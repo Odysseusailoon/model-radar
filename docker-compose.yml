@@ -1,0 +1,39 @@
+# Local dev: `docker compose up` brings up Postgres + the app together.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gtm
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/gtm
+      # ---- fill these in (or use an .env file / `docker compose --env-file`) ----
+      TWITTERAPI_KEY: ${TWITTERAPI_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-https://aihubmix.com}
+      FEISHU_WEBHOOK_URL: ${FEISHU_WEBHOOK_URL:-}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-changeme}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-}
+      # Seed a starter product config on first boot (table-empty only).
+      SEED_PRODUCTS_FILE: ${SEED_PRODUCTS_FILE:-products.example.json}
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:

@@ -1,0 +1,31 @@
+[
+  {
+    "name": "K3",
+    "active": true,
+    "launch_date": "2026-07-01",
+    "keywords": [
+      "K3",
+      "\"K3\" model",
+      "K3 语言模型",
+      "K3 大模型"
+    ],
+    "official_accounts": [
+      "your_official_handle_here"
+    ],
+    "seed_kols": [
+      "karpathy",
+      "swyx",
+      "simonw"
+    ],
+    "_comment": "Replace keywords with real, disambiguating terms. Bare 'K3' will match a lot of noise (cars, cameras) — prefer quoted multi-word phrases and product-specific terms. official_accounts drives promo detection; seed_kols are polled directly each cycle."
+  },
+  {
+    "name": "GLM",
+    "active": false,
+    "launch_date": null,
+    "keywords": [],
+    "official_accounts": [],
+    "seed_kols": [],
+    "_comment": "Empty template for the next product. Fill in keywords/accounts/kols, flip active to true, and it goes live on the next collection cycle. Adding a product needs ZERO code changes — do it here or via /admin/products."
+  }
+]

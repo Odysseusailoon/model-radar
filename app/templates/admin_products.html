@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}产品配置 · GTM Evidence Radar{% endblock %}
+{% block content %}
+
+<h2 style="margin-top:0">产品配置</h2>
+<p class="muted">加一个新产品 = 填下面这张表。下一个采集周期(默认 10 分钟)自动生效,无需改代码或重启。</p>
+
+<div class="card">
+  <h3 style="margin-top:0">新增 / 编辑产品</h3>
+  <p class="muted">编辑已有产品:把"产品名称"填成已有的名字即可覆盖其配置。</p>
+  <form method="post" action="/admin/products">
+    <p><label>产品名称<br><input type="text" name="name" required style="width:100%"></label></p>
+    <p><label>关键词(每行一个,或用逗号分隔;支持中英文,建议用多词短语避免同名歧义)<br>
+      <textarea name="keywords" rows="4" style="width:100%" placeholder='K3&#10;"K3" model&#10;K3 大模型'></textarea></label></p>
+    <p><label>官方账号(每行一个 handle,用于识别自发推广 promo)<br>
+      <textarea name="official_accounts" rows="2" style="width:100%" placeholder="your_official_handle"></textarea></label></p>
+    <p><label>种子 KOL(每行一个 handle,每周期直接轮询其最新推文)<br>
+      <textarea name="seed_kols" rows="3" style="width:100%" placeholder="karpathy&#10;swyx"></textarea></label></p>
+    <p><label>Launch 日期(YYYY-MM-DD,可留空)<br><input type="date" name="launch_date"></label></p>
+    <p><label><input type="checkbox" name="active" checked> active(勾选后才会被采集)</label></p>
+    <button class="btn-primary" type="submit">保存</button>
+  </form>
+</div>
+
+<h3>现有产品({{ products|length }})</h3>
+<table>
+  <tr><th>名称</th><th>状态</th><th>关键词</th><th>官方账号</th><th>种子KOL</th><th>Launch</th><th>操作</th></tr>
+  {% for p in products %}
+  <tr>
+    <td><strong>{{ p.name }}</strong></td>
+    <td>{% if p.active %}<span class="tag t-customer_case">active</span>{% else %}<span class="tag t-irrelevant">off</span>{% endif %}</td>
+    <td>{{ (p.keywords or [])|join(', ') }}</td>
+    <td>{{ (p.official_accounts or [])|join(', ') }}</td>
+    <td>{{ (p.seed_kols or [])|join(', ') }}</td>
+    <td>{{ p.launch_date.strftime('%Y-%m-%d') if p.launch_date else '—' }}</td>
+    <td>
+      <form method="post" action="/admin/products/{{ p.id }}/delete" onsubmit="return confirm('删除产品 {{ p.name }}?');">
+        <button type="submit">删除</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}
