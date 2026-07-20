@@ -22,16 +22,20 @@
   </form>
 </div>
 
-<h3>现有产品({{ products|length }})</h3>
+<div class="card" style="margin-top:14px">
+<div class="card-head"><span class="card-title">现有产品（{{ products|length }}）</span></div>
+<p class="card-sub">竞品建议留空种子 KOL —— 轮询 KOL 是为了发现关于自家产品的证据。</p>
+<div style="overflow-x:auto">
 <table>
-  <tr><th>名称</th><th>状态</th><th>关键词</th><th>官方账号</th><th>种子KOL</th><th>Launch</th><th>操作</th></tr>
+  <thead><tr><th>名称</th><th>状态</th><th>关键词</th><th>官方账号</th><th>种子KOL</th><th>Launch</th><th>操作</th></tr></thead>
+  <tbody>
   {% for p in products %}
   <tr>
     <td><strong>{{ p.name }}</strong></td>
     <td>{% if p.active %}<span class="tag t-customer_case">active</span>{% else %}<span class="tag t-irrelevant">off</span>{% endif %}</td>
-    <td>{{ (p.keywords or [])|join(', ') }}</td>
-    <td>{{ (p.official_accounts or [])|join(', ') }}</td>
-    <td>{{ (p.seed_kols or [])|join(', ') }}</td>
+    <td class="muted">{{ (p.keywords or [])|join(', ') }}</td>
+    <td class="muted">{{ (p.official_accounts or [])|join(', ') }}</td>
+    <td class="muted">{{ (p.seed_kols or [])|length }} 个</td>
     <td>{{ p.launch_date.strftime('%Y-%m-%d') if p.launch_date else '—' }}</td>
     <td>
       <form method="post" action="/admin/products/{{ p.id }}/delete" onsubmit="return confirm('删除产品 {{ p.name }}?');">
@@ -40,6 +44,9 @@
     </td>
   </tr>
   {% endfor %}
+  </tbody>
 </table>
+</div>
+</div>
 
 {% endblock %}

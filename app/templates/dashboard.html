@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% block title %}概览 · GTM Evidence Radar{% endblock %}
+{% block content %}
+
+{# One filter row, above everything it scopes. #}
+<form class="filters" method="get" action="/">
+  <label>产品
+    <select name="product_id" onchange="this.form.submit()">
+      <option value="">全部产品</option>
+      {% for p in o.products %}
+      <option value="{{ p.id }}" {% if filters.get('product_id')==p.id|string %}selected{% endif %}>{{ p.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>时间范围
+    <select name="days" onchange="this.form.submit()">
+      {% for d in [7, 14, 30, 90] %}
+      <option value="{{ d }}" {% if days==d %}selected{% endif %}>最近 {{ d }} 天</option>
+      {% endfor %}
+    </select>
+  </label>
+  <span class="spacer"></span>
+  <a class="btn" href="/feed">审核队列{% if o.pending %} · {{ o.pending }}{% endif %}</a>
+  <a class="btn" href="/export">⬇ 导出 CSV</a>
+</form>
+
+{# ---------------- KPI row: headline numbers are tiles, not one-bar charts ---- #}
+<div class="kpis">
+  <div class="card">
+    <div class="kpi-label">证据总量</div>
+    <div class="kpi-value">{{ "{:,}".format(o.total) }}</div>
+    <div class="kpi-foot">最近 {{ days }} 天采集</div>
+  </div>
+  <div class="card">
+    <div class="kpi-label">有效证据</div>
+    <div class="kpi-value">{{ "{:,}".format(o.signal) }}</div>
+    <div class="kpi-foot">
+      占比 <span class="{% if o.signal_rate >= 25 %}up{% endif %}">{{ "%.0f"|format(o.signal_rate) }}%</span>
+      · Demo/客户/大佬评价
+    </div>
+  </div>
+  <div class="card">
+    <div class="kpi-label">触达人数</div>
+    <div class="kpi-value">{{ reach_h }}</div>
+    <div class="kpi-foot">有效证据作者粉丝总和</div>
+  </div>
+  <div class="card">
+    <div class="kpi-label">待审核</div>
+    <div class="kpi-value">{{ "{:,}".format(o.pending) }}</div>
+    <div class="kpi-foot">
+      {% if o.failed %}<span class="warn">{{ o.failed }} 条分类失败</span>{% else %}无分类失败{% endif %}
+    </div>
+  </div>
+</div>
+
+{% if o.is_empty %}
+{# Empty state carries the diagnosis, since "no data" here usually means
+   collection is misconfigured rather than genuinely quiet. #}
+<div class="card">
+  <div class="empty">
+    <div class="empty-icon">📡</div>
+    <h3>还没有采集到证据</h3>
+    <p>
+      如果刚部署完，等待下一个采集周期，或用管理员账号 <code>POST /debug/collect</code> 立即采集一次。<br><br>
+      如果一直是空的，先检查 Railway 环境变量：<code>TWITTERAPI_KEY</code> 与
+      <code>ANTHROPIC_API_KEY</code> 未设置时采集会静默失败，
+      <code>SEED_PRODUCTS_FILE</code> 未设为 <code>products.json</code> 时加载的是示例配置。
+    </p>
+  </div>
+</div>
+{% else %}
+
+<div class="grid">
+  {# ---------- Trend: distinct series over time -> multi-line, categorical ---- #}
+  <div class="card span-2">
+    <div class="card-head">
+      <span class="card-title">证据量趋势</span>
+      <button class="link-btn" data-toggle="tv-trend">查看数据表</button>
+    </div>
+    <p class="card-sub">按产品分组的每日证据条数</p>
+
+    <div class="legend">
+      {% for name, values in o.series.items() %}
+      <span class="legend-item">
+        <span class="swatch" style="background:{{ colors[name].css }}"></span>{{ name }}
+      </span>
+      {% endfor %}
+    </div>
+
+    <svg viewBox="0 0 {{ chart.width }} {{ chart.height }}" preserveAspectRatio="xMidYMid meet"
+         role="img" aria-label="按产品分组的每日证据量趋势"
+         style="display:block;width:100%;height:auto;max-height:260px;overflow:visible">
+      {% for y, label in chart.y_ticks %}
+      <line x1="{{ chart.pad_l }}" x2="{{ chart.width - 8 }}" y1="{{ y }}" y2="{{ y }}"
+            stroke="var(--grid)" stroke-width="1"/>
+      <text x="{{ chart.pad_l - 7 }}" y="{{ y + 3.5 }}" text-anchor="end"
+            font-size="10" fill="var(--text-muted)" style="font-variant-numeric:tabular-nums">{{ label }}</text>
+      {% endfor %}
+
+      {% for x, label in chart.x_labels %}
+      <text x="{{ x }}" y="{{ chart.height - 8 }}" text-anchor="middle"
+            font-size="10" fill="var(--text-muted)">{{ label }}</text>
+      {% endfor %}
+
+      {% for s in chart.series %}
+      <path d="{{ s.path }}" fill="none" stroke="{{ colors[s.name].css }}"
+            stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      {% endfor %}
+
+      {# Crosshair + per-index hit columns, so the hit target is the whole
+         column rather than a pinpoint on the line. #}
+      {% for i in range(chart.series[0].points|length if chart.series else 0) %}
+        {% set x = chart.series[0].points[i][0] %}
+        <line class="crosshair" data-idx="{{ i }}" x1="{{ x }}" x2="{{ x }}"
+              y1="6" y2="{{ chart.height - chart.pad_b }}"/>
+        {% for s in chart.series %}
+        <circle class="dot" data-idx="{{ i }}" cx="{{ s.points[i][0] }}" cy="{{ s.points[i][1] }}"
+                fill="{{ colors[s.name].css }}"/>
+        {% endfor %}
+        <rect class="hit" data-idx="{{ i }}" tabindex="0"
+              x="{{ x - (chart.width / (chart.series[0].points|length * 2)) }}" y="0"
+              width="{{ chart.width / (chart.series[0].points|length) }}" height="{{ chart.height - chart.pad_b }}"
+              data-tip="{{ chart.series[0].points[i][3] }}<br>{% for s in chart.series %}{{ s.name }}: <b>{{ s.points[i][2] }}</b>{% if not loop.last %}<br>{% endif %}{% endfor %}"/>
+      {% endfor %}
+    </svg>
+
+    <div class="table-view scroll-x" id="tv-trend">
+      <table>
+        <thead><tr><th>日期</th>{% for s in chart.series %}<th class="num">{{ s.name }}</th>{% endfor %}</tr></thead>
+        <tbody>
+          {% for i in range(o.days|length) %}
+          <tr>
+            <td>{{ o.days[i] }}</td>
+            {% for name, values in o.series.items() %}<td class="num">{{ values[i] }}</td>{% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {# ---------- Category mix: grouped bars, one hue per PRODUCT (entity) ------- #}
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">证据类型分布</span>
+      <button class="link-btn" data-toggle="tv-cat">查看数据表</button>
+    </div>
+    <p class="card-sub">按分类统计，颜色代表产品</p>
+    <div class="legend">
+      {% for name in o.series.keys() %}
+      <span class="legend-item"><span class="swatch" style="background:{{ colors[name].css }}"></span>{{ name }}</span>
+      {% endfor %}
+    </div>
+    {% for cat in category_order %}
+      {% if cat_totals.get(cat) %}
+      <div class="bar-row">
+        <span class="bar-name">{{ category_labels.get(cat, cat) }}</span>
+        <span class="bar-group">
+          {% for name in o.series.keys() %}
+            {% set v = o.by_category.get(cat, {}).get(name, 0) %}
+            {% if v %}
+            <span class="bar" tabindex="0"
+                  style="width:{{ (v / cat_max * 100)|round(1) }}%;background:{{ colors[name].css }}"
+                  data-tip="{{ name }} · {{ category_labels.get(cat, cat) }}: <b>{{ v }}</b>"></span>
+            {% endif %}
+          {% endfor %}
+        </span>
+        <span class="bar-value">{{ cat_totals.get(cat) }}</span>
+      </div>
+      {% endif %}
+    {% endfor %}
+    <div class="table-view scroll-x" id="tv-cat">
+      <table>
+        <thead><tr><th>分类</th>{% for name in o.series.keys() %}<th class="num">{{ name }}</th>{% endfor %}<th class="num">合计</th></tr></thead>
+        <tbody>
+          {% for cat in category_order %}{% if cat_totals.get(cat) %}
+          <tr>
+            <td>{{ category_labels.get(cat, cat) }}</td>
+            {% for name in o.series.keys() %}<td class="num">{{ o.by_category.get(cat, {}).get(name, 0) }}</td>{% endfor %}
+            <td class="num">{{ cat_totals.get(cat) }}</td>
+          </tr>
+          {% endif %}{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {# ---------- Sentiment: an ordered scale -> diverging, centered on neutral -- #}
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">情感倾向</span>
+      <button class="link-btn" data-toggle="tv-sent">查看数据表</button>
+    </div>
+    <p class="card-sub">以中性为中心，左负右正</p>
+    <div class="legend">
+      <span class="legend-item"><span class="swatch" style="background:var(--diverge-neg)"></span>负面</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--diverge-mid)"></span>中性</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--diverge-pos)"></span>正面</span>
+    </div>
+    {% for r in sentiment_rows %}
+    <div class="div-row">
+      <span class="bar-name" title="{{ r.name }}">{{ r.name }}</span>
+      <span class="div-track">
+        <span class="div-half neg">
+          <span class="div-seg" tabindex="0" style="width:{{ r.neg_w }}%;background:var(--diverge-neg);border-radius:4px 0 0 4px"
+                data-tip="{{ r.name }} · 负面 <b>{{ r.neg }}</b>（{{ (r.neg_f * 100)|round }}%）"></span>
+          <span class="div-seg" style="width:{{ r.neu_half_w }}%;background:var(--diverge-mid);margin-left:2px"
+                tabindex="0" data-tip="{{ r.name }} · 中性 <b>{{ r.neu }}</b>（{{ (r.neu_f * 100)|round }}%）"></span>
+        </span>
+        <span class="div-half">
+          <span class="div-seg" style="width:{{ r.neu_half_w }}%;background:var(--diverge-mid)"
+                tabindex="0" data-tip="{{ r.name }} · 中性 <b>{{ r.neu }}</b>（{{ (r.neu_f * 100)|round }}%）"></span>
+          <span class="div-seg" tabindex="0" style="width:{{ r.pos_w }}%;background:var(--diverge-pos);border-radius:0 4px 4px 0;margin-left:2px"
+                data-tip="{{ r.name }} · 正面 <b>{{ r.pos }}</b>（{{ r.pos_pct }}%）"></span>
+        </span>
+        <span class="div-mid"></span>
+      </span>
+      {# Direct label: the light-mode relief rule requires the value be
+         readable without relying on the mark's color alone. #}
+      <span class="bar-value">{{ r.pos_pct }}%</span>
+    </div>
+    {% endfor %}
+    <div class="table-view" id="tv-sent">
+      <table>
+        <thead><tr><th>产品</th><th class="num">负面</th><th class="num">中性</th><th class="num">正面</th></tr></thead>
+        <tbody>
+          {% for name in o.series.keys() %}
+          <tr>
+            <td>{{ name }}</td>
+            <td class="num">{{ o.by_sentiment.get('negative', {}).get(name, 0) }}</td>
+            <td class="num">{{ o.by_sentiment.get('neutral', {}).get(name, 0) }}</td>
+            <td class="num">{{ o.by_sentiment.get('positive', {}).get(name, 0) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{# ---------- Top voices: many attributes per row -> a table, not a chart ----- #}
+<div class="card">
+  <div class="card-head"><span class="card-title">高影响力证据</span></div>
+  <p class="card-sub">按作者粉丝量排序的有效证据</p>
+  {% if o.top_voices %}
+  <div class="scroll-x">
+  <table>
+    <thead>
+      <tr><th>作者</th><th class="num">粉丝</th><th>产品</th><th>分类</th><th>摘要</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for ev in o.top_voices %}
+      <tr>
+        <td><strong>@{{ ev.author_handle }}</strong>{% if ev.author_verified %} ✔{% endif %}</td>
+        <td class="num">{{ "{:,}".format(ev.author_followers) }}</td>
+        <td>{{ ev.product.name if ev.product else '—' }}</td>
+        <td><span class="tag t-{{ ev.category or 'unclassified' }}">{{ category_labels.get(ev.category, ev.category or '未分类') }}</span></td>
+        <td class="muted">{{ (ev.classification or {}).get('summary_zh') or (ev.text or '')[:60] }}</td>
+        <td>{% if ev.tweet_url %}<a href="{{ ev.tweet_url }}" target="_blank" rel="noopener">原推 ↗</a>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}
+  <div class="empty"><p>还没有被判定为有效证据的内容。</p></div>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

@@ -23,7 +23,9 @@ from .db import SessionLocal, init_db
 from .export import build_csv
 from .models import Evidence
 from .pipeline import process_tweet
+from .charts import assign_colors, build_line_chart, build_sentiment_bars
 from .queries import EvidenceFilter, query_evidence
+from .stats import build_overview
 from .xclient import _map_tweet
 
 logging.basicConfig(
@@ -122,9 +124,59 @@ def debug_collect(_: str = Depends(require_auth)):
 
 
 # --------------------------------------------------------------------------
-# Evidence feed (/)
+# Overview dashboard (/)
 # --------------------------------------------------------------------------
+def _humanize(n: int) -> str:
+    """Compact reach figure — 1.2M rather than 1,203,455, which is noise at
+    stat-tile size."""
+    for limit, suffix in ((1_000_000_000, "B"), (1_000_000, "M"), (1_000, "K")):
+        if n >= limit:
+            v = n / limit
+            return f"{v:.1f}".rstrip("0").rstrip(".") + suffix
+    return str(n)
+
+
 @app.get("/", response_class=HTMLResponse)
+def overview(request: Request, _: str = Depends(require_auth), db=Depends(get_db)):
+    params = request.query_params
+    try:
+        days = min(max(int(params.get("days") or 14), 1), 365)
+    except ValueError:
+        days = 14
+    try:
+        product_id = int(params.get("product_id")) if params.get("product_id") else None
+    except ValueError:
+        product_id = None
+
+    o = build_overview(db, product_id=product_id, days=days)
+    colors = assign_colors(list(o.series.keys()))
+    chart = build_line_chart(o.days, o.series)
+
+    cat_totals = {c: sum(v.values()) for c, v in o.by_category.items()}
+    return templates.TemplateResponse(
+        "dashboard.html",
+        {
+            "request": request,
+            "active": "overview",
+            "o": o,
+            "days": days,
+            "colors": colors,
+            "chart": chart,
+            "sentiment_rows": build_sentiment_bars(o.by_sentiment, list(o.series.keys())),
+            "cat_totals": cat_totals,
+            "cat_max": max(cat_totals.values()) if cat_totals else 1,
+            "category_order": CATEGORIES + ["unclassified"],
+            "category_labels": {**CATEGORY_LABELS, "unclassified": "未分类"},
+            "reach_h": _humanize(o.reach),
+            "filters": params,
+        },
+    )
+
+
+# --------------------------------------------------------------------------
+# Evidence feed (/feed) — the review queue
+# --------------------------------------------------------------------------
+@app.get("/feed", response_class=HTMLResponse)
 def feed(request: Request, _: str = Depends(require_auth), db=Depends(get_db)):
     f = EvidenceFilter.from_query(request.query_params)
     items = query_evidence(db, f)
@@ -133,6 +185,7 @@ def feed(request: Request, _: str = Depends(require_auth), db=Depends(get_db)):
         "feed.html",
         {
             "request": request,
+            "active": "feed",
             "items": items,
             "products": products,
             "categories": CATEGORIES,
@@ -158,7 +211,7 @@ def review(evidence_id: int, action: str = Form(...), qs: str = Form(""),
     else:
         raise HTTPException(400, "invalid action")
     db.commit()
-    return RedirectResponse(f"/?{qs}", status_code=303)
+    return RedirectResponse(f"/feed?{qs}", status_code=303)
 
 
 # --------------------------------------------------------------------------
@@ -184,7 +237,8 @@ def export_csv(request: Request, _: str = Depends(require_auth), db=Depends(get_
 def admin_products(request: Request, _: str = Depends(require_auth), db=Depends(get_db)):
     products = list_products(db)
     return templates.TemplateResponse(
-        "admin_products.html", {"request": request, "products": products}
+        "admin_products.html",
+        {"request": request, "active": "products", "products": products},
     )
 
 
