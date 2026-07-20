@@ -1,10 +1,16 @@
 """Database engine / session setup (SQLAlchemy 2.x)."""
 from __future__ import annotations
 
+import logging
+import time
+
 from sqlalchemy import create_engine
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
 
 from .config import get_settings
+
+log = logging.getLogger("gtm.db")
 
 
 def _normalize_db_url(url: str) -> str:
@@ -26,8 +32,27 @@ engine = create_engine(
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False, future=True)
 
 
-def init_db() -> None:
-    """Create all tables if they do not exist (no migration framework, per spec)."""
+def init_db(attempts: int = 6, base_delay: float = 1.0) -> None:
+    """Create all tables if they do not exist (no migration framework, per spec).
+
+    Retries with exponential backoff: on Railway the app container regularly
+    wins the startup race against Postgres, and an unguarded failure here kills
+    the container before it can serve the healthcheck. Since the restart policy
+    allows only a limited number of retries, a slow database cold start could
+    otherwise burn them all and fail the whole deploy.
+    """
     from . import models  # noqa: F401  (register models on the metadata)
 
-    models.Base.metadata.create_all(bind=engine)
+    for attempt in range(1, attempts + 1):
+        try:
+            models.Base.metadata.create_all(bind=engine)
+            return
+        except OperationalError:
+            if attempt == attempts:
+                raise
+            delay = base_delay * 2 ** (attempt - 1)
+            log.warning(
+                "Database not ready (attempt %d/%d); retrying in %.1fs",
+                attempt, attempts, delay,
+            )
+            time.sleep(delay)
