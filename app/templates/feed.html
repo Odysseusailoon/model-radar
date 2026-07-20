@@ -2,7 +2,7 @@
 {% block title %}证据流 · GTM Evidence Radar{% endblock %}
 {% block content %}
 
-<form class="filters" method="get" action="/">
+<form class="filters" method="get" action="/feed">
   <label>产品
     <select name="product_id">
       <option value="">全部</option>
@@ -36,63 +36,78 @@
     </select>
   </label>
   <label>最小粉丝数
-    <input type="number" name="min_followers" value="{{ filters.get('min_followers','') }}" min="0" step="1000" style="width:110px">
+    <input type="number" name="min_followers" value="{{ filters.get('min_followers','') }}" min="0" step="1000" style="width:104px">
   </label>
   <button class="btn-primary" type="submit">筛选</button>
+  <span class="spacer"></span>
   <a class="btn" href="/export?{{ qs }}">⬇ 导出 CSV</a>
 </form>
 
-<p class="muted">共 {{ items|length }} 条（最多展示 200 条，导出不受此限）</p>
+<p class="muted" style="margin:0 0 12px">共 {{ items|length }} 条（最多展示 200 条，导出不受此限）</p>
 
 {% for ev in items %}
-<div class="card {% if ev.classification_failed %}failed{% endif %}">
-  <div class="row">
+<div class="card" style="margin-bottom:12px;{% if ev.classification_failed %}border-color:var(--serious){% endif %}">
+  <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap">
     <div>
       <strong>@{{ ev.author_handle }}</strong>
-      <span class="muted">{{ "{:,}".format(ev.author_followers) }} 粉丝{% if ev.author_verified %} · ✔{% endif %}</span>
-      <span class="muted"> · {{ ev.product.name }}</span>
+      {% if ev.author_verified %}<span class="muted">✔</span>{% endif %}
+      <span class="muted">· {{ "{:,}".format(ev.author_followers) }} 粉丝</span>
+      <span class="muted">· {{ ev.product.name if ev.product else '—' }}</span>
     </div>
-    <div>
+    <div style="display:flex;gap:8px;align-items:center">
       {% if ev.classification_failed %}
         <span class="tag t-promo">分类失败</span>
       {% else %}
-        <span class="tag t-{{ ev.category }}">{{ category_labels.get(ev.category, ev.category) }}</span>
-        <span class="s-{{ ev.sentiment }}">● {{ ev.sentiment }}</span>
+        <span class="tag t-{{ ev.category or 'unclassified' }}">{{ category_labels.get(ev.category, '未分类') }}</span>
+        <span class="s-{{ ev.sentiment }}" style="font-size:12px">● {{ ev.sentiment or '—' }}</span>
         <span class="muted">conf {{ "%.2f"|format(ev.confidence) }}</span>
       {% endif %}
     </div>
   </div>
 
   {% set data = ev.classification or {} %}
-  {% if data.get('summary_zh') %}<p style="margin:8px 0 4px">{{ data.get('summary_zh') }}</p>{% endif %}
-  {% if data.get('quotable_excerpt') %}<div class="excerpt">“{{ data.get('quotable_excerpt') }}”</div>{% endif %}
+  {% if data.get('summary_zh') %}<p style="margin:10px 0 4px">{{ data.get('summary_zh') }}</p>{% endif %}
+  {% if data.get('quotable_excerpt') %}
+  <blockquote style="border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0;
+                     background:var(--plane);border-radius:0 6px 6px 0;font-size:13.5px">
+    “{{ data.get('quotable_excerpt') }}”
+  </blockquote>
+  {% endif %}
   {% if data.get('author_credibility_signals') %}
-    <p class="muted">可信度信号:{{ data.get('author_credibility_signals')|join('、') }}</p>
+    <p class="muted">可信度信号：{{ data.get('author_credibility_signals')|join('、') }}</p>
   {% endif %}
   {% if ev.media_urls %}<p class="muted">📎 {{ ev.media_urls|length }} 个媒体附件</p>{% endif %}
 
-  <div class="row">
-    <span class="muted">❤ {{ ev.like_count }} · 🔁 {{ ev.retweet_count }} · 💬 {{ ev.reply_count }}
-      {% if ev.posted_at %}· {{ ev.posted_at.strftime('%Y-%m-%d %H:%M') }}{% endif %}</span>
-    <span>
+  <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px">
+    <span class="muted">
+      ❤ {{ ev.like_count }} · 🔁 {{ ev.retweet_count }} · 💬 {{ ev.reply_count }}
+      {% if ev.posted_at %}· {{ ev.posted_at.strftime('%Y-%m-%d %H:%M') }}{% endif %}
+    </span>
+    <span style="display:flex;gap:8px;align-items:center">
       <span class="pill">{{ ev.review_status }}</span>
-      {% if ev.tweet_url %}<a class="muted" href="{{ ev.tweet_url }}" target="_blank" rel="noopener">原推 ↗</a>{% endif %}
+      {% if ev.tweet_url %}<a href="{{ ev.tweet_url }}" target="_blank" rel="noopener">原推 ↗</a>{% endif %}
     </span>
   </div>
 
-  <div class="actions">
+  <div style="display:flex;gap:8px;margin-top:12px">
     <form method="post" action="/evidence/{{ ev.id }}/review">
       <input type="hidden" name="qs" value="{{ qs }}">
-      <button name="action" value="approve" class="btn-primary" {% if ev.review_status=='approved' %}disabled{% endif %}>✓ Approve</button>
+      <button name="action" value="approve" class="btn-primary" {% if ev.review_status=='approved' %}disabled{% endif %}>✓ 通过</button>
     </form>
     <form method="post" action="/evidence/{{ ev.id }}/review">
       <input type="hidden" name="qs" value="{{ qs }}">
-      <button name="action" value="reject" {% if ev.review_status=='rejected' %}disabled{% endif %}>✕ Reject</button>
+      <button name="action" value="reject" {% if ev.review_status=='rejected' %}disabled{% endif %}>✕ 拒绝</button>
     </form>
   </div>
 </div>
 {% else %}
-<div class="card"><p class="muted">还没有证据。等待下一个采集周期,或用管理员账号 POST /debug/collect 立即采集一次。</p></div>
+<div class="card">
+  <div class="empty">
+    <div class="empty-icon">🗂️</div>
+    <h3>没有符合条件的证据</h3>
+    <p>调整筛选条件，或等待下一个采集周期。也可以用管理员账号 <code>POST /debug/collect</code> 立即采集一次。</p>
+  </div>
+</div>
 {% endfor %}
 
 {% endblock %}

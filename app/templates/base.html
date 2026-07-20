@@ -5,42 +5,279 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}GTM Evidence Radar{% endblock %}</title>
   <style>
-    :root { --bg:#f6f7f9; --card:#fff; --line:#e4e7ec; --ink:#1a1d23; --muted:#667085; --brand:#3b5bdb; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background:var(--bg); color:var(--ink); }
-    header { background:var(--card); border-bottom:1px solid var(--line); padding:12px 20px; display:flex; gap:20px; align-items:center; position:sticky; top:0; z-index:5; }
-    header a { color:var(--brand); text-decoration:none; font-weight:600; }
-    header .title { font-weight:700; font-size:16px; }
-    .wrap { max-width:960px; margin:0 auto; padding:18px 16px 60px; }
-    .filters { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
-    .filters label { font-size:12px; color:var(--muted); display:flex; flex-direction:column; gap:4px; }
-    select, input[type=number], input[type=text], input[type=date], textarea { padding:6px 8px; border:1px solid var(--line); border-radius:6px; font-size:13px; background:#fff; }
-    button, .btn { cursor:pointer; border:1px solid var(--line); background:#fff; border-radius:6px; padding:6px 12px; font-size:13px; }
-    .btn-primary { background:var(--brand); color:#fff; border-color:var(--brand); }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px; }
-    .row { display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
-    .muted { color:var(--muted); font-size:12px; }
-    .tag { display:inline-block; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; }
-    .t-demo{background:#e7f5ff;color:#1971c2}.t-customer_case{background:#ebfbee;color:#2f9e44}
-    .t-expert_review{background:#fff3bf;color:#e67700}.t-news{background:#f1f3f5;color:#495057}
-    .t-promo{background:#ffe3e3;color:#c92a2a}.t-irrelevant{background:#f1f3f5;color:#868e96}
-    .s-positive{color:#2f9e44}.s-negative{color:#c92a2a}.s-neutral{color:#868e96}
-    .excerpt { border-left:3px solid var(--brand); padding:6px 10px; margin:8px 0; background:#fafbff; font-size:14px; }
-    .actions { display:flex; gap:8px; margin-top:10px; }
-    .failed { border-color:#ffa8a8; }
-    table { width:100%; border-collapse:collapse; background:#fff; }
-    th,td { border:1px solid var(--line); padding:8px; font-size:13px; text-align:left; vertical-align:top; }
-    .pill { font-size:11px; padding:1px 6px; border-radius:4px; background:#eef; }
+    /* ---------------------------------------------------------------
+       Tokens. Series slots come from the validated categorical palette
+       (see app/charts.py); light/dark are selected steps of the same
+       hues, not an automatic flip.
+       --------------------------------------------------------------- */
+    :root {
+      color-scheme: light;
+      --surface-1:#fcfcfb; --plane:#f9f9f7; --raised:#ffffff;
+      --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+      --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+      --series-1:#2a78d6; --series-2:#008300; --series-3:#e87ba4; --series-other:#898781;
+      --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+      --success-text:#006300;
+      --diverge-pos:#2a78d6; --diverge-mid:#f0efec; --diverge-neg:#d03b3b;
+      --accent:#2a78d6;
+      --shadow:0 1px 2px rgba(11,11,11,.04), 0 4px 12px rgba(11,11,11,.04);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:where(:not([data-theme="light"])) {
+        color-scheme: dark;
+        --surface-1:#1a1a19; --plane:#0d0d0d; --raised:#1f1f1e;
+        --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
+        --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+        --series-1:#3987e5; --series-2:#008300; --series-3:#d55181; --series-other:#898781;
+        --success-text:#0ca30c;
+        --diverge-pos:#3987e5; --diverge-mid:#383835; --diverge-neg:#d03b3b;
+        --accent:#3987e5;
+        --shadow:0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3);
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --surface-1:#1a1a19; --plane:#0d0d0d; --raised:#1f1f1e;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
+      --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+      --series-1:#3987e5; --series-2:#008300; --series-3:#d55181; --series-other:#898781;
+      --success-text:#0ca30c;
+      --diverge-pos:#3987e5; --diverge-mid:#383835; --diverge-neg:#d03b3b;
+      --accent:#3987e5;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3);
+    }
+
+    * { box-sizing:border-box; }
+    body {
+      margin:0; background:var(--plane); color:var(--text-primary);
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size:14px; line-height:1.5;
+    }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+
+    /* ---- chrome ---- */
+    header {
+      background:var(--surface-1); border-bottom:1px solid var(--border);
+      padding:0 20px; display:flex; gap:6px; align-items:center;
+      position:sticky; top:0; z-index:20; height:52px;
+    }
+    .brand { font-weight:650; font-size:15px; margin-right:14px; white-space:nowrap; }
+    .brand span { color:var(--accent); }
+    /* Nav must never wrap into stacked characters on a narrow screen; it
+       scrolls horizontally inside the header instead. */
+    nav { display:flex; gap:2px; flex:1; min-width:0; overflow-x:auto; scrollbar-width:none; }
+    nav::-webkit-scrollbar { display:none; }
+    nav a {
+      padding:6px 11px; border-radius:7px; color:var(--text-secondary);
+      font-weight:500; font-size:13px; white-space:nowrap;
+    }
+    nav a:hover { background:var(--plane); text-decoration:none; }
+    nav a.active { background:var(--plane); color:var(--text-primary); font-weight:600; }
+    .wrap { max-width:1180px; margin:0 auto; padding:20px 16px 72px; }
+
+    /* ---- controls ---- */
+    button, .btn, select, input[type=number], input[type=text], input[type=date], textarea {
+      font:inherit; font-size:13px; color:var(--text-primary);
+      background:var(--raised); border:1px solid var(--border);
+      border-radius:7px; padding:6px 10px;
+    }
+    button, .btn { cursor:pointer; }
+    button:hover, .btn:hover { border-color:var(--axis); text-decoration:none; }
+    .btn-primary { background:var(--accent); color:#fff; border-color:transparent; font-weight:550; }
+    .btn-primary:hover { filter:brightness(1.06); }
+    button:disabled { opacity:.45; cursor:default; }
+    .icon-btn { padding:6px 9px; line-height:1; }
+
+    /* ---- filter row: one row above everything it scopes ---- */
+    .filters {
+      display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
+      background:var(--surface-1); border:1px solid var(--border);
+      border-radius:11px; padding:12px 14px; margin-bottom:18px; box-shadow:var(--shadow);
+    }
+    .filters label { display:flex; flex-direction:column; gap:4px; font-size:11px;
+      color:var(--text-muted); font-weight:550; letter-spacing:.02em; text-transform:uppercase; }
+    .filters .spacer { flex:1; }
+
+    /* ---- cards ---- */
+    .card {
+      background:var(--surface-1); border:1px solid var(--border);
+      border-radius:11px; padding:16px; box-shadow:var(--shadow);
+    }
+    .card-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:2px; }
+    .card-title { font-size:13px; font-weight:650; }
+    .card-sub { font-size:11.5px; color:var(--text-muted); margin:0 0 14px; }
+    .muted { color:var(--text-muted); font-size:12px; }
+
+    /* ---- KPI tiles ---- */
+    .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-bottom:18px; }
+    .kpi-label { font-size:11px; color:var(--text-muted); font-weight:600; letter-spacing:.03em; text-transform:uppercase; }
+    .kpi-value { font-size:30px; font-weight:640; letter-spacing:-.02em; margin-top:6px; line-height:1.1; }
+    .kpi-foot { font-size:11.5px; color:var(--text-secondary); margin-top:5px; }
+    .kpi-foot .up { color:var(--success-text); font-weight:600; }
+    .kpi-foot .warn { color:var(--critical); font-weight:600; }
+
+    /* ---- chart grid ---- */
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    .grid .span-2 { grid-column:1 / -1; }
+    @media (max-width:860px) { .grid { grid-template-columns:1fr; } }
+
+    /* ---- legend ---- */
+    .legend { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:10px; }
+    .legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-secondary); }
+    .swatch { width:10px; height:10px; border-radius:3px; flex:none; }
+
+    /* ---- bar marks (CSS-laid-out) ---- */
+    .bar-row { display:grid; grid-template-columns:104px 1fr 46px; gap:10px; align-items:center; margin-bottom:7px; }
+    .bar-name { font-size:12px; color:var(--text-secondary); text-align:right;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .bar-track { display:flex; gap:2px; height:100%; }
+    .bar-group { display:flex; flex-direction:column; gap:2px; }
+    .bar { height:11px; border-radius:0 4px 4px 0; min-width:2px; transition:filter .12s; }
+    .bar:hover { filter:brightness(1.12); }
+    .bar-value { font-size:12px; color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+
+    /* ---- diverging sentiment bar ---- */
+    /* Product names run long ("GLM / Z.ai (competitor)"), so this label column
+       is wider than the category one and wraps rather than truncating. */
+    .div-row { display:grid; grid-template-columns:140px 1fr 42px; gap:10px; align-items:center; margin-bottom:11px; }
+    .div-row .bar-name { white-space:normal; overflow:visible; line-height:1.3; }
+    .div-track { position:relative; height:14px; display:flex; }
+    .div-half { display:flex; flex:1; height:100%; }
+    .div-half.neg { justify-content:flex-end; }
+    .div-seg { height:100%; }
+    .div-mid { position:absolute; left:50%; top:-3px; bottom:-3px; width:1px; background:var(--axis); }
+
+    /* ---- table ---- */
+    /* Wide content scrolls inside its own container; the page body must never
+       scroll sideways. */
+    .scroll-x { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .scroll-x table { min-width:560px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:8px 10px; font-size:12.5px; text-align:left; border-bottom:1px solid var(--border); }
+    th { font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover { background:var(--plane); }
+    td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
+
+    /* ---- tags ---- */
+    .tag { display:inline-block; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; white-space:nowrap; }
+    .t-demo{background:color-mix(in srgb,var(--series-1) 14%,transparent);color:var(--series-1)}
+    .t-customer_case{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--success-text)}
+    .t-expert_review{background:color-mix(in srgb,var(--warning) 20%,transparent);color:var(--text-primary)}
+    .t-news{background:var(--plane);color:var(--text-secondary)}
+    .t-promo{background:color-mix(in srgb,var(--serious) 18%,transparent);color:var(--text-primary)}
+    .t-irrelevant{background:var(--plane);color:var(--text-muted)}
+    .t-unclassified{background:var(--plane);color:var(--text-muted)}
+    .s-positive{color:var(--success-text)} .s-negative{color:var(--critical)} .s-neutral{color:var(--text-muted)}
+    .pill { font-size:11px; padding:1px 7px; border-radius:5px; background:var(--plane); color:var(--text-secondary); }
+
+    /* ---- empty state ---- */
+    .empty { text-align:center; padding:34px 18px; color:var(--text-muted); }
+    .empty-icon { font-size:26px; opacity:.5; }
+    .empty h3 { margin:10px 0 4px; font-size:14px; color:var(--text-secondary); font-weight:600; }
+    .empty p { margin:0 auto; font-size:12.5px; max-width:420px; }
+
+    /* ---- chart tooltip ---- */
+    #tip {
+      position:fixed; z-index:60; pointer-events:none; opacity:0; transition:opacity .1s;
+      background:var(--text-primary); color:var(--surface-1);
+      padding:6px 9px; border-radius:7px; font-size:12px; white-space:nowrap;
+      box-shadow:0 3px 12px rgba(0,0,0,.22);
+    }
+    #tip.on { opacity:1; }
+    .hit { fill:transparent; cursor:crosshair; }
+    .crosshair { stroke:var(--axis); stroke-width:1; opacity:0; }
+    .dot { r:3.5; stroke:var(--surface-1); stroke-width:2; opacity:0; }
+
+    /* table-view twin, required by the relief rule for sub-3:1 series */
+    .table-view { display:none; margin-top:12px; }
+    .table-view.on { display:block; }
+    .link-btn { background:none; border:none; color:var(--accent); font-size:11.5px; padding:0; cursor:pointer; }
+    .link-btn:hover { text-decoration:underline; border:none; }
   </style>
 </head>
 <body>
   <header>
-    <span class="title">📡 GTM Evidence Radar</span>
-    <a href="/">证据流</a>
-    <a href="/admin/products">产品配置</a>
+    <span class="brand">📡 GTM <span>Evidence Radar</span></span>
+    <nav>
+      <a href="/" class="{% if active=='overview' %}active{% endif %}">概览</a>
+      <a href="/feed" class="{% if active=='feed' %}active{% endif %}">证据流</a>
+      <a href="/admin/products" class="{% if active=='products' %}active{% endif %}">产品配置</a>
+    </nav>
+    <button class="icon-btn" id="theme" title="切换深色/浅色" aria-label="切换主题">◐</button>
   </header>
   <div class="wrap">
     {% block content %}{% endblock %}
   </div>
+  <div id="tip" role="status" aria-live="polite"></div>
+  <script>
+    // Theme toggle — stamps data-theme so it beats the OS media query both ways.
+    (function () {
+      var root = document.documentElement, KEY = 'gtm-theme';
+      var saved = localStorage.getItem(KEY);
+      if (saved) root.setAttribute('data-theme', saved);
+      document.getElementById('theme').addEventListener('click', function () {
+        var isDark = root.getAttribute('data-theme') === 'dark' ||
+          (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+        var next = isDark ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem(KEY, next);
+      });
+    })();
+
+    // Shared tooltip. Any element with data-tip shows it; hit areas are sized
+    // generously in the chart markup rather than pinned to the mark itself.
+    (function () {
+      var tip = document.getElementById('tip');
+      function show(html, x, y) {
+        tip.innerHTML = html; tip.classList.add('on');
+        var r = tip.getBoundingClientRect();
+        var left = Math.min(Math.max(8, x - r.width / 2), innerWidth - r.width - 8);
+        tip.style.left = left + 'px';
+        tip.style.top = Math.max(8, y - r.height - 12) + 'px';
+      }
+      function hide() { tip.classList.remove('on'); }
+      document.addEventListener('mouseover', function (e) {
+        var t = e.target.closest('[data-tip]');
+        if (!t) return;
+        var b = t.getBoundingClientRect();
+        show(t.getAttribute('data-tip'), b.left + b.width / 2, b.top);
+        var i = t.getAttribute('data-idx');
+        if (i !== null) t.closest('svg') && revealPoints(t.closest('svg'), i);
+      });
+      document.addEventListener('mouseout', function (e) {
+        if (!e.target.closest('[data-tip]')) return;
+        hide();
+        document.querySelectorAll('svg .dot,svg .crosshair').forEach(function (n) { n.style.opacity = 0; });
+      });
+      // Keyboard parity: focusing a mark shows the same tooltip as hover.
+      document.addEventListener('focusin', function (e) {
+        var t = e.target.closest('[data-tip]');
+        if (!t) return;
+        var b = t.getBoundingClientRect();
+        show(t.getAttribute('data-tip'), b.left + b.width / 2, b.top);
+      });
+      document.addEventListener('focusout', hide);
+
+      function revealPoints(svg, idx) {
+        svg.querySelectorAll('.dot').forEach(function (d) {
+          d.style.opacity = d.getAttribute('data-idx') === idx ? 1 : 0;
+        });
+        var c = svg.querySelector('.crosshair[data-idx="' + idx + '"]');
+        svg.querySelectorAll('.crosshair').forEach(function (n) { n.style.opacity = 0; });
+        if (c) c.style.opacity = 1;
+      }
+    })();
+
+    // Table-view twins (the WCAG-clean equivalent of each chart).
+    document.querySelectorAll('[data-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.getAttribute('data-toggle'));
+        var on = el.classList.toggle('on');
+        btn.textContent = on ? '隐藏数据表' : '查看数据表';
+      });
+    });
+  </script>
 </body>
 </html>
