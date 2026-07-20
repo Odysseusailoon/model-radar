@@ -15,8 +15,25 @@ Verified from the docs:
       response envelope: { tweets: [...], has_next_page: bool, next_cursor: str }
   * User Last Tweets: GET /twitter/user/last_tweets
       params: userId | userName, cursor, includeReplies
-      response envelope: { tweets: [...], has_next_page, next_cursor, status, message }
+      response envelope: { data: { tweets: [...], pin_tweet }, has_next_page,
+                           next_cursor, status, msg, code }
+      *** WARNING: tweets are nested under `data`, UNLIKE advanced_search which
+      returns them at the top level. Verified live 2026-07-20. Reading the top
+      level here yields zero tweets silently — seed-KOL polling looked healthy
+      while collecting nothing. `_tweets_from` handles both shapes. ***
+  * User Followings: GET /twitter/user/followings
+      params: userName, cursor
+      response envelope: { followings: [...], has_next_page, next_cursor, status, msg, code }
+      NOTE: the user objects here use snake_case (`followers_count`,
+      `screen_name`) — NOT the camelCase of tweet author objects. Verified
+      against a live response 2026-07-20; `_map_user` handles the difference.
   * Auth header: X-API-Key
+
+*** RATE LIMIT (verified live 2026-07-20): the free tier allows ONE request
+    every 5 seconds. Exceeding it returns HTTP 429. `XDataClient` therefore
+    enforces a client-side minimum interval between requests (`min_interval`)
+    and uses a 429-aware backoff floor, because the generic 1s/2s/4s retry
+    ladder is shorter than the limit window and would burn all attempts. ***
   * Tweet fields : id, text, url, createdAt, likeCount, retweetCount,
                    replyCount, quoteCount, viewCount, bookmarkCount, lang,
                    author, entities
@@ -48,12 +65,17 @@ log = logging.getLogger(__name__)
 # ---- Endpoint paths (verified 2026-07-19) --------------------------------
 ADVANCED_SEARCH_PATH = "/twitter/tweet/advanced_search"
 USER_LAST_TWEETS_PATH = "/twitter/user/last_tweets"
+USER_FOLLOWINGS_PATH = "/twitter/user/followings"
 AUTH_HEADER = "X-API-Key"
 
 # ---- Response envelope keys ----------------------------------------------
 KEY_TWEETS = "tweets"
+KEY_FOLLOWINGS = "followings"
 KEY_HAS_NEXT = "has_next_page"
 KEY_NEXT_CURSOR = "next_cursor"
+
+# Free tier: one request per 5 seconds. Leave headroom.
+DEFAULT_MIN_INTERVAL = float(os.getenv("TWITTERAPI_MIN_INTERVAL", "5.5"))
 
 _DEBUG = os.getenv("XCLIENT_DEBUG") == "1"
 
@@ -140,6 +162,44 @@ def _extract_media(tweet: dict) -> list[str]:
     return out
 
 
+def _tweets_from(data: dict) -> list:
+    """Pull the tweet list out of a response envelope.
+
+    advanced_search returns `{tweets: [...]}` while last_tweets returns
+    `{data: {tweets: [...]}}`. Accept either so a shape change on one endpoint
+    cannot silently zero out collection.
+    """
+    top = data.get(KEY_TWEETS)
+    if top:
+        return top
+    nested = data.get("data")
+    if isinstance(nested, dict):
+        return nested.get(KEY_TWEETS) or []
+    return []
+
+
+def _is_rate_limited(exc: Exception) -> bool:
+    resp = getattr(exc, "response", None)
+    return getattr(resp, "status_code", None) == 429
+
+
+def _map_user(raw: dict) -> Author:
+    """Map a user object from /twitter/user/followings.
+
+    Distinct from `_map_author`: this endpoint returns snake_case fields
+    (`followers_count`, `screen_name`) rather than the tweet author object's
+    camelCase (`followers`, `userName`). Verified live 2026-07-20.
+    """
+    return Author(
+        id=str(raw.get("id", "") or ""),
+        handle=raw.get("userName") or raw.get("screen_name") or "",
+        name=raw.get("name", "") or "",
+        followers=int(raw.get("followers_count", 0) or 0),
+        bio=raw.get("description", "") or "",
+        verified=bool(raw.get("verified", False)),
+    )
+
+
 def _map_author(raw: dict) -> Author:
     raw = raw or {}
     return Author(
@@ -178,11 +238,22 @@ class XDataClient:
         base_url: str = "https://api.twitterapi.io",
         timeout: float = 20.0,
         max_retries: int = 3,
+        min_interval: float = DEFAULT_MIN_INTERVAL,
     ):
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self.max_retries = max_retries
+        self.min_interval = min_interval
+        self._last_request_at = 0.0
+
+    def _throttle(self) -> None:
+        """Space requests out to respect the provider's QPS limit."""
+        if self.min_interval <= 0:
+            return
+        wait = self.min_interval - (time.monotonic() - self._last_request_at)
+        if wait > 0:
+            time.sleep(wait)
 
     # ---- low-level request with retry + exponential backoff --------------
     def _get(self, path: str, params: dict) -> dict:
@@ -190,6 +261,8 @@ class XDataClient:
         last_exc: Optional[Exception] = None
         for attempt in range(1, self.max_retries + 1):
             try:
+                self._throttle()
+                self._last_request_at = time.monotonic()
                 resp = httpx.get(
                     url,
                     params=params,
@@ -210,6 +283,11 @@ class XDataClient:
                 last_exc = exc
                 if attempt < self.max_retries:
                     backoff = 2 ** (attempt - 1)
+                    # A 429 means we are inside the provider's QPS window; a
+                    # sub-window backoff would just burn the next attempt on
+                    # another 429, so never wait less than the full interval.
+                    if _is_rate_limited(exc):
+                        backoff = max(backoff, self.min_interval)
                     log.warning("X API %s attempt %d/%d failed: %s; retry in %ss",
                                 path, attempt, self.max_retries, exc, backoff)
                     time.sleep(backoff)
@@ -235,8 +313,32 @@ class XDataClient:
                 ADVANCED_SEARCH_PATH,
                 {"query": query, "queryType": query_type, "cursor": cursor},
             )
-            for raw in data.get(KEY_TWEETS, []) or []:
+            for raw in _tweets_from(data):
                 yield _map_tweet(raw)
+            if not data.get(KEY_HAS_NEXT):
+                break
+            cursor = data.get(KEY_NEXT_CURSOR) or ""
+            if not cursor:
+                break
+
+    # ---- KOL discovery ---------------------------------------------------
+    def user_followings(
+        self,
+        user_name: str,
+        max_pages: int = 25,
+    ) -> Iterator[Author]:
+        """Yield the accounts `user_name` follows (200 per page).
+
+        Who a product account follows is a high-signal KOL shortlist: unlike
+        its followers (millions, mostly noise), the following list is small and
+        hand-curated. `max_pages` is a hard cost cap — at the free tier's one
+        request per 5s, each page costs ~5s of wall clock.
+        """
+        cursor = ""
+        for _ in range(max_pages):
+            data = self._get(USER_FOLLOWINGS_PATH, {"userName": user_name, "cursor": cursor})
+            for raw in data.get(KEY_FOLLOWINGS, []) or []:
+                yield _map_user(raw)
             if not data.get(KEY_HAS_NEXT):
                 break
             cursor = data.get(KEY_NEXT_CURSOR) or ""
@@ -263,7 +365,7 @@ class XDataClient:
             return
         for _ in range(max_pages):
             data = self._get(USER_LAST_TWEETS_PATH, {**params_base, "cursor": cursor})
-            for raw in data.get(KEY_TWEETS, []) or []:
+            for raw in _tweets_from(data):
                 yield _map_tweet(raw)
             if not data.get(KEY_HAS_NEXT):
                 break

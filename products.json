@@ -1,0 +1,70 @@
+[
+  {
+    "name": "MiniMax",
+    "active": true,
+    "launch_date": null,
+    "keywords": [
+      "MiniMax",
+      "\"MiniMax Hub\"",
+      "\"MiniMax M3\"",
+      "\"MiniMax M2\"",
+      "\"MiniMax Agent\"",
+      "\"MiniMax Raven\"",
+      "Hailuo",
+      "MiniMax 大模型"
+    ],
+    "official_accounts": [
+      "MiniMax_AI",
+      "MiniMaxAgent"
+    ],
+    "seed_kols": [
+      "ArtificialAnlys", "simonw", "natolambert", "rasbt", "karminski3",
+      "scaling01", "kalomaze", "awnihannun", "ivanfioravanti", "mervenoyann",
+      "reach_vb", "omarsar0", "swyx", "Teknium", "testingcatalog",
+      "WenhuChen", "op7418", "zephyr_z9", "rohanpaul_ai", "Yuchenj_UW",
+      "_akhaliq", "Xianbao_QIAN", "percyliang", "eliebakouch", "xeophon",
+      "MaziyarPanahi", "casper_hansen_", "victormustar", "Thom_Wolf",
+      "ClementDelangue"
+    ],
+    "_comment": "OWN PRODUCT — tuned for RECALL. Bare 'MiniMax' is included deliberately: sampled live 2026-07-20, it returned 20/20 on-topic AI hits, and it catches genuine demo evidence ('opened MiniMax Hub, selected Story to Video Generator') that quoted product names miss entirely. 'Hailuo' likewise runs heavy in JP/CN video-gen content, often written 'Minimax Hailuo 2'. RISK: bare 'MiniMax' also matches the game-theory algorithm (minimax theorem/regret, alpha-beta). It is clean today only because the launch news cycle dominates the term. Re-sample when the cycle cools; if algorithm noise starts eating MAX_TWEETS_PER_CYCLE, drop the bare term and keep the quoted ones."
+  },
+  {
+    "name": "Kimi (competitor)",
+    "active": true,
+    "launch_date": null,
+    "keywords": [
+      "\"Kimi K3\"",
+      "\"Kimi K2\"",
+      "\"Moonshot AI\"",
+      "\"Kimi\" model",
+      "Kimi 大模型"
+    ],
+    "official_accounts": [
+      "Kimi_Moonshot",
+      "Kimidevs",
+      "crystalsssup"
+    ],
+    "seed_kols": [],
+    "_comment": "COMPETITOR. crystalsssup is an OFFICIAL account, not a KOL — her bio reads '@Kimi_Moonshot Staff'. Filing her under seed_kols would score first-party Kimi marketing as independent expert_review evidence and inflate the competitor's perceived third-party validation. Bare 'K3' is excluded: sampled live it returned a mobile-crusher auction listing alongside the model hits, and 'Kimi K3' loses nothing since the model is not discussed without the brand."
+  },
+  {
+    "name": "GLM / Z.ai (competitor)",
+    "active": true,
+    "launch_date": null,
+    "keywords": [
+      "\"GLM-5.2\"",
+      "\"GLM-5.1\"",
+      "\"GLM-5\"",
+      "\"GLM-5V\"",
+      "\"GLM Coding Plan\"",
+      "\"ZCode\"",
+      "\"Z.ai\""
+    ],
+    "official_accounts": [
+      "Zai_org",
+      "zcode_ai"
+    ],
+    "seed_kols": [],
+    "_comment": "COMPETITOR. Bare 'GLM' is excluded — it is the standard abbreviation for Generalized Linear Model. It sampled clean today only because GLM-5.2 just launched; unlike MiniMax there is no recall argument for the bare term, since GLM releases are effectively always version-qualified in practice. Version-numbered keywords also survive the next release: add GLM-5.3/5.5 when they ship."
+  }
+]
