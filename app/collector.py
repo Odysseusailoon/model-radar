@@ -1,13 +1,18 @@
 """Collection orchestration (called by APScheduler every N minutes).
 
-For each active product:
-  1. Build an advanced-search query from its keywords (excluding retweets).
-  2. Pull recent tweets, incrementally (stop at last_seen_tweet_id watermark).
-  3. Poll each seed KOL's latest tweets.
-  4. Funnel every new tweet through the shared pipeline (classify+store).
-  5. Fire alerts for high-signal hits.
+Two phases per cycle:
+  1. Keyword phase — for each active product, advanced-search its keywords
+     (excluding retweets), incrementally via the snowflake watermark.
+  2. KOL phase — the seed KOLs of ALL products form ONE global pool, each polled
+     once per cycle (rotating window). Every KOL tweet is attributed to whichever
+     product(s) its text mentions, so a single shared KOL list serves every model
+     and a comparison tweet lands under each model it names. Off-topic KOL tweets
+     are skipped with no LLM call.
 
-A global per-cycle cap (settings.max_tweets_per_cycle) bounds LLM spend.
+Every new tweet is funneled through the shared pipeline (classify + store) and
+high-signal hits fire alerts. A global per-cycle cap (max_tweets_per_cycle)
+bounds LLM spend; a rate-budget-aware rotation keeps any one product/KOL from
+being starved on the free tier (1 req/5s).
 """
 from __future__ import annotations
 
@@ -68,8 +73,15 @@ def collect_once() -> dict:
 
 
 def _collect_once_locked() -> dict:
-    """Run one full collection cycle across all active products. Returns stats,
-    including any per-source failures so they are visible, not silently dropped."""
+    """Run one full collection cycle. Two phases:
+      1. Keyword search — per product, incremental via the snowflake watermark.
+      2. KOL pool — the seed KOLs of ALL products form one global pool, polled
+         once each (rotating window). Each KOL tweet is attributed to whichever
+         product(s) its text mentions, so a KOL's take on GLM lands under GLM even
+         though the KOL is listed under MiniMax. Off-topic KOL tweets are skipped
+         with no LLM call.
+    Returns stats, including per-source failures so they are visible, not dropped.
+    """
     global _rotation
     settings = get_settings()
     client = XDataClient(
@@ -79,75 +91,34 @@ def _collect_once_locked() -> dict:
     classifier = Classifier()
     budget = settings.max_tweets_per_cycle
 
-    totals = {"fetched": 0, "processed": 0, "skipped_dup": 0, "alerts": 0}
+    totals = {"fetched": 0, "processed": 0, "skipped_dup": 0, "alerts": 0, "kol_attributed": 0}
     category_dist: Counter = Counter()
     errors: list[dict] = []
 
     session = SessionLocal()
     try:
         products = list_products(session, only_active=True)
-        # Fair rotation: start the cycle at a different product each time so the
-        # same product isn't always last (and thus first to starve on the rate
-        # limit). Advances by one product per cycle.
+        # Fair rotation: start each cycle at a different product so the same one
+        # isn't always last (and thus first to starve on the rate limit).
         if products:
             off = _rotation % len(products)
             products = products[off:] + products[:off]
         _rotation += 1
-        log.info("Collection cycle start: %d active product(s), budget=%d, order=%s",
+        log.info("Collection cycle start: %d product(s), budget=%d, order=%s",
                  len(products), budget, [p.name for p in products])
 
-        for product in products:
-            if budget <= 0:
-                log.warning("Per-cycle tweet budget exhausted; stopping early.")
-                break
-
-            watermark = _as_int(product.last_seen_tweet_id or "0")
-            new_max = watermark
-            tweets = _gather_product_tweets(client, product, settings, errors)
-
-            for tweet in tweets:
-                if budget <= 0:
-                    log.warning("Budget hit mid-product %s; remaining tweets deferred to next cycle.", product.name)
-                    break
-                totals["fetched"] += 1
-
-                tid = _as_int(tweet.id)
-                # Incremental: skip anything at/below the watermark from keyword search.
-                # (Seed-KOL tweets share the same guard; dedup in pipeline is the backstop.)
-                if watermark and tid and tid <= watermark:
-                    continue
-
-                budget -= 1
-                ev = process_tweet(session, product, tweet, classifier)
-                if ev is None:
-                    totals["skipped_dup"] += 1
-                    if tid > new_max:
-                        new_max = tid
-                    continue
-
-                totals["processed"] += 1
-                category_dist[ev.category or "unknown"] += 1
-                if tid > new_max:
-                    new_max = tid
-
-                try:
-                    if maybe_alert(session, product, ev):
-                        totals["alerts"] += 1
-                except Exception:
-                    log.exception("Alerting failed for tweet %s (non-fatal)", tweet.id)
-
-            # Advance the watermark so next cycle only sees genuinely new tweets.
-            if new_max > watermark:
-                product.last_seen_tweet_id = str(new_max)
-                session.commit()
+        budget = _keyword_phase(session, client, classifier, products, budget,
+                                totals, category_dist, errors, settings)
+        budget = _kol_phase(session, client, classifier, products, budget,
+                            totals, category_dist, errors, settings)
 
         if errors:
-            log.warning("Collection cycle had %d source failure(s): %s",
-                        len(errors), errors)
+            log.warning("Collection cycle had %d source failure(s): %s", len(errors), errors)
         log.info(
-            "Collection cycle done: fetched=%d processed=%d dup=%d alerts=%d failed=%d dist=%s",
+            "Collection cycle done: fetched=%d processed=%d dup=%d alerts=%d "
+            "kol_attributed=%d failed=%d dist=%s",
             totals["fetched"], totals["processed"], totals["skipped_dup"],
-            totals["alerts"], len(errors), dict(category_dist),
+            totals["alerts"], totals["kol_attributed"], len(errors), dict(category_dist),
         )
     finally:
         session.close()
@@ -158,41 +129,120 @@ def _collect_once_locked() -> dict:
     return totals
 
 
+def _handle_tweet(session, product, tweet, classifier, totals, category_dist) -> bool:
+    """Classify + store one tweet under one product; count + alert. Returns True
+    if it was newly stored (False on dedup)."""
+    ev = process_tweet(session, product, tweet, classifier)
+    if ev is None:
+        totals["skipped_dup"] += 1
+        return False
+    totals["processed"] += 1
+    category_dist[ev.category or "unknown"] += 1
+    try:
+        if maybe_alert(session, product, ev):
+            totals["alerts"] += 1
+    except Exception:
+        log.exception("Alerting failed for tweet %s (non-fatal)", tweet.id)
+    return True
+
+
+def _keyword_phase(session, client, classifier, products, budget,
+                   totals, category_dist, errors, settings) -> int:
+    """Per-product keyword search, incremental via the snowflake watermark."""
+    for product in products:
+        if budget <= 0:
+            break
+        query = build_query(product)
+        if not query:
+            log.info("Product %s has no keywords; skipping keyword search.", product.name)
+            continue
+        try:
+            tweets = list(client.search_recent(query, max_pages=settings.max_pages_per_query))
+        except Exception as exc:
+            log.exception("Keyword search failed for product %s", product.name)
+            errors.append({"product": product.name, "source": "keyword_search", "error": str(exc)})
+            continue
+
+        watermark = _as_int(product.last_seen_tweet_id or "0")
+        new_max = watermark
+        for tweet in tweets:
+            if budget <= 0:
+                break
+            totals["fetched"] += 1
+            tid = _as_int(tweet.id)
+            if watermark and tid and tid <= watermark:  # already seen
+                continue
+            budget -= 1
+            _handle_tweet(session, product, tweet, classifier, totals, category_dist)
+            if tid > new_max:
+                new_max = tid
+        if new_max > watermark:
+            product.last_seen_tweet_id = str(new_max)
+            session.commit()
+    return budget
+
+
+def _tweet_matches_product(tweet: Tweet, product: Product) -> bool:
+    """Does the tweet text mention any of the product's keywords? (Same terms
+    used to build the search query, so attribution is consistent with search.)"""
+    text = (tweet.text or "").lower()
+    for kw in (product.keywords or []):
+        term = kw.strip().strip('"').strip("'").lower()
+        if term and term in text:
+            return True
+    return False
+
+
+def _kol_phase(session, client, classifier, products, budget,
+               totals, category_dist, errors, settings) -> int:
+    """Global KOL pool: the union of every product's seed_kols, polled once each
+    (rotating window). Each KOL tweet is attributed to the product(s) it mentions
+    — so one shared list serves all products, and a comparison tweet lands under
+    each model it names. Off-topic KOL tweets cost nothing (no LLM call)."""
+    pool: list[str] = []
+    seen: set[str] = set()
+    for p in products:
+        for h in (p.seed_kols or []):
+            hh = (h or "").lstrip("@").strip()
+            if hh and hh.lower() not in seen:
+                seen.add(hh.lower())
+                pool.append(hh)
+    if not pool:
+        return budget
+
+    window = _kol_window(pool, settings.max_seed_kols_per_cycle)
+    log.info("KOL pool: %d unique, polling %d this cycle", len(pool), len(window))
+    for handle in window:
+        if budget <= 0:
+            break
+        try:
+            tweets = list(client.user_last_tweets(user_name=handle, max_pages=1))
+        except Exception as exc:
+            log.exception("Seed-KOL poll failed for @%s", handle)
+            errors.append({"product": "(kol-pool)", "source": f"kol:@{handle}", "error": str(exc)})
+            continue
+        for tweet in tweets:
+            if budget <= 0:
+                break
+            matched = [p for p in products if _tweet_matches_product(tweet, p)]
+            if not matched:
+                continue  # off-topic — no LLM call, no storage
+            totals["fetched"] += 1
+            for product in matched:  # comparison tweet -> attach to each named model
+                if budget <= 0:
+                    break
+                budget -= 1
+                if _handle_tweet(session, product, tweet, classifier, totals, category_dist):
+                    totals["kol_attributed"] += 1
+    return budget
+
+
 def _kol_window(kols: list[str], cap: int) -> list[str]:
-    """A rotating slice of at most `cap` seed KOLs. Successive cycles advance the
-    window so every KOL is covered over time without polling all of them at once
-    (which would starve the rate budget on the free tier)."""
+    """A rotating slice of at most `cap` KOLs. Successive cycles advance the
+    window so every KOL is covered over time without polling all at once (which
+    would starve the rate budget on the free tier)."""
     kols = [k.lstrip("@").strip() for k in (kols or []) if k and k.strip()]
     if cap <= 0 or len(kols) <= cap:
         return kols
     start = _rotation % len(kols)
     return (kols + kols)[start:start + cap]
-
-
-def _gather_product_tweets(client: XDataClient, product: Product, settings,
-                           errors: list[dict]) -> list[Tweet]:
-    """Keyword search + seed-KOL polling. Per-source failures are recorded in
-    `errors` (and logged) instead of being silently swallowed, so a rate-limited
-    search shows up as a failure rather than looking like 'no data'."""
-    collected: list[Tweet] = []
-
-    query = build_query(product)
-    if query:
-        try:
-            collected.extend(client.search_recent(query, max_pages=settings.max_pages_per_query))
-        except Exception as exc:
-            log.exception("Keyword search failed for product %s", product.name)
-            errors.append({"product": product.name, "source": "keyword_search", "error": str(exc)})
-    else:
-        log.info("Product %s has no keywords; skipping keyword search.", product.name)
-
-    for handle in _kol_window(product.seed_kols, settings.max_seed_kols_per_cycle):
-        if not handle:
-            continue
-        try:
-            collected.extend(client.user_last_tweets(user_name=handle, max_pages=1))
-        except Exception as exc:
-            log.exception("Seed-KOL poll failed for @%s", handle)
-            errors.append({"product": product.name, "source": f"kol:@{handle}", "error": str(exc)})
-
-    return collected
