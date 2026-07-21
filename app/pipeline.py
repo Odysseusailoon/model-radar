@@ -16,16 +16,23 @@ from .xclient import Tweet
 log = logging.getLogger(__name__)
 
 
-def already_stored(session: Session, tweet_id: str) -> bool:
-    """Dedup guard: has this tweet_id already been ingested?"""
-    return session.scalar(select(Evidence.id).where(Evidence.tweet_id == tweet_id)) is not None
+def already_stored(session: Session, tweet_id: str, product_id: int) -> bool:
+    """Dedup guard: has this tweet_id already been ingested *for this product*?
+
+    Scoped per product, not global: the same tweet may legitimately be stored
+    once per tracked product it mentions (see Evidence.__table_args__)."""
+    return session.scalar(
+        select(Evidence.id).where(
+            Evidence.tweet_id == tweet_id, Evidence.product_id == product_id
+        )
+    ) is not None
 
 
 def process_tweet(session: Session, product: Product, tweet: Tweet, classifier) -> Evidence | None:
     """Classify + persist one tweet. Returns the stored Evidence, or None if it
     was a duplicate. Never raises for a single tweet's classification failure —
     those are stored with classification_failed=True so no data is lost."""
-    if already_stored(session, tweet.id):
+    if already_stored(session, tweet.id, product.id):
         return None
 
     result = classifier.classify(tweet, product)

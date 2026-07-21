@@ -1,0 +1,4545 @@
+{
+  "seeds": [
+    "Kimi_Moonshot",
+    "MiniMax_AI",
+    "crystalsssup",
+    "Zai_org",
+    "willccbb",
+    "eliebakouch",
+    "SonglinYang4",
+    "yacinelearning"
+  ],
+  "seeds_with_data": [
+    "Kimi_Moonshot",
+    "MiniMax_AI",
+    "SonglinYang4",
+    "Zai_org",
+    "crystalsssup",
+    "eliebakouch",
+    "willccbb",
+    "yacinelearning"
+  ],
+  "seeds_missing": [],
+  "threshold": 4,
+  "per_account": {
+    "Kimi_Moonshot": 138,
+    "MiniMax_AI": 894,
+    "crystalsssup": 1123,
+    "Zai_org": 264,
+    "willccbb": 1410,
+    "eliebakouch": 4362,
+    "SonglinYang4": 3439,
+    "yacinelearning": 1679
+  },
+  "candidates": [
+    {
+      "handle": "elonmusk",
+      "name": "Elon Musk",
+      "followers": 240979600,
+      "bio": "Starmind",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "satyanadella",
+      "name": "Satya Nadella",
+      "followers": 7396158,
+      "bio": "Chairman and CEO at Microsoft",
+      "followed_by": [
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "sama",
+      "name": "Sam Altman",
+      "followers": 5579471,
+      "bio": "AI is cool i guess",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "lexfridman",
+      "name": "Lex Fridman",
+      "followers": 5194528,
+      "bio": "Host of Lex Fridman Podcast.\nInterested in robots and humans.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "pmarca",
+      "name": "Marc Andreessen 🇺🇸",
+      "followers": 4935174,
+      "bio": "You’re not talking to someone who woke up a loser. That loser attitude, that loser premise makes no sense to me.",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "karpathy",
+      "name": "Andrej Karpathy",
+      "followers": 3477671,
+      "bio": "I like training large deep neural nets.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "AndrewYNg",
+      "name": "Andrew Ng",
+      "followers": 1711830,
+      "bio": "Co-Founder of Coursera; Stanford CS adjunct faculty. Former head of Baidu AI Group/Google Brain. #ai #machinelearning, #deeplearning #MOOCs",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "ycombinator",
+      "name": "Y Combinator",
+      "followers": 1626075,
+      "bio": "We help founders make something people want. Subscribe to our newsletter: https://t.co/sjqjxxBeLc",
+      "followed_by": [
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "demishassabis",
+      "name": "Demis Hassabis",
+      "followers": 1477199,
+      "bio": "Nobel Laureate. Co-Founder & CEO @GoogleDeepMind - working on AGI. Solving disease @IsomorphicLabs. Trying to understand the fundamental nature of reality.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "ylecun",
+      "name": "Yann LeCun",
+      "followers": 1245704,
+      "bio": "Professor at NYU & Executive Chairman at AMI Labs. \nEx-Chief AI Scientist at Meta.\nResearcher in AI, Machine Learning, Robotics, etc.\nACM Turing Award Laureate.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "tbpn",
+      "name": "TBPN",
+      "followers": 1075755,
+      "bio": "Technology's daily show. Hosted by @johncoogan & @jordihays. Streaming live 11a-2p PT every weekday. Sign up for our free daily newsletter at https://t.co/Nhf5ohjInO.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "a16z",
+      "name": "a16z",
+      "followers": 1028181,
+      "bio": "It's time to build.\n\nhttps://t.co/A9eTFq6Xbx\n\nPosts are not investment advice or an advertisement for investment services. See https://t.co/nX2FtaLE06.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "gdb",
+      "name": "Greg Brockman",
+      "followers": 1016793,
+      "bio": "President & Co-Founder @OpenAI",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "levelsio",
+      "name": "@levelsio",
+      "followers": 921261,
+      "bio": "📸https://t.co/lAyoqmT9Hv $89K/m\n🎮https://t.co/jFirUbDOjx $44K/m\n🏡https://t.co/1oqUgfDEsx $27K/m\n👙https://t.co/RyXpqGvdBB + @X $17K/m\n🌍https://t.co/UXK5AFra0o $11K/m\n💾https://t.co/T74ZwJ2cQa\n🏩https://t.co/4p4dzTEtCE",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "AravSrinivas",
+      "name": "Aravind Srinivas",
+      "followers": 870431,
+      "bio": "CEO @perplexity_ai",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "AIatMeta",
+      "name": "AI at Meta",
+      "followers": 825530,
+      "bio": "Together with the AI community, we are pushing the boundaries of what’s possible through open science to create a more connected world.",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "miramurati",
+      "name": "Mira Murati",
+      "followers": 798370,
+      "bio": "Now building @thinkymachines. Previously CTO @OpenAI",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "dhh",
+      "name": "DHH",
+      "followers": 753491,
+      "bio": "Father of three, Creator of Ruby on Rails + Omarchy, Co-owner & CTO of 37signals, Shopify director, NYT best-selling author, and Le Mans 24h class-winner.",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "huggingface",
+      "name": "Hugging Face",
+      "followers": 728998,
+      "bio": "The AI community building the future. https://t.co/TpiXQMQ9rZ",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "fchollet",
+      "name": "François Chollet",
+      "followers": 708599,
+      "bio": "Co-founder @ndea. Co-founder @arcprize. Creator of Keras and ARC-AGI. Author of 'Deep Learning with Python'.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "rauchg",
+      "name": "Guillermo Rauch",
+      "followers": 694394,
+      "bio": "@vercel CEO",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "steipete",
+      "name": "Peter Steinberger 🦞",
+      "followers": 567022,
+      "bio": "Polyagentmorous ClawFather. Came back from retirement to mess with AI and help a lobster take over the world.\n@OpenClaw🦞 + @OpenAI",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "bcherny",
+      "name": "Boris Cherny",
+      "followers": 533874,
+      "bio": "Claude Code @anthropicai",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "_akhaliq",
+      "name": "AK",
+      "followers": 512567,
+      "bio": "AI research paper tweets, ML @Gradio (acq. by @HuggingFace 🤗) dm for promo ,submit papers here: https://t.co/UzmYN5XOCi",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 8
+    },
+    {
+      "handle": "DrJimFan",
+      "name": "Jim Fan",
+      "followers": 505706,
+      "bio": "NVIDIA Director of Robotics & Distinguished Scientist. Co-Lead of GEAR lab. Solving Physical AGI, one motor at a time. Stanford Ph.D. OpenAI's 1st intern.",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ClementDelangue",
+      "name": "clem 🤗",
+      "followers": 492777,
+      "bio": "Co-founder & CEO @HuggingFace 🤗, the open and collaborative platform for AI builders",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 8
+    },
+    {
+      "handle": "rasbt",
+      "name": "Sebastian Raschka",
+      "followers": 483523,
+      "bio": "ML/AI research engineer. Ex stats professor.\nAuthor of \"Build a Large Language Model From Scratch\" (https://t.co/O8LAAMRzzW) & reasoning (https://t.co/5TueQKx2Fk)",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "AlexFinn",
+      "name": "Alex Finn",
+      "followers": 460999,
+      "bio": "Founder/CEO of Henry Intelligent Machines PBC and Creator Buddy ($300,000 ARR). Building a 100 trillion dollar economic engine",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "JeffDean",
+      "name": "Jeff Dean",
+      "followers": 449396,
+      "bio": "Chief Scientist, Google DeepMind & Google Research. Gemini Lead. Opinions stated here are my own, not those of Google. TensorFlow, MapReduce, Bigtable, ...",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "vercel",
+      "name": "Vercel",
+      "followers": 442001,
+      "bio": "Agentic Infrastructure for apps and agents.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "cursor_ai",
+      "name": "Cursor",
+      "followers": 435283,
+      "bio": "Coding agent for building ambitious software",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "hardmaru",
+      "name": "hardmaru",
+      "followers": 423738,
+      "bio": "Co-Founder and CEO @SakanaAILabs 🎏",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "tszzl",
+      "name": "roon",
+      "followers": 413735,
+      "bio": "fellow creators the creator seeks",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "lennysan",
+      "name": "Lenny Rachitsky",
+      "followers": 399221,
+      "bio": "Deeply researched product, growth, and career advice",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ThePrimeagen",
+      "name": "ThePrimeagen",
+      "followers": 372096,
+      "bio": "skill issues: 🟩⬛️⬛️⬛️⬛️⬛️(69/420)\n\nhttps://t.co/TYJ6aSq4O0\nhttps://t.co/wQJlh4stsc\nhttps://t.co/wxeJWY8LmI",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "theo",
+      "name": "Theo - t3.gg",
+      "followers": 363544,
+      "bio": "Full time CEO @t3dotchat. Part time YouTuber, investor, and developer",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "OfficialLoganK",
+      "name": "Logan Kilpatrick",
+      "followers": 344915,
+      "bio": "Member of technical staff, working on Gemini, @GoogleAIStudio, the Gemini API, & Kaggle. My views!",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "DeryaTR_",
+      "name": "Derya Unutmaz, MD",
+      "followers": 336247,
+      "bio": "Professor scientist, immunologist, biomedical engineer & Biohacker. ALL IN ON AI ! #Longevity #BioAI #Codex #Robotics #Space #Scifi #Singularity #trekkie 🖖",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "yacineMTB",
+      "name": "kache",
+      "followers": 332823,
+      "bio": "reinforcement learning, robots. prev eng @ x, stripe. 6'3 (height)\n\ntensorpunk\n\nsubscribe to read my blog!",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "EMostaque",
+      "name": "Emad",
+      "followers": 329975,
+      "bio": "Building first principles, sovereign AI @ii_posts. \n\nFounder @StabilityAI. \n\nConsistent inference is possible.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jeremyphoward",
+      "name": "Jeremy Howard",
+      "followers": 323004,
+      "bio": "🇦🇺 Co-founder: @AnswerDotAI/@FastDotAI ;\nPrev: Professor@UQ; @kaggle founding president; founder @fastmail/@enlitic/…\nhttps://t.co/16UBFTX7mo",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "soumithchintala",
+      "name": "Soumith Chintala",
+      "followers": 313669,
+      "bio": "Building new things @thinkymachines.  Also dabble in robotics at NYU.  Cofounded @PyTorch. AI is delicious when it is accessible and open-source.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "bindureddy",
+      "name": "Bindu Reddy",
+      "followers": 312197,
+      "bio": "CEO of @abacusai - the world’s first AI super assistant and a powerful AI SuperComputer for professionals & enterprises, open-source AI zealot, ex-AWS & Google",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "omarsar0",
+      "name": "elvis",
+      "followers": 311691,
+      "bio": "Building self-improving AI @dair_ai • Prev: Meta AI | PhD • Learn about AI Agents for FREE here: https://t.co/P5SA9u54xO",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "mweinbach",
+      "name": "Max Weinbach",
+      "followers": 301660,
+      "bio": "Analyst @creativestrat | Analyst and Market Research Firm | Typo ignorer \nEmail: max@creativestrategies.com",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "leerob",
+      "name": "Lee Robinson",
+      "followers": 272568,
+      "bio": "Model behavior @cursor_ai. Helping train useful models.",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "lilianweng",
+      "name": "Lilian Weng",
+      "followers": 271411,
+      "bio": "Co-founder of Thinking Machines Lab @thinkymachines; Ex-VP, AI Safety & robotics, applied research @OpenAI; Author of Lil'Log",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "deedydas",
+      "name": "Deedy",
+      "followers": 249378,
+      "bio": "Partner at @MenloVentures. Investor: Anthropic, OpenRouter, Modal, Wispr, Inception, Goodfire, PrimeIntellect\n\nprior: Glean, Google Search. Cornell CS.",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "dwarkesh_sp",
+      "name": "Dwarkesh Patel",
+      "followers": 242935,
+      "bio": "Host of @dwarkeshpodcast\n\nhttps://t.co/3SXlu7fy6N\nhttps://t.co/4DPAxODFYi\nhttps://t.co/hQfIWdM1Un",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "NousResearch",
+      "name": "Nous Research",
+      "followers": 236631,
+      "bio": "A bunch of nerds making progress toward open source AI\nhttps://t.co/vrD0aDJeto",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "elder_plinius",
+      "name": "Pliny the Liberator 🐉󠅫󠄼󠄿󠅆󠄵󠄐󠅀󠄼󠄹󠄾󠅉󠅭",
+      "followers": 226883,
+      "bio": "⊰•-•⦑ latent space steward ❦ prompt incanter 𓃹 hacker of matrices ⊞ breaker of markov chains ☣︎ ai danger researcher ⚔︎ bt6 ⚕︎ architect-healer ⦒•-•⊱",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "Yuchenj_UW",
+      "name": "Yuchen Jin",
+      "followers": 222325,
+      "bio": "Cooking fun AI systems & products @databricks. Prev: co-founder & CTO @ Hyperbolic, OctoAI (acquired by @nvidia) Apache TVM, PhD @ University of Washington.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 8
+    },
+    {
+      "handle": "goodside",
+      "name": "Riley Goodside",
+      "followers": 219598,
+      "bio": "Mostly screenshots of chatbots since 2022.\nFormerly: Google DeepMind, Scale.",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "tom_doerr",
+      "name": "Tom Dörr",
+      "followers": 214060,
+      "bio": "Follow for posts about GitHub repos, DSPy, and agents\nSubscribe for top posts\nDM to share your AI project (Due to volume of DMs I'll prioritize subscribers)",
+      "followed_by": [
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "SchmidhuberAI",
+      "name": "Jürgen Schmidhuber",
+      "followers": 207595,
+      "bio": "OG of: P and T in ChatGPT, 100x deeper learning, meta learning and RSI, neural distillation, GAN/World Model... Co-authored most-cited AI paper of 20th century",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "nearcyan",
+      "name": "near",
+      "followers": 206107,
+      "bio": "allow yourself to introspect and realize what was lost: twitter will never return to what it once was. close your phone; think about how you now spend your life",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "arena",
+      "name": "Arena.ai",
+      "followers": 201667,
+      "bio": "Where AI meets the real world. Formerly LMArena. We measure and advance the frontier of AI through community-driven evaluation. We’re hiring → https://t.co/XBZCrseaWF",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "simonw",
+      "name": "Simon Willison",
+      "followers": 198813,
+      "bio": "Creator @datasetteproj, co-creator Django. PSF board. Hangs out with @natbat. He/Him. Mastodon: https://t.co/t0MrmnJW0K Bsky: https://t.co/OnWIyhX4CH",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "arankomatsuzaki",
+      "name": "Aran Komatsuzaki",
+      "followers": 183975,
+      "bio": "Sharing AI research. Early work on AI (GPT-J, scaling, MoE). Ex ML PhD (GT) & Google.",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "jimmybajimmyba",
+      "name": "Jimmy Ba",
+      "followers": 178325,
+      "bio": "100x | pumping MPI up co-founder @xai | @uoft",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "mntruell",
+      "name": "Michael Truell",
+      "followers": 177468,
+      "bio": "Building @cursor_ai",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "thinkymachines",
+      "name": "Thinking Machines",
+      "followers": 176975,
+      "bio": "Thinking, beeping, and booping.\n@tinkerapi",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "swyx",
+      "name": "swyx",
+      "followers": 175870,
+      "bio": "achieve ambition with intentionality, intensity, integrity & insanity.\n\naffiliations:\n- @dxtipshq \n- @cognition\n- @temporalio\n- @aidotengineer\n- @latentspacepod",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "chrmanning",
+      "name": "Christopher Manning",
+      "followers": 166166,
+      "bio": "Founder @stanfordnlp & cs224n—Senior Fellow @StanfordHAI—Prof. CS & Linguistics @Stanford—GP @aixventureshq—MTS @moonlake—Australian🇦🇺—Do #NLProc & #AI 👋",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "zephyr_z9",
+      "name": "Zephyr",
+      "followers": 165749,
+      "bio": "AI & Chips | Not Investment Advice | DYOD",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "op7418",
+      "name": "歸藏(guizang.ai)",
+      "followers": 161320,
+      "bio": "关注人工智能、LLM 、 AI 图像视频和设计（Interested in AI, LLM, Stable Diffusion, and design）\n\n歸藏的 AIGC 周刊｜公众号：歸藏的AI工具箱",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "rohanpaul_ai",
+      "name": "Rohan Paul",
+      "followers": 153224,
+      "bio": "Compiling in real-time, the race towards AGI.\n\nThe Largest Show on X for AI.\n\n🗞️ Get my daily AI analysis newsletter to your email  👉 https://t.co/6LBxO8215l",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "dylan522p",
+      "name": "Dylan Patel",
+      "followers": 152511,
+      "bio": "SemiAnalysis\nBoutique AI Infrastructure Research and Consulting\nDMs are open for consulting, quotes, or to talk shop,\nOpinions my own",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "polynoamial",
+      "name": "Noam Brown",
+      "followers": 151651,
+      "bio": "Researching reasoning @OpenAI | Co-created Libratus/Pluribus superhuman poker AIs, CICERO Diplomacy AI, and OpenAI o-series 🍓 reasoning models",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "marktenenholtz",
+      "name": "Mark Tenenholtz",
+      "followers": 151406,
+      "bio": "Member of Technical Staff @perplexity_ai",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "thdxr",
+      "name": "dax",
+      "followers": 148853,
+      "bio": "building @opencode at @anomalyco\nnot the ceo",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "lqiao",
+      "name": "Lin Qiao",
+      "followers": 146785,
+      "bio": "Cofounder and CEO of @FireworksAI_HQ",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "giffmana",
+      "name": "Lucas Beyer (bl16)",
+      "followers": 143908,
+      "bio": "Researcher (now: Meta. ex:  OpenAI, DeepMind, Brain, RWTH Aachen), Gamer, Hacker, Belgian. Anon feedback: https://t.co/xe2XUqkKit\n✗DMs → email",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "SemiAnalysis_",
+      "name": "SemiAnalysis",
+      "followers": 143269,
+      "bio": "",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "chipro",
+      "name": "Chip Huyen",
+      "followers": 137645,
+      "bio": "@aisysbooks @goodailist\nAI Engineering: https://t.co/94dv4uTU1H\nDesigning MLSys: https://t.co/G81hL2dWmr\nReading @chipslib",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ericjang11",
+      "name": "Eric Jang",
+      "followers": 136856,
+      "bio": "",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "kimmonismus",
+      "name": "Chubby♨️",
+      "followers": 127746,
+      "bio": "Tech Analyst & Content Creator. Editor-in-Chief @getsuperintel - daily AI briefing for 225k+ reader: 🔗 https://t.co/jHMmImmI5I //📧 kim@getsuperintel.com",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "MatthewBerman",
+      "name": "Matthew Berman",
+      "followers": 127676,
+      "bio": "The future is bright.\n\nGet Ahead - https://t.co/s5tbuuNdjE\nLoop Skill - https://t.co/1B5X282n8S\nLearn Loops - https://t.co/8t0scQUngV",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "rsalakhu",
+      "name": "Russ Salakhutdinov",
+      "followers": 127420,
+      "bio": "CSO @ Sooth Labs, Professor @ CMU,  President Elect ICML Board, Ex-VP of Research @ Meta (Multimodal LLMs, AI Agents), ex-Director of AI at @Apple.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "opencode",
+      "name": "OpenCode",
+      "followers": 125464,
+      "bio": "The open source coding agent",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "eshear",
+      "name": "Emmett Shear",
+      "followers": 123390,
+      "bio": "CEO of Softmax: Massively Multiplayer Learning Environments",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "OpenRouter",
+      "name": "OpenRouter",
+      "followers": 121337,
+      "bio": "The unified interface for LLMs. 400+ models (incl. 50+ free), the best prices, explorable data, private chat, & a unified API. https://t.co/qJG5mKrQ6j",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Thom_Wolf",
+      "name": "Thomas Wolf",
+      "followers": 119624,
+      "bio": "Co-founder at @HuggingFace - moonshots - angel",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 8
+    },
+    {
+      "handle": "kepano",
+      "name": "kepano",
+      "followers": 119589,
+      "bio": "making @obsdmd",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jxnlco",
+      "name": "jason",
+      "followers": 118999,
+      "bio": "vibes @openai",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "DavidSHolz",
+      "name": "David",
+      "followers": 118912,
+      "bio": "founder @midjourney, previously founded leap motion, before that was at nasa and max planck - vibeposting @davidvibesonly",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 8
+    },
+    {
+      "handle": "ArtificialAnlys",
+      "name": "Artificial Analysis",
+      "followers": 118350,
+      "bio": "Independent analysis of AI",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "LiorOnAI",
+      "name": "Lior Alexander",
+      "followers": 116529,
+      "bio": "Founder @AlphaSignalAI (300k devs) • Ex-MILA researcher focusing on solving the explosion of information in AI.",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "gabriel1",
+      "name": "gabriel",
+      "followers": 114013,
+      "bio": "new thing, previously research at @OpenAI & @midjourney",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Teknium",
+      "name": "Teknium 🪽",
+      "followers": 110307,
+      "bio": "Cofounder and Lead Engineer - Hermes Agent @NousResearch, prev @StabilityAI\nGithub: https://t.co/LZwHTUFwPq\nHuggingFace: https://t.co/sN2FFU8PVE",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "percyliang",
+      "name": "Percy Liang",
+      "followers": 110239,
+      "bio": "professor of computer science @Stanford @stanfordnlp, co-founder of @togethercompute, creator of https://t.co/7R5THVogW2, co-founder of @simile_ai, pianist",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "_jasonwei",
+      "name": "Jason Wei",
+      "followers": 110093,
+      "bio": "ai researcher @meta superintelligence labs, past: openai, google 🧠",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "ibab",
+      "name": "Igor Babuschkin",
+      "followers": 109771,
+      "bio": "CEO & Co-Founder @river_ai_inc. Previously @xAI, Research & Engineering",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "skirano",
+      "name": "Pietro Schirano",
+      "followers": 108754,
+      "bio": "CEO at @magicpathai 🎨✨ \n\nPreviously, @AnthropicAI, @brexHQ. @Uber, @Facebook. Creator of Claude Engineer, DesignerGPT, Sequential thinking MCP and more",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "_philschmid",
+      "name": "Philipp Schmid",
+      "followers": 101816,
+      "bio": "Agents & Gemini API, MTS @GoogleDeepMind | prev: Tech Lead at @huggingface, AWS ML Hero 🤗 Sharing my own views and AI News 🧑🏻‍💻 https://t.co/7IosdlO6RA",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "TheGregYang",
+      "name": "Greg Yang",
+      "followers": 95190,
+      "bio": "xai cofounder.\nfighting lyme",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "natolambert",
+      "name": "Nathan Lambert",
+      "followers": 94087,
+      "bio": "Open model research @ something new.\nPrev. co-led Olmo at Ai2.\nContact via email. \nWrites @interconnectsai\nWrote The RLHF Book,\n🏔️🏃‍♂️",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "GroqInc",
+      "name": "Groq Inc",
+      "followers": 89991,
+      "bio": "Fuel for developers.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "Zai_org",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "iScienceLuvr",
+      "name": "Tanishq Mathew Abraham, Ph.D.",
+      "followers": 89136,
+      "bio": "CEO @SophontAI |\nFounder @MedARC_AI |\nPhD at 19 (2023) |\nex Research Director Stability AI | \nBiomed. engineer @ 14 |\nTEDx talk➡https://t.co/xPxwKTq6Qb",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "mervenoyann",
+      "name": "merve",
+      "followers": 88996,
+      "bio": "(mer-veh) open-sourceress at @huggingface 🧙🏻‍♀️ DM me for any feedback about HF 🤗 https://t.co/MhrMkGTm7p",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "JustinLin610",
+      "name": "Junyang Lin",
+      "followers": 88784,
+      "bio": "❤️ 🍵 ☕️",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "TheTuringPost",
+      "name": "Turing Post",
+      "followers": 86604,
+      "bio": "On X we surface the AI research that matters and explain the ideas behind it. In the newsletter, we connect the dots between AI’s past, present, and future ⬇️",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "NoamShazeer",
+      "name": "Noam Shazeer",
+      "followers": 83935,
+      "bio": "Engineer",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "Hesamation",
+      "name": "ℏεsam",
+      "followers": 83581,
+      "bio": "apes made fire, then GPUs, then ASI",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Madisonkanna",
+      "name": "Madison Kanna",
+      "followers": 83399,
+      "bio": "learning out loud. AI infrastructure @baseten https://t.co/fWhUnuouar",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "srush_nlp",
+      "name": "Sasha Rush",
+      "followers": 82104,
+      "bio": "Researcher at Cursor\nhttps://t.co/cZl0wTfqGz",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ai_for_success",
+      "name": "AshutoshShrivastava",
+      "followers": 80836,
+      "bio": "Post about latest AI news, tools, tutorials and memes.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "UnslothAI",
+      "name": "Unsloth AI",
+      "followers": 78923,
+      "bio": "Train and run models locally! 🦥 https://t.co/2kXqhhvLsb",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "SebastienBubeck",
+      "name": "Sebastien Bubeck",
+      "followers": 78572,
+      "bio": "I work on AI at OpenAI. Former VP AI and Distinguished Scientist at Microsoft.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "johnschulman2",
+      "name": "John Schulman",
+      "followers": 78373,
+      "bio": "Recently started @thinkymachines. Interested in reinforcement learning, alignment, birds, jazz music",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "julien_c",
+      "name": "Julien Chaumond",
+      "followers": 78098,
+      "bio": "Co-founder and CTO at @huggingface 🤗. ML/AI for everyone, building products to propel communities fwd. @Stanford + @Polytechnique",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "VictorTaelin",
+      "name": "Taelin",
+      "followers": 77773,
+      "bio": "₍^. .^₎⟆",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "arthurmensch",
+      "name": "Arthur Mensch",
+      "followers": 74831,
+      "bio": "Co-founder and CEO @MistralAI. Mistral Vibe can help you https://t.co/IHZhDUiAnO",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "PrimeIntellect",
+      "name": "Prime Intellect",
+      "followers": 72219,
+      "bio": "Open Superintelligence Stack",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "osanseviero",
+      "name": "Omar Sanseviero",
+      "followers": 70972,
+      "bio": "MTS at @GoogleDeepMind\n\nBuilding Gemini, Gemma, AI Studio and more. My views\n\nex-Chief Llama Officer @huggingface 🇵🇪🇲🇽",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "teortaxesTex",
+      "name": "Teortaxes▶️ (DeepSeek 推特🐋铁粉 2023 – ∞)",
+      "followers": 70270,
+      "bio": "We're in a race. It's not USA vs China but humans and AGIs vs ape power centralization.\n@deepseek_ai stan #1, 2023–Deep Time\n\n«C’est la guerre.» ®1",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "haider1",
+      "name": "Haider.",
+      "followers": 68101,
+      "bio": "open intelligence for a decentralized future",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "TheAhmadOsman",
+      "name": "Ahmad",
+      "followers": 67895,
+      "bio": "Founder & CEO @OsmanticAI — Accelerating Opensource & Self-hosted / Local AI Adoption",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "deanwball",
+      "name": "Dean W. Ball",
+      "followers": 67452,
+      "bio": "head of strategic futures @openai",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "cline",
+      "name": "Cline",
+      "followers": 66935,
+      "bio": "The open source coding agent that takes over your editor, terminal, and browser to complete work autonomously.\n\nnpm i -g cline",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "thegautamkamath",
+      "name": "Gautam Kamath",
+      "followers": 65370,
+      "bio": "Assistant Prof of CS @UWaterloo, Faculty @VectorInst, Canada @CIFAR_News AI Chair. Joining @NYU_Courant Fall 2026. Co-EiC @TmlrOrg. I lead @TheSalonML.",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "quocleix",
+      "name": "Quoc Le",
+      "followers": 64093,
+      "bio": "Google Fellow",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "cerebras",
+      "name": "Cerebras",
+      "followers": 63506,
+      "bio": "The world's fastest AI inference and training.\nTry the latest open models at: https://t.co/jREGhLI2nj",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "deepfates",
+      "name": "🎭",
+      "followers": 62701,
+      "bio": "deepfates is a distributed collective intelligence running on heterogenous substrates and coordinating acausally. thank you for participating. we/us",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "sarahookr",
+      "name": "Sara Hooker",
+      "followers": 62626,
+      "bio": "Building intelligence that evolves @adaption_ai. Built @Cohere_Labs, @GoogleBrain, @GoogleDeepmind. ML Efficiency, Multimodal\\lingual.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "togethercompute",
+      "name": "Together AI",
+      "followers": 59855,
+      "bio": "Accelerate inference, model shaping, and pre-training on a research-optimized platform.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "alexatallah",
+      "name": "Alex Atallah",
+      "followers": 59604,
+      "bio": "CEO @OpenRouter, the largest LLM marketplace. Previously: co-founder & CTO @OpenSea.",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ProfTomYeh",
+      "name": "Tom Yeh",
+      "followers": 58914,
+      "bio": "CS Prof | AI by Hand ✍️ | @CUBoulder",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "0xSero",
+      "name": "0xSero",
+      "followers": 58201,
+      "bio": "I want to be free",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "jietang",
+      "name": "jietang",
+      "followers": 55540,
+      "bio": "Professor @ Tsinghua, Founder of https://t.co/3IaQ4CI5W3.\nAGI, LLM.\n“The value of a man should be seen in what he gives and not in what he is able to receive.”―Einstein",
+      "followed_by": [
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Yuhu_ai_",
+      "name": "Yuhuai (Tony) Wu",
+      "followers": 55163,
+      "bio": "know thyself. co-founder @xai.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "asharoraa",
+      "name": "ash",
+      "followers": 54979,
+      "bio": "Vibing @PrimeIntellect. @Forbes U30. Backed @polymarket @mistralai @basetenco (acqd @parsedlabs) @nothing @coreautoai @reflectorbital + others",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ChrisGPT",
+      "name": "Chris",
+      "followers": 54794,
+      "bio": "Agi 2029 - AI Insider / Reporter as featured in The Information • NYT • Techcrunch",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "reach_vb",
+      "name": "Vaibhav (VB) Srivastav",
+      "followers": 53949,
+      "bio": "founder mode @OpenAI | ex @huggingface | F1 fan | Here for @at_sofdog’s wisdom | *opinions my own",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "scaling01",
+      "name": "Lisan al Gaib",
+      "followers": 53791,
+      "bio": "lead them to paradise\n\nLisanBench: https://t.co/vorVk7Oks6\n\nImpressum & Datenschutz: https://t.co/lFLgiu9cqs",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "jxmnop",
+      "name": "Jack Morris",
+      "followers": 53383,
+      "bio": "research @engramlab // language models, information theory, science of AI",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "alexocheema",
+      "name": "Alex Cheema",
+      "followers": 52309,
+      "bio": "building @exolabs | prev @UniOfOxford  We're hiring: https://t.co/UlkApFndnH",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "kyliebytes",
+      "name": "Kylie Robison",
+      "followers": 51811,
+      "bio": "take it easy dude, but take it • writing @corememory • robison (rah-beh-son) not robinson • signal @ kylie.111",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "cHHillee",
+      "name": "Horace He",
+      "followers": 51581,
+      "bio": "@thinkymachines Formerly @PyTorch \"My learning style is Horace twitter threads\" - @typedfemale",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "shaneguML",
+      "name": "Shane Gu",
+      "followers": 50575,
+      "bio": "Gemini/Omni Thinking, Senior Staff AE @GoogleDeepMind. 🇯🇵-born 🇨🇳🇨🇦. ex: Gemini 1.5-3, GPT-4 @OpenAI, Google Robotics (JP: @shanegJP). Personal opinions.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "aidan_mclau",
+      "name": "Aidan McLaughlin",
+      "followers": 48341,
+      "bio": "posttraining research @openai",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "abacaj",
+      "name": "anton",
+      "followers": 48060,
+      "bio": "Software",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "_sholtodouglas",
+      "name": "Sholto Douglas",
+      "followers": 47868,
+      "bio": "Scaling RL @AnthropicAI, ex @DeepMind - working towards intelligence too cheap to meter",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "suchenzang",
+      "name": "Susan Zhang",
+      "followers": 47215,
+      "bio": "@ Google Deepmind. Past: @MetaAI, @OpenAI, @unitygames, @losalamosnatlab, @Princeton etc. Always hungry for intelligence. Only my opinions stored here.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Tim_Dettmers",
+      "name": "Tim Dettmers",
+      "followers": 46185,
+      "bio": "Creator of bitsandbytes. Professor @CarnegieMellon and Research Scientist @allen_ai .  I blog about deep learning and PhD life at https://t.co/Y78KDJJFE7.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "tydsh",
+      "name": "Yuandong Tian",
+      "followers": 45959,
+      "bio": "Co-founder of @Recursive_SI. ex-Meta FAIR Director. ex-Google. Reasoning, Optimization and Understanding LLM. Novelist in spare time. PhD in @CMU_Robotics.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "hyhieu226",
+      "name": "Hieu Pham",
+      "followers": 45441,
+      "bio": "Something new 🇻🇳 | ex: @openai, @xai, @augmentcode, @GoogleBrain, @LTIatCMU, @Stanford, ACM ICPC, IMO🥈\n\nOpinions are my own.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "gneubig",
+      "name": "Graham Neubig",
+      "followers": 45118,
+      "bio": "Associate professor @LTIatCMU.\nCo-founder/chief scientist @OpenHandsDev.\nI mostly work on modeling language.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ShunyuYao12",
+      "name": "Shunyu Yao",
+      "followers": 44906,
+      "bio": "Language agents",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "awnihannun",
+      "name": "Awni Hannun",
+      "followers": 44898,
+      "bio": "ow knee",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "huybery",
+      "name": "Binyuan Hui",
+      "followers": 43884,
+      "bio": "Formerly @Alibaba_Qwen",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "_arohan_",
+      "name": "rohan anil",
+      "followers": 43634,
+      "bio": "member of technical staff & co-founder of @coreautoai - and continuing to aspire to understand deep learning.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "Yampeleg",
+      "name": "Yam Peleg",
+      "followers": 43079,
+      "bio": "The only AI researcher they sent a missile for 🇮🇱 | Co-host @thursdai_pod • AI news every Thursday",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "tri_dao",
+      "name": "Tri Dao",
+      "followers": 43048,
+      "bio": "Asst. Prof @PrincetonCS, Chief Scientist @togethercompute. Machine learning & systems.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "khoomeik",
+      "name": "Rohan Pandey",
+      "followers": 42831,
+      "bio": "descending cross-entropy to ascend entropy @PeriodicLabs || prev research @OpenAI @CarnegieMellon '23",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "paularambles",
+      "name": "“paula”",
+      "followers": 42739,
+      "bio": "playing with words. creating whimsical ai @ https://t.co/khnCIsqbhL. built iOS apps @xAI, @Spotify, and co-founded @imagilabs.",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "maharshii",
+      "name": "maharshi",
+      "followers": 42621,
+      "bio": "learning deeply about life one gradient step at a time - ml perf optimizer @ fal",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "elliotarledge",
+      "name": "Elliot Arledge",
+      "followers": 42294,
+      "bio": "low taste kernel engineer |\nKernelBench-Hard | \nmade the 12 hr CUDA course | \nhttps://t.co/2hzezpoDwQ | \n@shipfr8 alum",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "NeelNanda5",
+      "name": "Neel Nanda",
+      "followers": 42160,
+      "bio": "Mechanistic Interpretability lead DeepMind. Formerly @AnthropicAI, independent. In this to reduce AI X-risk. Neural networks can be understood, let's go do it!",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "altryne",
+      "name": "Alex Volkov @ AI Engineer",
+      "followers": 41666,
+      "bio": "🎙️ Host of @thursdai_pod (get your AI news with us!) \n✨ AI Evangelist with @wandb & @coreweave 🪄🐝 \nOpinions my own",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "sainingxie",
+      "name": "Saining Xie",
+      "followers": 40439,
+      "bio": "cofounder & chief science officer at @amilabs | faculty @nyu_courant | prev: @googledeepmind @meta (fair) @ucsandiego | ynwa",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ivanfioravanti",
+      "name": "Ivan Fioravanti ᯅ",
+      "followers": 39877,
+      "bio": "GenAI/LLM addicted, Apple MLX, Cloud computing, Kubernetes, Technology Advisor, Investor and Co-Founder & Board Member of CoreView.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "MillionInt",
+      "name": "Jerry Tworek",
+      "followers": 38913,
+      "bio": "CEO and co-founder of Core Automation\n\nformer VP of RL @ OpenAI : reasoning models, o3, o1, GPT4, ChatGPT, Codex, RL for robots\n\ncautious AI optimist",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "hwchung27",
+      "name": "Hyung Won Chung",
+      "followers": 38550,
+      "bio": "AI Research Scientist @Meta Superintelligence Labs. Past: @OpenAI / @Google Brain / PhD @MIT",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "karminski3",
+      "name": "karminski-牙医",
+      "followers": 37680,
+      "bio": "A coder, road bike rider, server fortune teller, electronic waste collector, co-founder of KCORES, ex-director at IllaSoft, KingsoftOffice, Juejin.",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "RayFernando1337",
+      "name": "Ray Fernando",
+      "followers": 37125,
+      "bio": "12y ex-Apple • Building live with AI • Current Mission: 10% Body Fat",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "lateinteraction",
+      "name": "Omar Khattab",
+      "followers": 36572,
+      "bio": "asst professor @MIT CSAIL @nlp_mit.\n\nhttps://t.co/VgyLxl0VZz, https://t.co/ZZaSzaRIOF (@DSPyOSS), GEPA, RLMs, Pedagogical RL",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "a1zhang",
+      "name": "alex zhang",
+      "followers": 36228,
+      "bio": "phd student @mit_csail @nlp_mit, previously undergrad @princeton\n\n🫵🏻 go participate in the @GPU_MODE kernel competitions!",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "danielhanchen",
+      "name": "Daniel Han",
+      "followers": 34918,
+      "bio": "Building @UnslothAI • Making open-source LLMs faster, better & more accessible • YC S24 • ex-NVIDIA ML",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jon_barron",
+      "name": "Jon Barron",
+      "followers": 34481,
+      "bio": "Principal research scientist at Google DeepMind. Synthesized views are my own.",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "sophiamyang",
+      "name": "Sophia Yang, Ph.D.",
+      "followers": 34288,
+      "bio": "Head of Developer Relations @MistralAI | Board of @NumFOCUS",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "tenobrus",
+      "name": "Tenobrus",
+      "followers": 34002,
+      "bio": "this endless blue sky is driving me insane",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "maximelabonne",
+      "name": "Maxime Labonne",
+      "followers": 32884,
+      "bio": "Head of Post-Training @liquidai\n🤗 HF: https://t.co/2ECS7Gjhwb\n📝 Blog: https://t.co/Dxjebt3GZW",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "vincentweisser",
+      "name": "Vincent Weisser",
+      "followers": 30659,
+      "bio": "ceo @primeintellect — open superintelligence",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "philipvollet",
+      "name": "Philip Vollet",
+      "followers": 30347,
+      "bio": "VP Developer Relations and Growth @weaviate_io & Open source lover",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "TacoCohen",
+      "name": "Taco Cohen",
+      "followers": 30303,
+      "bio": "Slop janitor & post-trainologer at Meta / FAIR. Into codegen, RL, equivariance. Spent time at Qualcomm, Scyfer (acquired), UvA, Deepmind, OpenAI.",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "_xjdr",
+      "name": "xjdr",
+      "followers": 29105,
+      "bio": "building AI that wont embarrass me in front of my own standards",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "victormustar",
+      "name": "Victor M",
+      "followers": 28665,
+      "bio": "🤗 Head of Product @huggingface",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "itsclivetime",
+      "name": "Clive Chan",
+      "followers": 28433,
+      "bio": "perplexity per picojoule @anthropicai // prev jalapeno @openai, dojo @tesla",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "vikhyatk",
+      "name": "vik",
+      "followers": 28249,
+      "bio": "teaching computers how to see @moondreamai",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "himanshustwts",
+      "name": "himanshu",
+      "followers": 28177,
+      "bio": "simulating world behaviour @PhyseraAI • pods @groundzero_twt • DMs open!",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "DimitrisPapail",
+      "name": "Dimitris Papailiopoulos",
+      "followers": 28001,
+      "bio": "Researcher @MSFTResearch, AI Frontiers | Prof @UWMadison (on leave) | babas of Inez Lily.",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "billyuchenlin",
+      "name": "Bill Yuchen Lin",
+      "followers": 27598,
+      "bio": "Teaching Grok to Code @SpaceXAI\nAffiliate Assistant Prof @UW. \nEx: @allen_ai; Google, Meta FAIR.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "andrew_n_carr",
+      "name": "Andrew Carr 🤸",
+      "followers": 26582,
+      "bio": "co-founder leading science @getcartwheel co-founder advisor @arcade_ai Past: Codex @OpenAI, Brain @GoogleAI, world ranked Tetris player",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "WenhuChen",
+      "name": "Wenhu Chen",
+      "followers": 26391,
+      "bio": "Meta MSL. I led PoT, MMMU, MMLU-Pro, ClawBench, MAmmoTH, General-Reasoner, VL-Rethinker, VLM2Vec. I contributed to Gemini-2.5 and Muse Spark series.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "dejavucoder",
+      "name": "sankalp",
+      "followers": 25913,
+      "bio": "ai and side quests. i post well, just follow.\n\ni consult on ai engineering stuff | seeking post-training, auto-research adjacent, evals related work atm",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "QuanquanGu",
+      "name": "Quanquan Gu",
+      "followers": 25800,
+      "bio": "Professor @UCLA, Ex-ByteDance Seed | Recent work: Seed2.0, SeedFold, SeedProteo | Opinions are my own",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "karan4d",
+      "name": "mephisto",
+      "followers": 25213,
+      "bio": "API rapper",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "kalomaze",
+      "name": "kalomaze",
+      "followers": 24805,
+      "bio": "ML researcher (@primeintellect), speculator • extremely silly jester",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "Dorialexander",
+      "name": "Alexander Doria",
+      "followers": 24357,
+      "bio": "building open ai infrastructure @pleiasfr",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "ericzelikman",
+      "name": "Eric Zelikman",
+      "followers": 23785,
+      "bio": "cofounder & ceo @humansand - building ai for humans // was lgtm-ing @xAI, phd-ing @stanford",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "VoidAsuka",
+      "name": "Asuka Zheng🎀",
+      "followers": 23632,
+      "bio": "kids see ghosts sometimes.\nprev:physics, redis kernel, cloud infra, robotics learning.\nforest fairy, meme eng, ai researcher, hot nerd.\nig:roninkamuy",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "wzenus",
+      "name": "Zihan \"Zenus\" Wang ✈️ ICML",
+      "followers": 22999,
+      "bio": "Reasoning agent / RL / efficiency research @NorthwesternU & @nvidia. Ex @Microsoft @yutori_ai @deepseek_ai @uiuc_nlp @RUC1937.",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "Prince_Canuma",
+      "name": "Prince Canuma",
+      "followers": 22520,
+      "bio": "Apple MLX King 🤴🏽• Creator of (mlx-audio & mlx-vlm) • working on something new\n\nEx-@arcee_ai • @neptune_ai • https://t.co/iZnxoefJBU",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ropirito",
+      "name": "∿ Ropirito (0commoDTE)",
+      "followers": 22141,
+      "bio": "the machine god is coming for everyone",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "muratcan",
+      "name": "Muratcan Koylan",
+      "followers": 22075,
+      "bio": "Member of Technical Staff, AI Research @sullyai \n\nBuilding AI medical employees\n\nPrev/ AI Persona Development Research @ 99Ravens",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "henloitsjoyce",
+      "name": "joyce",
+      "followers": 22010,
+      "bio": "growth @zocomputer, 🇲🇾 in 🇺🇸",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "brandondamos",
+      "name": "Brandon Amos",
+      "followers": 21757,
+      "bio": "🧙 RL @Reflection_AI\n\npast: @MetaAi @GoogleDeepmind @SCSatCMU @Cornell_Tech",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "MaxForAI",
+      "name": "Max For AI",
+      "followers": 20286,
+      "bio": "本科辍学创业，没啥好看的，也就发点AI相关的内容🫡\nHead of growth @lobehub（79K🌟）\nPrev @listenhub @Sapient_Int \n同名小红书4万粉丝，公众号01Founder（长文首发）\n观点仅代表个人\n更多请访问网站⬇️（欢迎DM",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ZyphraAI",
+      "name": "Zyphra",
+      "followers": 20045,
+      "bio": "Full stack open superintelligence",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "QuixiAI",
+      "name": "Eric Hartford",
+      "followers": 19916,
+      "bio": "We make AI models Dolphin and Samantha\nBTC 3ENBV6zdwyqieAXzZP2i3EjeZtVwEmAuo4\nhttps://t.co/3ri2GbXrQB\nhttps://t.co/zH0F3pTjjY @dphnAI",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ZixuanLi_",
+      "name": "Zixuan Li",
+      "followers": 19892,
+      "bio": "Lead https://t.co/KepyJGAtVs @Zai_org.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "_lewtun",
+      "name": "Lewis Tunstall",
+      "followers": 19817,
+      "bio": "🤠 post-training @huggingface",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "sdrzn",
+      "name": "Saoud Rizwan",
+      "followers": 19173,
+      "bio": "Founder @cline Join the discord: https://t.co/rQxzlf8JQN",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "OfirPress",
+      "name": "Ofir Press",
+      "followers": 18912,
+      "bio": "I push the AI frontier by building tough benchmarks with amazing people. SWE-bench, SWE-agent, SciCode, AlgoTune. Postdoc @Princeton. PhD @nlpnoah @UW.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "MaziyarPanahi",
+      "name": "Maziyar PANAHI",
+      "followers": 18708,
+      "bio": "Building @OpenMed_AI · 3,500+ open-source models · Apache 2.0, runs on-device · #1 org in HF Daily Papers",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "Mascobot",
+      "name": "Marco Mascorro @ ICML",
+      "followers": 18375,
+      "bio": "Researching LLMs | Roboticist | Prev: Partner @a16z (inv @cursor_ai, @thinkymachines, @bfl_ml, etc), cofounded Fellow Robots, @singularityu, @BMW Research",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "nickbaumann_",
+      "name": "Nick",
+      "followers": 18359,
+      "bio": "codex @openAI | prev @cline | product of @UWMadison 🦡",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "qtnx_",
+      "name": "Q",
+      "followers": 18231,
+      "bio": "husband",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "BlackHC",
+      "name": "Andreas Kirsch 🇺🇦",
+      "followers": 18182,
+      "bio": "My opinions only here.\n👨‍🔬 RS DeepMind 1.8y,  Midjourney 1y 🧑‍🎓 DPhil AIMS 4.5y 🧙‍♂️ RE DeepMind 1y 📺 SWE Google 3y  🎓 TUM  \n👤 @nwspk",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "kellerjordan0",
+      "name": "Keller Jordan",
+      "followers": 18079,
+      "bio": "CIFAR-10 fanatic\nPretraining @OpenAI OpCo LLC.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "nisten",
+      "name": "nisten🇨🇦e/acc",
+      "followers": 17997,
+      "bio": "fullstack-dev democratizing intelligence 9mcp inc. ezdoesit inc. https://t.co/RjbLSpEgPE @skunkworks_ai @alignment_lab",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "nrehiew_",
+      "name": "wh",
+      "followers": 17519,
+      "bio": "eng primarily, ml mostly, research previously",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jayair",
+      "name": "Jay",
+      "followers": 17109,
+      "bio": "CEO @anomalyco @opencode",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ying11231",
+      "name": "Ying Sheng",
+      "followers": 17090,
+      "bio": "Cofounder & CEO @radixark @lmsysorg | @sgl_project (https://t.co/6e9BrnaWXK) | Do it anyway | Be the light",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "SkylerMiao7",
+      "name": "Skyler Miao",
+      "followers": 16945,
+      "bio": "Head of Engineering @MiniMax_AI \nBuilding MiniMax M3.x, Code, Audio and @Hailuo_AI",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "CarinaLHong",
+      "name": "Carina Hong",
+      "followers": 16910,
+      "bio": "@axiommathai : https://t.co/Qzh4GiCCXU",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "marksaroufim",
+      "name": "Mark Saroufim",
+      "followers": 16808,
+      "bio": "Fighting Amdahl @coreautoai",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Xinyu2ML",
+      "name": "Xinyu Yang",
+      "followers": 16493,
+      "bio": "Scaling everything @Kimi_Moonshot. Building open frontier intelligence. Prev. PhD @CarnegieMellon. Opinions are my own. Architect. They/Them",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "TheZachMueller",
+      "name": "Zach Mueller",
+      "followers": 16399,
+      "bio": "Head of Dev Rel at @LambdaAPI. Hardware nerd. Usually yelling at NCCL over things. Posts are my own. https://t.co/UpZIajM9qT",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "cloud11665",
+      "name": "cloud",
+      "followers": 16321,
+      "bio": "worldsim systems @openai, prev sora",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "lmsysorg",
+      "name": "LMSYS Org",
+      "followers": 16267,
+      "bio": "Large Model Systems Organization: We developed SGLang @sgl_project (https://t.co/OjwQadINKU), Chatbot Arena (now @arena), and Vicuna!",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "ArmenAgha",
+      "name": "Armen Aghajanyan",
+      "followers": 16160,
+      "bio": "Co-founder & CEO @perceptroninc; ex-RS FAIR/MSFT",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "gabriberton",
+      "name": "Gabriele Berton",
+      "followers": 16079,
+      "bio": "Training VLMs at @GoogleDeepMind - ex @Amazon @CarnegieMellon @PoliTOnews @IITalk - I post honest non-AI-generated paper reviews",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "menhguin",
+      "name": "Minh Nhat Nguyen",
+      "followers": 15707,
+      "bio": "ai agents @hud_evals (hiring!) | owned @AIHubCentral (1 million users,acq.) ex climate protester🦦I seek Greatness, and to guide humanity through a Golden Age",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "AdinaYakup",
+      "name": "Adina Yakup",
+      "followers": 15510,
+      "bio": "@huggingface 🤗 |  opinions are my own",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "madiator",
+      "name": "Mahesh Sathiamoorthy",
+      "followers": 15491,
+      "bio": "RL Environment Curation. Data Curation (OpenThoughts). Post-training.\nCEO @bespokelabsai.\nEx-GoogleDeepMind.",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "snwy_me",
+      "name": "snwy",
+      "followers": 15228,
+      "bio": "the distribution is anything but normal",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "xeophon",
+      "name": "Florian Brand",
+      "followers": 15199,
+      "bio": "evals @PrimeIntellect | open models @interconnectsai",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "yifanzhang_",
+      "name": "Yifan Zhang",
+      "followers": 15188,
+      "bio": "PhD at @Princeton University, Princeton AI Lab Fellow. RL & LLM Reasoning, Pretraining & Language Modeling. Prev @ Seed @Tsinghua_Uni",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "DylanAbruscato",
+      "name": "Dylan Abruscato",
+      "followers": 14939,
+      "bio": "President @TBPN",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "guohao_li",
+      "name": "Guohao Li 🐫",
+      "followers": 14642,
+      "bio": "Founder @Eigent_AI / @CamelAIOrg. Scaling RL Environments for Agents. Prev Oxford, KAUST, ETHz, Intel, Kumo.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "jiayi_pirate",
+      "name": "Jiayi Pan",
+      "followers": 14444,
+      "bio": "Research | Prev @xAI @Berkeley_AI | Views Are My Own",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "gabrielchua",
+      "name": "Gabriel Chua",
+      "followers": 13973,
+      "bio": "DX Engineer, Codex @OpenAI || Opinions my own",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "xlr8harder",
+      "name": "xlr8harder",
+      "followers": 13973,
+      "bio": "ai enjoyer, human flourishing, cat ✝️",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ziv_ravid",
+      "name": "Ravid Shwartz Ziv",
+      "followers": 13762,
+      "bio": "AI researcher | Meta | NYU. Working on compression, representation learning, and memory. I have an AI podcast! \nhttps://t.co/Bzzp2OpwME",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Vtrivedy10",
+      "name": "Viv",
+      "followers": 13754,
+      "bio": "applied research lead @LangChain Labs, prev @awscloud, phd cs @templeuniv",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "achowdhery",
+      "name": "Aakanksha Chowdhery",
+      "followers": 13670,
+      "bio": "@Stanford \n// Previously @GoogleDeepMind :: PaLM, Gemini, @reflection_ai\n// @MSFTResearch, @Princeton\n// views my own and subject to change",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "max_paperclips",
+      "name": "Shannon Sands",
+      "followers": 13657,
+      "bio": "Software developer & cognitive architect https://t.co/JAoBrqMLXN.",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "Stefania_druga",
+      "name": "Stefania Druga",
+      "followers": 13135,
+      "bio": "Staff Research Scientist @SakanaAILabs RSI Lab, \nalumni @GoogleDeepMind @mit",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "theemozilla",
+      "name": "emozilla",
+      "followers": 13007,
+      "bio": "catholic, ai researcher, co-founder/cto of @NousResearch\n\nalignment: whatever the opposite of yudkowsky + bryan johnson is.\n\nblessed be God in all his designs.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "zxytim",
+      "name": "Xinyu Zhou",
+      "followers": 12781,
+      "bio": "",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "louszbd",
+      "name": "Lou",
+      "followers": 12566,
+      "bio": "Code with GLM",
+      "followed_by": [
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "arcee_ai",
+      "name": "Arcee.ai",
+      "followers": 12497,
+      "bio": "American made open-source AI\n\nhttps://t.co/6gcSwU5nk3",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "neural_avb",
+      "name": "AVB",
+      "followers": 12309,
+      "bio": "Neural Breakdown on YT | Read research with AI: https://t.co/Ef6m4nUpcZ | Latest vid: RLMs, Post Training | Next: Reasoning SLM",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "tokenbender",
+      "name": "tokenbender",
+      "followers": 12253,
+      "bio": "slice large models to focused minions • RL, sparsity, efficiency and fastest kernels",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "Xianbao_QIAN",
+      "name": "Tiezhen WANG",
+      "followers": 12061,
+      "bio": "Helping ecosystem to grow on vLLM, ex-Head of APAC ecosystem @huggingface. Ex-Googler on TFLite/micro. Ideas on my own. Interested in future tech. DM open",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "nathancgy4",
+      "name": "nathan chen",
+      "followers": 12021,
+      "bio": "learning, member of technical staff @kimi_moonshot, prev @tilderesearch",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "abeirami",
+      "name": "Ahmad Beirami ✈️ ICML",
+      "followers": 11964,
+      "bio": "stealth // ex Gemini RL+Inference @GoogleDeepMind // Chat AI @AIatMeta // RL Agents @EA // ML+Information Theory @MIT+@Harvard+@GeorgiaTech",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "YouJiacheng",
+      "name": "You Jiacheng",
+      "followers": 11962,
+      "bio": "",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "casper_hansen_",
+      "name": "Casper Hansen",
+      "followers": 11839,
+      "bio": "ai engineer | previously created autoawq",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 7
+    },
+    {
+      "handle": "eisokant",
+      "name": "Eiso Kant",
+      "followers": 11704,
+      "bio": "Co-CEO @poolsideai // President @ PIC // Board @axon_enterprise\n\n“The best way to predict the future is to invent it.” - Alan Kay",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "bigeagle_xd",
+      "name": "熊师傅 weight decay 了吗",
+      "followers": 11662,
+      "bio": "a person living with @mianmoe, opinions are my own",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "_kevinlu",
+      "name": "Kevin Lu",
+      "followers": 10495,
+      "bio": "Research @thinkymachines",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "johannes_hage",
+      "name": "Johannes Hagemann",
+      "followers": 10320,
+      "bio": "co-founder/cto @PrimeIntellect | open superintelligence infra, longevity, techno-optimism",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "Jianlin_S",
+      "name": "jianlin.su",
+      "followers": 10208,
+      "bio": "Grad&Clip&EM is all you need @Kimi_Moonshot\nBlog: https://t.co/YVxsWylklA , Cool Papers: https://t.co/scS1n1oyaO\nInteresting link: https://t.co/7Tl4HaVajh, https://t.co/Y5qaxAA9Iy",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "torchcompiled",
+      "name": "Ethan",
+      "followers": 9856,
+      "bio": "trying to feel the magic. global research lead at @canva | prev: cofounder at @leonardoai",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ivanleomk",
+      "name": "Ivan Leo",
+      "followers": 9806,
+      "bio": "Developer Experience @GoogleDeepMind, Benchmarks @kaggle\n prev agents @manusai. I write at https://t.co/02byZNKMa8.\n\nTweets are my own views!",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "yuntiandeng",
+      "name": "Yuntian Deng @ ICML",
+      "followers": 9585,
+      "bio": "programasweights, NeuralOS | AP @UWaterloo | Associate @Harvard | Faculty Affiliate @VectorInst | Former Postdoc @ai2_mosaic | PhD @Harvard",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "inductionheads",
+      "name": "Super Dario",
+      "followers": 9568,
+      "bio": "the only way out is up",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "roomote",
+      "name": "Roomote",
+      "followers": 9482,
+      "bio": "The always-on engineer for your entire team.\n\nFrom the team that created Roo Code.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Grad62304977",
+      "name": "Grad",
+      "followers": 9311,
+      "bio": "",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "GPU_MODE",
+      "name": "GPU MODE",
+      "followers": 9124,
+      "bio": "Your favorite GPU community",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "gm8xx8",
+      "name": "𝚐𝔪𝟾𝚡𝚡𝟾",
+      "followers": 8833,
+      "bio": "𝐇𝐈𝐆𝐇-𝐓𝐀𝐒𝐓𝐄 𝐀𝐈 | 𝐎𝐏𝐄𝐍 𝐌𝐎𝐃𝐄𝐋𝐒",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "interconnectsai",
+      "name": "Interconnects",
+      "followers": 8757,
+      "bio": "What you need to know about AI research trends, from @natolambert\nWednesday mornings weekly, sometimes extra posts.",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "BanghuaZ",
+      "name": "Banghua Zhu",
+      "followers": 8513,
+      "bio": "Cofounder & CTO @radixark. Assistant Professor @UW. Prior @Nvidia @Berkeley_EECS",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "samsja19",
+      "name": "samsja",
+      "followers": 8417,
+      "bio": "leading research at @PrimeIntellect",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "sea_snell",
+      "name": "Charlie Snell",
+      "followers": 8239,
+      "bio": "PhD student @berkeley_ai; research @cursor_ai; prev @GoogleDeepMind. My friend told me to tweet more. I stare at my computer a lot and make things",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "damekdavis",
+      "name": "Damek",
+      "followers": 8138,
+      "bio": "Prof @Wharton stats / optimization & ML / AI for math / benchmark https://t.co/a1OxJdthkM / course https://t.co/bfOIEx0lHj",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "MatternJustus",
+      "name": "Justus Mattern",
+      "followers": 8084,
+      "bio": "Co-Founder @ProximalHQ | prev. research @PrimeIntellect, @MPI_IS and built revideo",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "jxbz",
+      "name": "Jeremy Bernstein",
+      "followers": 7953,
+      "bio": "🧪 @thinkymachines ✍️ anon feedback @ https://t.co/RIhBhjMRdD",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "arjunkocher",
+      "name": "Arjun",
+      "followers": 7908,
+      "bio": "AI Research",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "_lopopolo",
+      "name": "Ryan Lopopolo",
+      "followers": 7830,
+      "bio": "Principal Engineer, Agentic GCP @googlecloud • prev @OpenAI • Building the future of work. Harness engineering. As an agent influencer, • opinions mine",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "just_cameron",
+      "name": "Cameron",
+      "followers": 7618,
+      "bio": "Building machines that learn @Letta_AI. ATProtocol fanboy. Recovering financial economist. Sunbeam enjoyer.\n\n◯",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "code_star",
+      "name": "Cody Blakeney",
+      "followers": 7520,
+      "bio": "Leading research at @arcee_ai | Formerly Data Research Lead @DbrxMosaicAI | Visiting Researcher @meta | Ph.D | #TXSTFOOTBALL fan | https://t.co/4G6Jf3b0V4",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "rosinality",
+      "name": "Rosinality",
+      "followers": 7520,
+      "bio": "ML Engineer @poolsideai",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "leloykun",
+      "name": "leloy!",
+      "followers": 7512,
+      "bio": "@mirendil • Math @ AdMU • NanoGPT speedrunner • Muon fan 🤍 • prev ML @ XPD • 2x IOI & 2x ICPC WF • https://t.co/nfO038itfn",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "Yulun_Du",
+      "name": "Yulun Du",
+      "followers": 7396,
+      "bio": "Scaling @Kimi_Moonshot prev @LTIatCMU Opinions are my own.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "mike64_t",
+      "name": "mike",
+      "followers": 7260,
+      "bio": "descending the gradient",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "leonardofed",
+      "name": "Leonardo",
+      "followers": 7136,
+      "bio": "Desi@n lead @primeintellect, @openprest",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "stochasticchasm",
+      "name": "stochasm",
+      "followers": 6914,
+      "bio": "pretraining lead @arcee_ai • 25 • opinions my own",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 6
+    },
+    {
+      "handle": "ellev3n11",
+      "name": "Federico Cassano",
+      "followers": 6878,
+      "bio": "training composer @cursor_ai",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "clarejtbirch",
+      "name": "clare ❤️‍🔥",
+      "followers": 6685,
+      "bio": "thinking, doing @thinkymachines / fear is the mind-killer, solvitur ambulando",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "keunwoochoi",
+      "name": "Keunwoo Choi",
+      "followers": 6612,
+      "bio": "AI, LLMs, and music.\ncurrently @upstageai @KAIST.\nprev: @genentech @gaudiolab @tiktok_us @spotify, @c4dm @qmul.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "latkins",
+      "name": "Lucas Atkins",
+      "followers": 6428,
+      "bio": "cto @arcee_ai",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "grx_xce",
+      "name": "Grace Li",
+      "followers": 6181,
+      "bio": "cofounder @intelligence_ai (@designarena, @predictionbench). Prev cs + neuro harvard, swe apple",
+      "followed_by": [
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jyangballin",
+      "name": "John Yang",
+      "followers": 6024,
+      "bio": "CS PhD @Stanford. Created @SWEbench (multi-lingual/modal); SWE-agent; SWE-smith; InterCode; CodeClash; ProgramBench",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "yzhang_cs",
+      "name": "Yu Zhang 🐙🌘",
+      "followers": 5998,
+      "bio": "@Kimi_Moonshot; working on efficient methods for LLMs; disciple of parallel programming; INTP; 🐈",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "pingToven",
+      "name": "Toven",
+      "followers": 5840,
+      "bio": "leading inference provider ops @openrouter. opinions my own. aka tomas. 🇦🇷🇦🇷🇦🇷",
+      "followed_by": [
+        "MiniMax_AI",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "tensorqt",
+      "name": "tensorqt",
+      "followers": 5604,
+      "bio": "⬢ chaos dancing star @paradigmainc",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "TheSeaMouse",
+      "name": "Hassan Hayat 🔥",
+      "followers": 5038,
+      "bio": "feel the agi",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "vitaliychiley",
+      "name": "Vitaliy Chiley",
+      "followers": 4833,
+      "bio": "Gemini @GoogleDeepMind | ex @Meta (MSL), @DataBricks (@DBRXMosaicAI), @MosaicML, @cerebras",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "shxf0072",
+      "name": "Joey (e/λ)",
+      "followers": 4731,
+      "bio": "I speak fluent Python and Sarcasm.",
+      "followed_by": [
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "secemp9",
+      "name": "secemp",
+      "followers": 4475,
+      "bio": "researcher • pragmatic optimist • anything could work",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "HessianFree",
+      "name": "Omead Pooladzandi",
+      "followers": 4355,
+      "bio": "Co-Founder @PrismML  PSGD",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "HaoningTimothy",
+      "name": "Wu Haoning",
+      "followers": 4301,
+      "bio": "Husband. Curious RL researcher.\nHumbly contributed to Joint RL of K3 and K2.5. Prev: PhD NTU, BS PKU.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "simonguozirui",
+      "name": "Simon Guo",
+      "followers": 4284,
+      "bio": "Beep Boop @thinkymachines | CS PhD student @Stanford | 🎓 @Berkeley_EECS",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "bidhan",
+      "name": "Bidhan Roy",
+      "followers": 4215,
+      "bio": "ceo @bageldotcom. previously code monkey at amazon, cashapp, instacart. hiring - dms are open.",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "dominik_scherm",
+      "name": "Dom",
+      "followers": 4072,
+      "bio": "AI for science/bio, prev product @PrimeIntellect",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ShashwatGoel7",
+      "name": "Shashwat Goel",
+      "followers": 3954,
+      "bio": "Training AI for Decision Making\n\nPast work: https://t.co/Slt56DQHEn, Training AI Co-scientists, ΔBelief-RL, Measuring Long Horizon Execution",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "NoahZiems",
+      "name": "Noah Ziems",
+      "followers": 3908,
+      "bio": "MTS @PrimeIntellect. Prev @MIT_CSAIL under @lateinteraction, PhD @NotreDame Pedagogical RL, DSPy",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "mkurman88",
+      "name": "Mariusz Kurman",
+      "followers": 3895,
+      "bio": "building opensource stuff 🇵🇱",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "saurabh_shah2",
+      "name": "Saurabh Shah",
+      "followers": 3684,
+      "bio": "human-ing & AI-ing @humansand prev @allen_ai @Apple @Penn 🎤dabbler of things🎸 🐈‍⬛enjoyer of cats 🐈 and mountains🏔️he/him",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "zhyncs42",
+      "name": "zhyncs",
+      "followers": 3669,
+      "bio": "LightSeek Mafia 🌁 OPINIONS ARE MY OWN, Senior Director @togethercompute, Governing Board @lightseekorg, Homepage https://t.co/saCowtppUm",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "JingyuanLiu123",
+      "name": "JingyuanLiu",
+      "followers": 3643,
+      "bio": "https://t.co/D7zLeTZRMh is all you need | I am not Jianlin, just love his work... | Opinions are my own",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "CyouSakura",
+      "name": "Yasmine",
+      "followers": 3449,
+      "bio": "Researcher @StepFun_ai. Working on scalable RL methods in #LLM. she/her/hers. 守护最好的猫猫@biliacat_public",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jacobli99",
+      "name": "Jacob X. Li",
+      "followers": 3445,
+      "bio": "PhD Student @MIT EECS & CSAIL, advised by @lateinteraction. Prev. @BrownUniversity",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "xu3kev",
+      "name": "Wen-Ding Li",
+      "followers": 3378,
+      "bio": "LLM for code and reasoning. PhD student at Cornell. Previously Student Researcher at @google. Previously intern at @theteamatx.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "omouamoua",
+      "name": "snimu (Sebastian Müller)",
+      "followers": 3160,
+      "bio": "Leading the RL Residency and doing research @PrimeIntellect",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "zpysky1125",
+      "name": "Pengyu Zhao",
+      "followers": 2980,
+      "bio": "LLM Lead @MiniMax_AI\nMiniMax Agent: https://t.co/WYkuer8tSV",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "StringChaos",
+      "name": "Naman Jain",
+      "followers": 2891,
+      "bio": "Research @cursor_ai | CursorBench, LiveCodeBench, DeepSWE, R2E-Gym, GSO, LMArena Coding | Past: @UCBerkeley @MetaAI @AWS @MSFTResearch @iitbombay",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jannik_stra",
+      "name": "Jannik",
+      "followers": 2805,
+      "bio": "Leading Engineering @PrimeIntellect - Building open superintelligence infrastructure",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "RenLeanna",
+      "name": "Leanna Ren",
+      "followers": 2695,
+      "bio": "My babies since day 1: @MiniMax_AI, @Hailuo_AI\n\nForbes 100 under 100\nGym, compute, jet lag",
+      "followed_by": [
+        "MiniMax_AI",
+        "crystalsssup",
+        "eliebakouch",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jackminong",
+      "name": "Jackmin",
+      "followers": 2661,
+      "bio": "On a little excursion. Waku Waku!\n\nOn sabbatical @PrimeIntellect 🇺🇸\nPreviously @JinaAI_ 🇩🇪 @MoneyLion 🇲🇾",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Gradientdinner",
+      "name": "mikail",
+      "followers": 2646,
+      "bio": "Research Scientist @nvidia 🌁 | PhD @MIT",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "rogerliuty",
+      "name": "Tianyu Liu",
+      "followers": 2387,
+      "bio": "LLM agent & coding  | prev @Kimi_Moonshot @Alibaba_Qwen\n @TencentHunyuan | Intern/Visitor @MSFTResearch @TTIC_connect | NLP PhD @PKU1898. Opinions are my own.",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "Ameen_ml",
+      "name": "Ameen Patel",
+      "followers": 2093,
+      "bio": "Inference @PrimeIntellect, prev @togethercompute, @AmazonScience, @uwaterloo",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "jessicafeiyali",
+      "name": "Jess Li",
+      "followers": 1819,
+      "bio": "applied research @PrimeIntellect / prev @cartesia, @beaconsai, @Soma_Capital, @Harvard / dog walker @sfspca and distance runner (8x half and full marathons)",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ekellbuch",
+      "name": "Kelly Buchanan @ICML",
+      "followers": 1803,
+      "bio": "@Stanford with @HazyResearch and @Scott_linderman. \nWorking on 🤖🧠 \n\nPhD @cu_neurotheory\n@GoogleAI",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "test_tm7873",
+      "name": "testtm",
+      "followers": 1687,
+      "bio": "Love Cats, and Love Cats \n🐈 🇵🇱\nDMs open! (I don’t bite) 🐱\nwant to talk? come join https://t.co/b5iZQKZAss\n\nSupport me here: https://t.co/VCHvmK4Lx1",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "Zai_org",
+        "crystalsssup"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "ppwwyyxx",
+      "name": "Yuxin Wu",
+      "followers": 1612,
+      "bio": "Janitor @Kimi_Moonshot.\nhttps://t.co/p8HdDwgY6e",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "rasdani_",
+      "name": "Daniel Auras",
+      "followers": 1536,
+      "bio": "hill climbing @PrimeIntellect",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "scut_longhui",
+      "name": "Longhui Yu",
+      "followers": 1440,
+      "bio": "Post-train KIMI @Kimi_Moonshot | MS  Peking University @PKU1898",
+      "followed_by": [
+        "Kimi_Moonshot",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "rogershijin",
+      "name": "Roger Jin",
+      "followers": 1227,
+      "bio": "imposter syndrome. past: post-training @NousResearch. apple mle, google student researcher, mit math & cs",
+      "followed_by": [
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 5
+    },
+    {
+      "handle": "pokgak73",
+      "name": "aiman",
+      "followers": 995,
+      "bio": "infra @primeintellect",
+      "followed_by": [
+        "MiniMax_AI",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "VaishShrivas",
+      "name": "Vaish Shrivastava",
+      "followers": 875,
+      "bio": "Research Scientist @MSFTResearch\nPreviously MS CS @StanfordNLP with Percy Liang, BS CS @Caltech",
+      "followed_by": [
+        "SonglinYang4",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "DillonUzar",
+      "name": "Dillon Uzar",
+      "followers": 865,
+      "bio": "Building https://t.co/6ZEBsohKP9 | Compare LLMs across long context tests.\n\nManaging Member @ DeX Group LLC\nPresident @ Alkimi AI Corp\nPlus others.",
+      "followed_by": [
+        "MiniMax_AI",
+        "SonglinYang4",
+        "crystalsssup",
+        "eliebakouch"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "osoleve",
+      "name": "oso",
+      "followers": 715,
+      "bio": "data scientist (derogatory)",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    },
+    {
+      "handle": "stochi0",
+      "name": "stochi",
+      "followers": 331,
+      "bio": "Post-training, Agents, RL & ML systems.\nHotpot enjoyer.\nPrev: Residency @PrimeIntellect @Tsinghua_Uni @ycombinator F25 @iitbombay",
+      "followed_by": [
+        "crystalsssup",
+        "eliebakouch",
+        "willccbb",
+        "yacinelearning"
+      ],
+      "followed_by_count": 4
+    }
+  ]
+}
