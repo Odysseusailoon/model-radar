@@ -78,16 +78,60 @@ def test_kol_window_returns_all_when_under_cap():
     assert collector._kol_window(["a", "@b ", ""], 15) == ["a", "b"]
 
 
-def test_gather_records_source_failures_instead_of_swallowing():
+def test_keyword_phase_records_source_failures_instead_of_swallowing():
     from unittest.mock import MagicMock
     from app import collector
     client = MagicMock()
     client.search_recent.side_effect = RuntimeError("429 rate limited")
-    product = MagicMock(name="P", keywords=["MiniMax"], seed_kols=[])
+    product = MagicMock(keywords=["MiniMax"], seed_kols=[], last_seen_tweet_id=None)
     product.name = "MiniMax"
-    settings = MagicMock(max_pages_per_query=5, max_seed_kols_per_cycle=15)
+    settings = MagicMock(max_pages_per_query=5)
     errors = []
-    out = collector._gather_product_tweets(client, product, settings, errors)
-    assert out == []
+    budget = collector._keyword_phase(
+        MagicMock(), client, MagicMock(), [product], 300,
+        {"fetched": 0, "processed": 0, "skipped_dup": 0, "alerts": 0}, __import__("collections").Counter(),
+        errors, settings,
+    )
+    assert budget == 300  # nothing consumed
     assert len(errors) == 1 and errors[0]["source"] == "keyword_search"
     assert "429" in errors[0]["error"]
+
+
+def test_tweet_matches_product_by_keyword():
+    from unittest.mock import MagicMock
+    from app.collector import _tweet_matches_product
+    from app.xclient import Author, Tweet
+    glm = MagicMock(keywords=['"GLM-5.2"', "Z.ai"])
+    mini = MagicMock(keywords=["MiniMax", "Hailuo"])
+    t = Tweet(id="1", text="Tried GLM-5.2 today, beats everything", author=Author())
+    assert _tweet_matches_product(t, glm) is True
+    assert _tweet_matches_product(t, mini) is False
+
+
+def test_kol_pool_attributes_tweet_to_every_mentioned_product():
+    """A shared KOL's comparison tweet must land under EACH model it names."""
+    from collections import Counter
+    from unittest.mock import MagicMock
+    from app import collector
+    from app.xclient import Author, Tweet
+
+    glm = MagicMock(keywords=["GLM-5"], seed_kols=["karpathy"]); glm.name = "GLM"
+    kimi = MagicMock(keywords=["Kimi K3"], seed_kols=[]); kimi.name = "Kimi"
+    client = MagicMock()
+    client.user_last_tweets.return_value = [
+        Tweet(id="9", text="GLM-5 and Kimi K3 both improved a lot", author=Author(handle="karpathy"))
+    ]
+    stored = []
+    # process_tweet returns a truthy evidence-like object for each (product) call
+    import app.collector as C
+    orig = C.process_tweet
+    C.process_tweet = lambda s, p, t, c: stored.append(p.name) or MagicMock(category="expert_review")
+    try:
+        totals = {"fetched": 0, "processed": 0, "skipped_dup": 0, "alerts": 0, "kol_attributed": 0}
+        settings = MagicMock(max_seed_kols_per_cycle=15)
+        collector._kol_phase(MagicMock(), client, MagicMock(), [glm, kimi], 300,
+                             totals, Counter(), [], settings)
+    finally:
+        C.process_tweet = orig
+    assert sorted(stored) == ["GLM", "Kimi"]     # attributed to BOTH mentioned models
+    assert totals["kol_attributed"] == 2
