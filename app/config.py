@@ -55,6 +55,18 @@ class Settings(BaseSettings):
     alert_mega_followers: int = 100_000
     alert_min_confidence: float = 0.75
 
+    # ---- Daily lab-watch job (new posts from official accounts + new follows) ----
+    follow_watch_enabled: bool = True
+    # UTC hour to run the daily job (0-23). One run per day is plenty: following
+    # lists change slowly and this is the expensive call (one request / 5s).
+    follow_watch_hour_utc: int = 1
+    # Cost cap: max pages of followings to pull per watched account per run
+    # (200 handles/page). Bounds a lab that follows thousands.
+    follow_watch_max_pages: int = 20
+    # Skip firing new-follow alerts for accounts below this size, to cut noise
+    # (a lab following a 200-follower throwaway is rarely a partnership signal).
+    follow_watch_min_target_followers: int = 1_000
+
     # ---- Seeding ----
     # If set, on startup seed the products table from this JSON file when the
     # table is empty. Handy for local/dev bootstrapping.

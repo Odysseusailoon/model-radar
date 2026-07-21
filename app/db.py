@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 import time
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
 
@@ -46,6 +46,7 @@ def init_db(attempts: int = 6, base_delay: float = 1.0) -> None:
     for attempt in range(1, attempts + 1):
         try:
             models.Base.metadata.create_all(bind=engine)
+            _migrate_tweet_dedup()
             return
         except OperationalError:
             if attempt == attempts:
@@ -56,3 +57,39 @@ def init_db(attempts: int = 6, base_delay: float = 1.0) -> None:
                 attempt, attempts, delay,
             )
             time.sleep(delay)
+
+
+def _migrate_tweet_dedup() -> None:
+    """Idempotently move evidence dedup from global-on-tweet_id to
+    (tweet_id, product_id). `create_all` only creates missing tables; it never
+    alters the constraints of a table that already exists, so a database created
+    before this change keeps the old global unique constraint and would still
+    drop cross-product mentions. This runs the one-time swap in place.
+
+    Postgres-only: fresh SQLite (tests) is always built from the current models,
+    so there is nothing to migrate there.
+    """
+    if engine.dialect.name != "postgresql":
+        return
+    with engine.begin() as conn:
+        conn.execute(text(
+            "ALTER TABLE evidence DROP CONSTRAINT IF EXISTS uq_evidence_tweet_id"
+        ))
+        # ADD CONSTRAINT has no IF NOT EXISTS; guard on the catalog so re-runs
+        # (and freshly-created tables that already have it) are no-ops.
+        conn.execute(text(
+            """
+            DO $$
+            BEGIN
+                IF NOT EXISTS (
+                    SELECT 1 FROM pg_constraint WHERE conname = 'uq_evidence_tweet_product'
+                ) THEN
+                    ALTER TABLE evidence
+                        ADD CONSTRAINT uq_evidence_tweet_product UNIQUE (tweet_id, product_id);
+                END IF;
+            END $$;
+            """
+        ))
+        conn.execute(text(
+            "CREATE INDEX IF NOT EXISTS ix_evidence_tweet_id ON evidence (tweet_id)"
+        ))

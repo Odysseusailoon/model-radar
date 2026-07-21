@@ -1,9 +1,10 @@
 """SQLAlchemy ORM models.
 
-Three tables per spec:
   - products     : per-product configuration (multi-product reuse lives here)
   - evidence     : one row per collected tweet + LLM classification + review state
   - alerts_sent  : dedup ledger so we never push the same alert twice
+  - follow_edges : daily snapshot of who each watched lab account follows, so the
+                   lab-watch job can diff day-over-day and surface *new* follows
 """
 from __future__ import annotations
 
@@ -98,11 +99,14 @@ class Evidence(Base):
     product: Mapped["Product"] = relationship(back_populates="evidence")
 
     __table_args__ = (
-        # tweet_id is globally unique across X, so a global unique index is the
-        # simplest correct dedup guard (a tweet only ever matches one product's
-        # ingestion path first; duplicates across products are rare and harmless
-        # to drop). See collector.dedup for the application-level check.
-        UniqueConstraint("tweet_id", name="uq_evidence_tweet_id"),
+        # Dedup is per (tweet_id, product_id), NOT global on tweet_id. A single
+        # tweet that names several tracked products ("M2 beats GLM-5 and Kimi K3")
+        # is the highest-value competitive-intel signal we have; a global unique
+        # on tweet_id would attribute it to whichever product's search hit it
+        # first and silently drop it from the others. We want that comparison to
+        # appear under every product it mentions. See pipeline.already_stored.
+        UniqueConstraint("tweet_id", "product_id", name="uq_evidence_tweet_product"),
+        Index("ix_evidence_tweet_id", "tweet_id"),
         Index("ix_evidence_product_created", "product_id", "created_at"),
         Index("ix_evidence_category", "category"),
         Index("ix_evidence_review_status", "review_status"),
@@ -119,4 +123,33 @@ class AlertSent(Base):
 
     __table_args__ = (
         UniqueConstraint("tweet_id", "alert_type", name="uq_alert_tweet_type"),
+    )
+
+
+class FollowEdge(Base):
+    """A single "watcher follows target" edge, snapshotted by the daily
+    lab-watch job. We store the whole current following set per watcher so a
+    day-over-day diff reveals *new* follows — a lab starting to follow a company
+    or person is an early partnership / hiring / interest signal.
+
+    `alerted` guards the day-1 baseline: the first snapshot of a watcher stores
+    every edge with alerted=True (no alerts — we don't want to fire on the
+    hundreds of accounts it already follows). Genuinely new edges thereafter are
+    inserted with alerted=False and picked up by the alerter.
+    """
+    __tablename__ = "follow_edges"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    watcher_handle: Mapped[str] = mapped_column(String(120))
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id"), nullable=True)
+    target_handle: Mapped[str] = mapped_column(String(120))
+    target_name: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    target_followers: Mapped[int] = mapped_column(BigInteger, default=0)
+    target_bio: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    alerted: Mapped[bool] = mapped_column(Boolean, default=False)
+    first_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint("watcher_handle", "target_handle", name="uq_follow_watcher_target"),
+        Index("ix_follow_watcher", "watcher_handle"),
     )

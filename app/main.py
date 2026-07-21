@@ -20,6 +20,8 @@ from .collector import collect_once
 from .config import get_settings
 from .crud import delete_product, get_product, list_products, seed_from_file, upsert_product
 from .db import SessionLocal, init_db
+from .digest import build_digest
+from .follow_watch import run_daily_watch
 from .export import build_csv
 from .models import Evidence
 from .pipeline import process_tweet
@@ -38,12 +40,13 @@ settings = get_settings()
 templates = Jinja2Templates(directory="app/templates")
 security = HTTPBasic()
 
-CATEGORIES = ["demo", "customer_case", "expert_review", "news", "promo", "irrelevant"]
+CATEGORIES = ["demo", "customer_case", "expert_review", "partnership", "news", "promo", "irrelevant"]
 SENTIMENTS = ["positive", "neutral", "negative"]
 REVIEW_STATES = ["pending", "approved", "rejected"]
 CATEGORY_LABELS = {
     "demo": "真实Demo", "customer_case": "客户Case", "expert_review": "大佬评价",
-    "news": "资讯", "promo": "推广", "irrelevant": "无关", None: "未分类",
+    "partnership": "合作/集成", "news": "资讯", "promo": "推广",
+    "irrelevant": "无关", None: "未分类",
 }
 
 scheduler = BackgroundScheduler(timezone="UTC")
@@ -55,6 +58,14 @@ def _run_collection():
         log.info("Scheduled collection stats: %s", stats)
     except Exception:
         log.exception("Scheduled collection cycle crashed (will retry next interval)")
+
+
+def _run_daily_watch():
+    try:
+        stats = run_daily_watch()
+        log.info("Daily lab-watch stats: %s", stats)
+    except Exception:
+        log.exception("Daily lab-watch crashed (will retry tomorrow)")
 
 
 @asynccontextmanager
@@ -77,6 +88,16 @@ async def lifespan(app: FastAPI):
         max_instances=1,
         coalesce=True,
     )
+    if settings.follow_watch_enabled:
+        scheduler.add_job(
+            _run_daily_watch,
+            "cron",
+            hour=settings.follow_watch_hour_utc,
+            id="daily_watch",
+            max_instances=1,
+            coalesce=True,
+        )
+        log.info("Daily lab-watch scheduled for %02d:00 UTC", settings.follow_watch_hour_utc)
     scheduler.start()
     log.info("Scheduler started: collecting every %d min", settings.collect_interval_minutes)
     yield
@@ -121,6 +142,14 @@ def health():
 def debug_collect(_: str = Depends(require_auth)):
     """Manually trigger one collection cycle (handy right after deploy)."""
     return collect_once()
+
+
+@app.post("/debug/follow-watch")
+def debug_follow_watch(_: str = Depends(require_auth)):
+    """Manually trigger the daily lab-watch (new official posts + new follows).
+    Also lets an external cron drive it if the app is ever scaled to >1 instance
+    (in-process APScheduler would otherwise double-run)."""
+    return run_daily_watch()
 
 
 # --------------------------------------------------------------------------
@@ -169,6 +198,27 @@ def overview(request: Request, _: str = Depends(require_auth), db=Depends(get_db
             "category_labels": {**CATEGORY_LABELS, "unclassified": "未分类"},
             "reach_h": _humanize(o.reach),
             "filters": params,
+        },
+    )
+
+
+# --------------------------------------------------------------------------
+# Weekly digest (/digest) — the narrative the GTM team opens each week
+# --------------------------------------------------------------------------
+@app.get("/digest", response_class=HTMLResponse)
+def digest(request: Request, _: str = Depends(require_auth), db=Depends(get_db)):
+    try:
+        days = min(max(int(request.query_params.get("days") or 7), 1), 90)
+    except ValueError:
+        days = 7
+    dg = build_digest(db, days=days)
+    return templates.TemplateResponse(
+        "digest.html",
+        {
+            "request": request,
+            "active": "digest",
+            "dg": dg,
+            "category_labels": CATEGORY_LABELS,
         },
     )
 

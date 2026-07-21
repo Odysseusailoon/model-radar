@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}周报 · GTM Evidence Radar{% endblock %}
+{% block content %}
+
+{# Compact one-line rendering of a single evidence highlight. #}
+{% macro ev_line(ev) %}
+  {% set data = ev.classification or {} %}
+  <div class="dg-item">
+    <div class="dg-item-head">
+      <span><strong>@{{ ev.author_handle }}</strong>
+        {% if ev.author_verified %}<span class="muted">✔</span>{% endif %}
+        <span class="muted">· {{ "{:,}".format(ev.author_followers) }} 粉丝</span>
+        {% if ev.sentiment %}<span class="s-{{ ev.sentiment }}" style="font-size:11.5px">● {{ ev.sentiment }}</span>{% endif %}
+      </span>
+      {% if ev.tweet_url %}<a href="{{ ev.tweet_url }}" target="_blank" rel="noopener">原推 ↗</a>{% endif %}
+    </div>
+    {% if data.get('summary_zh') %}<div class="dg-summary">{{ data.get('summary_zh') }}</div>{% endif %}
+    {% if data.get('quotable_excerpt') %}
+      <div class="dg-quote">“{{ data.get('quotable_excerpt') }}”</div>
+    {% endif %}
+    {% if data.get('benchmark_names') %}
+      <div class="muted">📊 {{ data.get('benchmark_names')|join('、') }}</div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro highlight(title, cls, items) %}
+  {% if items %}
+  <div class="dg-block">
+    <div class="dg-block-title"><span class="tag {{ cls }}">{{ title }}</span> <span class="muted">{{ items|length }}</span></div>
+    {% for ev in items %}{{ ev_line(ev) }}{% endfor %}
+  </div>
+  {% endif %}
+{% endmacro %}
+
+<style>
+  .dg-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px; margin-bottom:16px; }
+  .dg-window a { padding:4px 10px; border-radius:7px; font-size:12.5px; color:var(--text-secondary); border:1px solid var(--border); }
+  .dg-window a.on { background:var(--accent); color:#fff; border-color:transparent; }
+  .dg-prod { margin-bottom:14px; }
+  .dg-prod-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .dg-prod-name { font-size:15px; font-weight:650; }
+  .dg-delta { font-size:12px; font-weight:600; }
+  .dg-delta.up { color:var(--success-text); } .dg-delta.down { color:var(--text-muted); }
+  .dg-catline { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 12px; }
+  .dg-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:760px) { .dg-grid { grid-template-columns:1fr; } }
+  .dg-block { margin-bottom:12px; }
+  .dg-block-title { font-size:12px; margin-bottom:6px; }
+  .dg-item { padding:8px 0; border-bottom:1px solid var(--border); }
+  .dg-item:last-child { border-bottom:none; }
+  .dg-item-head { display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+  .dg-summary { font-size:13px; margin-top:3px; }
+  .dg-quote { font-size:12.5px; color:var(--text-secondary); border-left:2px solid var(--accent);
+              padding:2px 9px; margin-top:5px; background:var(--plane); border-radius:0 5px 5px 0; }
+  .dg-quiet { font-size:12.5px; color:var(--text-muted); padding:6px 0; border-bottom:1px solid var(--border); }
+</style>
+
+<div class="dg-head">
+  <div>
+    <h2 style="margin:0 0 2px;font-size:18px">本周 GTM 情报周报</h2>
+    <p class="muted" style="margin:0">{{ dg.start.strftime('%Y-%m-%d') }} → {{ dg.end.strftime('%Y-%m-%d') }} · 近 {{ dg.days }} 天</p>
+  </div>
+  <div class="dg-window" style="display:flex;gap:6px">
+    {% for d in [7, 14, 30] %}
+      <a href="/digest?days={{ d }}" class="{% if dg.days == d %}on{% endif %}">{{ d }}天</a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="kpis">
+  <div class="card"><div class="kpi-label">本周入库</div><div class="kpi-value">{{ dg.total }}</div>
+    <div class="kpi-foot">条证据</div></div>
+  <div class="card"><div class="kpi-label">合作/集成情报</div><div class="kpi-value">{{ dg.partnership_count }}</div>
+    <div class="kpi-foot">条 partnership 信号</div></div>
+  <div class="card"><div class="kpi-label">评测/基准</div><div class="kpi-value">{{ dg.eval_count }}</div>
+    <div class="kpi-foot">条 eval 信号</div></div>
+  <div class="card"><div class="kpi-label">跟踪产品</div><div class="kpi-value">{{ dg.products|length }}</div>
+    <div class="kpi-foot">个</div></div>
+</div>
+
+{% if dg.is_empty %}
+<div class="card"><div class="empty">
+  <div class="empty-icon">🗞️</div>
+  <h3>本周暂无新证据</h3>
+  <p>等待下一个采集周期，或用管理员账号 <code>POST /debug/collect</code> 立即采集一次。</p>
+</div></div>
+{% endif %}
+
+{% for p in dg.products %}
+  {% if p.has_highlights or not p.is_quiet %}
+  <div class="card dg-prod">
+    <div class="dg-prod-head">
+      <span class="dg-prod-name">{{ p.name }}</span>
+      <span class="muted">本周 {{ p.total }} 条</span>
+      {% if p.prev_total or p.total %}
+        {% if p.delta > 0 %}<span class="dg-delta up">▲ +{{ p.delta }} vs 上周</span>
+        {% elif p.delta < 0 %}<span class="dg-delta down">▼ {{ p.delta }} vs 上周</span>
+        {% else %}<span class="dg-delta down">＝ 持平</span>{% endif %}
+      {% endif %}
+    </div>
+
+    <div class="dg-catline">
+      {% for cat, n in p.by_category.items() %}
+        <span class="tag t-{{ cat }}">{{ category_labels.get(cat, cat) }} {{ n }}</span>
+      {% endfor %}
+    </div>
+
+    {% if p.top_quote %}
+      {% set q = p.top_quote.classification or {} %}
+      <div class="dg-quote" style="margin-bottom:12px">
+        本周最佳引用（@{{ p.top_quote.author_handle }}，{{ "{:,}".format(p.top_quote.author_followers) }} 粉丝）：
+        “{{ q.get('quotable_excerpt') }}”
+      </div>
+    {% endif %}
+
+    {% if p.has_highlights %}
+    <div class="dg-grid">
+      <div>
+        {{ highlight('合作/集成', 't-partnership', p.partnerships) }}
+        {{ highlight('评测/基准', 't-expert_review', p.eval_hits) }}
+      </div>
+      <div>
+        {{ highlight('真实 Demo', 't-demo', p.demos) }}
+        {{ highlight('客户 Case', 't-customer_case', p.customer_cases) }}
+        {{ highlight('大佬评价', 't-expert_review', p.expert_reviews) }}
+      </div>
+    </div>
+    {% else %}
+      <p class="muted">本周有量无信号（多为资讯/推广/无关),详见 <a href="/feed?product_id={{ p.id }}">证据流</a>。</p>
+    {% endif %}
+
+    <p style="margin-top:10px"><a href="/feed?product_id={{ p.id }}">在证据流中查看 {{ p.name }} 全部 →</a></p>
+  </div>
+  {% else %}
+  <div class="dg-quiet">🔇 {{ p.name }}：本周无新证据。</div>
+  {% endif %}
+{% endfor %}
+
+{% endblock %}

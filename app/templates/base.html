@@ -165,6 +165,7 @@
     .t-demo{background:color-mix(in srgb,var(--series-1) 14%,transparent);color:var(--series-1)}
     .t-customer_case{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--success-text)}
     .t-expert_review{background:color-mix(in srgb,var(--warning) 20%,transparent);color:var(--text-primary)}
+    .t-partnership{background:color-mix(in srgb,var(--series-3) 18%,transparent);color:var(--series-3)}
     .t-news{background:var(--plane);color:var(--text-secondary)}
     .t-promo{background:color-mix(in srgb,var(--serious) 18%,transparent);color:var(--text-primary)}
     .t-irrelevant{background:var(--plane);color:var(--text-muted)}
@@ -202,6 +203,7 @@
     <span class="brand">📡 GTM <span>Evidence Radar</span></span>
     <nav>
       <a href="/" class="{% if active=='overview' %}active{% endif %}">概览</a>
+      <a href="/digest" class="{% if active=='digest' %}active{% endif %}">周报</a>
       <a href="/feed" class="{% if active=='feed' %}active{% endif %}">证据流</a>
       <a href="/admin/products" class="{% if active=='products' %}active{% endif %}">产品配置</a>
     </nav>
