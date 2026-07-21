@@ -58,3 +58,36 @@ def test_build_query_excludes_retweets_and_ors_keywords():
 
 def test_build_query_returns_none_without_keywords():
     assert build_query(MagicMock(keywords=[])) is None
+
+
+# ---- collector hardening: rotating KOL window + surfaced source failures ----
+def test_kol_window_rotates_and_caps():
+    from app import collector
+    kols = [f"k{i}" for i in range(10)]
+    collector._rotation = 0
+    w0 = collector._kol_window(kols, 3)
+    collector._rotation = 3
+    w1 = collector._kol_window(kols, 3)
+    assert len(w0) == 3 and len(w1) == 3
+    assert w0 == ["k0", "k1", "k2"]
+    assert w1 == ["k3", "k4", "k5"]            # window advanced -> different KOLs covered
+
+
+def test_kol_window_returns_all_when_under_cap():
+    from app import collector
+    assert collector._kol_window(["a", "@b ", ""], 15) == ["a", "b"]
+
+
+def test_gather_records_source_failures_instead_of_swallowing():
+    from unittest.mock import MagicMock
+    from app import collector
+    client = MagicMock()
+    client.search_recent.side_effect = RuntimeError("429 rate limited")
+    product = MagicMock(name="P", keywords=["MiniMax"], seed_kols=[])
+    product.name = "MiniMax"
+    settings = MagicMock(max_pages_per_query=5, max_seed_kols_per_cycle=15)
+    errors = []
+    out = collector._gather_product_tweets(client, product, settings, errors)
+    assert out == []
+    assert len(errors) == 1 and errors[0]["source"] == "keyword_search"
+    assert "429" in errors[0]["error"]

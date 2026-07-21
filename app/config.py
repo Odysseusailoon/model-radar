@@ -49,6 +49,20 @@ class Settings(BaseSettings):
     max_tweets_per_cycle: int = 300
     # Max pages to pull per keyword query per cycle (secondary guardrail).
     max_pages_per_query: int = 5
+    # Cap on seed KOLs polled per product per cycle. On the free tier (1 req/5s)
+    # polling dozens of KOLs starves later products of the rate budget, so we poll
+    # a rotating window of this size and cover the rest over subsequent cycles.
+    max_seed_kols_per_cycle: int = 15
+
+    # ---- Digest quality floor (Issue: junk small accounts on the deliverable) ----
+    # The weekly digest is the GTM-facing artifact, so it only surfaces credible
+    # evidence. All rows still live in the DB / feed; this gates the highlights.
+    # expert_review needs a real audience OR the classifier's credibility signals;
+    # customer_case needs a lower floor + confidence. partnership / eval / demo are
+    # gated on their own merits (event / benchmark / has-media), not follower count.
+    digest_min_followers_expert: int = 10_000
+    digest_min_followers_case: int = 2_000
+    digest_min_confidence: float = 0.6
 
     # ---- Alert thresholds ----
     alert_min_followers: int = 10_000

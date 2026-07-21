@@ -19,6 +19,7 @@ from typing import Optional
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
+from .config import get_settings
 from .models import Evidence, Product
 
 SIGNAL_CATEGORIES = ("demo", "customer_case", "expert_review")
@@ -28,6 +29,29 @@ TOP_N = 5
 
 def _flag(ev: Evidence, key: str) -> bool:
     return bool((ev.classification or {}).get(key))
+
+
+def _passes_floor(ev: Evidence, settings) -> bool:
+    """Quality gate for the digest highlight lists (the GTM deliverable).
+
+    Keeps out the junk-small-account problem: a 49-follower blue-check's empty
+    praise should not headline the weekly report. Category-specific because the
+    right bar differs — an expert take is about the author's authority (follower
+    floor), a demo is about the artifact (needs media), a partnership is an event
+    (no follower gate at all). Everything still lives in the DB / feed regardless.
+    """
+    conf = ev.confidence or 0.0
+    followers = ev.author_followers or 0
+    cat = ev.category
+    if cat == "partnership":
+        return conf >= settings.digest_min_confidence
+    if cat == "expert_review":
+        return followers >= settings.digest_min_followers_expert and conf >= settings.digest_min_confidence
+    if cat == "customer_case":
+        return followers >= settings.digest_min_followers_case and conf >= settings.digest_min_confidence
+    if cat == "demo":
+        return conf >= settings.digest_min_confidence and _flag(ev, "has_media_evidence")
+    return conf >= settings.digest_min_confidence
 
 
 def _benchmarks(ev: Evidence) -> list[str]:
@@ -111,6 +135,7 @@ def build_digest(session: Session, days: int = 7) -> Digest:
     start = now - timedelta(days=days)
     prev_start = start - timedelta(days=days)
 
+    settings = get_settings()
     products = list(session.scalars(select(Product).order_by(Product.id)))
     pd = {p.id: ProductDigest(id=p.id, name=p.name) for p in products}
 
@@ -131,17 +156,20 @@ def build_digest(session: Session, days: int = 7) -> Digest:
             continue
         d.total += 1
         cat = ev.category or "unclassified"
-        d.by_category[cat] = d.by_category.get(cat, 0) + 1
+        d.by_category[cat] = d.by_category.get(cat, 0) + 1  # raw volume (unfiltered)
         if cat in SIGNAL_CATEGORIES:
             d.reach += ev.author_followers or 0
-        if cat == "partnership":
-            d.partnerships.append(ev)
-        elif cat == "demo":
-            d.demos.append(ev)
-        elif cat == "customer_case":
-            d.customer_cases.append(ev)
-        elif cat == "expert_review":
-            d.expert_reviews.append(ev)
+        # Highlight lists apply the quality floor; eval_signal is benchmark-based
+        # so it stands on its own.
+        if _passes_floor(ev, settings):
+            if cat == "partnership":
+                d.partnerships.append(ev)
+            elif cat == "demo":
+                d.demos.append(ev)
+            elif cat == "customer_case":
+                d.customer_cases.append(ev)
+            elif cat == "expert_review":
+                d.expert_reviews.append(ev)
         if _flag(ev, "eval_signal"):
             d.eval_hits.append(ev)
 

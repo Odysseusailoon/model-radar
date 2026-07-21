@@ -12,6 +12,7 @@ A global per-cycle cap (settings.max_tweets_per_cycle) bounds LLM spend.
 from __future__ import annotations
 
 import logging
+import threading
 from collections import Counter
 
 from .alerts import maybe_alert
@@ -24,6 +25,16 @@ from .pipeline import process_tweet
 from .xclient import Tweet, XDataClient
 
 log = logging.getLogger(__name__)
+
+# One collection at a time. The APScheduler job and a manual /debug/collect both
+# call collect_once; on the free tier (1 req/5s) two concurrent cycles double the
+# request rate and trip 429s, which then silently starve whole products. This
+# lock makes a second trigger a no-op instead of a rate-limit pile-up.
+_collect_lock = threading.Lock()
+
+# Rotates the seed-KOL window and the product start position across cycles so no
+# single product (or KOL) is permanently starved when the rate budget runs out.
+_rotation = 0
 
 
 def build_query(product: Product) -> str | None:
@@ -45,7 +56,21 @@ def _as_int(tweet_id: str) -> int:
 
 
 def collect_once() -> dict:
-    """Run one full collection cycle across all active products. Returns stats."""
+    """Run one full collection cycle. Serialized: a second concurrent trigger
+    returns immediately rather than contending for the API rate budget."""
+    if not _collect_lock.acquire(blocking=False):
+        log.warning("collect_once already running; this trigger is a no-op")
+        return {"skipped": "already_running"}
+    try:
+        return _collect_once_locked()
+    finally:
+        _collect_lock.release()
+
+
+def _collect_once_locked() -> dict:
+    """Run one full collection cycle across all active products. Returns stats,
+    including any per-source failures so they are visible, not silently dropped."""
+    global _rotation
     settings = get_settings()
     client = XDataClient(
         api_key=settings.twitterapi_key,
@@ -56,11 +81,20 @@ def collect_once() -> dict:
 
     totals = {"fetched": 0, "processed": 0, "skipped_dup": 0, "alerts": 0}
     category_dist: Counter = Counter()
+    errors: list[dict] = []
 
     session = SessionLocal()
     try:
         products = list_products(session, only_active=True)
-        log.info("Collection cycle start: %d active product(s), budget=%d", len(products), budget)
+        # Fair rotation: start the cycle at a different product each time so the
+        # same product isn't always last (and thus first to starve on the rate
+        # limit). Advances by one product per cycle.
+        if products:
+            off = _rotation % len(products)
+            products = products[off:] + products[:off]
+        _rotation += 1
+        log.info("Collection cycle start: %d active product(s), budget=%d, order=%s",
+                 len(products), budget, [p.name for p in products])
 
         for product in products:
             if budget <= 0:
@@ -69,7 +103,7 @@ def collect_once() -> dict:
 
             watermark = _as_int(product.last_seen_tweet_id or "0")
             new_max = watermark
-            tweets = _gather_product_tweets(client, product, settings)
+            tweets = _gather_product_tweets(client, product, settings, errors)
 
             for tweet in tweets:
                 if budget <= 0:
@@ -107,38 +141,58 @@ def collect_once() -> dict:
                 product.last_seen_tweet_id = str(new_max)
                 session.commit()
 
+        if errors:
+            log.warning("Collection cycle had %d source failure(s): %s",
+                        len(errors), errors)
         log.info(
-            "Collection cycle done: fetched=%d processed=%d dup=%d alerts=%d dist=%s",
+            "Collection cycle done: fetched=%d processed=%d dup=%d alerts=%d failed=%d dist=%s",
             totals["fetched"], totals["processed"], totals["skipped_dup"],
-            totals["alerts"], dict(category_dist),
+            totals["alerts"], len(errors), dict(category_dist),
         )
     finally:
         session.close()
 
     totals["category_dist"] = dict(category_dist)
+    totals["sources_failed"] = len(errors)
+    totals["errors"] = errors  # surfaced so failures are visible, not silent
     return totals
 
 
-def _gather_product_tweets(client: XDataClient, product: Product, settings) -> list[Tweet]:
-    """Keyword search + seed-KOL polling, resilient to per-source failures."""
+def _kol_window(kols: list[str], cap: int) -> list[str]:
+    """A rotating slice of at most `cap` seed KOLs. Successive cycles advance the
+    window so every KOL is covered over time without polling all of them at once
+    (which would starve the rate budget on the free tier)."""
+    kols = [k.lstrip("@").strip() for k in (kols or []) if k and k.strip()]
+    if cap <= 0 or len(kols) <= cap:
+        return kols
+    start = _rotation % len(kols)
+    return (kols + kols)[start:start + cap]
+
+
+def _gather_product_tweets(client: XDataClient, product: Product, settings,
+                           errors: list[dict]) -> list[Tweet]:
+    """Keyword search + seed-KOL polling. Per-source failures are recorded in
+    `errors` (and logged) instead of being silently swallowed, so a rate-limited
+    search shows up as a failure rather than looking like 'no data'."""
     collected: list[Tweet] = []
 
     query = build_query(product)
     if query:
         try:
             collected.extend(client.search_recent(query, max_pages=settings.max_pages_per_query))
-        except Exception:
-            log.exception("Keyword search failed for product %s (continuing)", product.name)
+        except Exception as exc:
+            log.exception("Keyword search failed for product %s", product.name)
+            errors.append({"product": product.name, "source": "keyword_search", "error": str(exc)})
     else:
         log.info("Product %s has no keywords; skipping keyword search.", product.name)
 
-    for handle in product.seed_kols or []:
-        handle = handle.lstrip("@").strip()
+    for handle in _kol_window(product.seed_kols, settings.max_seed_kols_per_cycle):
         if not handle:
             continue
         try:
             collected.extend(client.user_last_tweets(user_name=handle, max_pages=1))
-        except Exception:
-            log.exception("Seed-KOL poll failed for @%s (continuing)", handle)
+        except Exception as exc:
+            log.exception("Seed-KOL poll failed for @%s", handle)
+            errors.append({"product": product.name, "source": f"kol:@{handle}", "error": str(exc)})
 
     return collected
