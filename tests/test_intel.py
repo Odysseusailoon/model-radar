@@ -164,6 +164,57 @@ def test_digest_floor_excludes_junk_small_accounts():
     assert [e.author_handle for e in d.expert_reviews] == ["big"]  # only the credible one headlines
 
 
+def test_digest_floor_admits_viral_small_account_and_excludes_non_english():
+    """A small account's viral tweet passes on engagement; a non-English one is out."""
+    from datetime import datetime, timezone
+    from app.db import SessionLocal
+    from app.digest import build_digest
+    from app.models import Evidence, Product
+
+    s = SessionLocal()
+    p = Product(name="DG-Viral", keywords=[], official_accounts=[], seed_kols=[])
+    s.add(p); s.commit()
+    now = datetime.now(timezone.utc)
+    # 50-follower but 5000 likes (viral) English expert take -> should headline
+    s.add(Evidence(tweet_id="v-viral", product_id=p.id, author_handle="smallviral",
+                   author_followers=50, like_count=5000, retweet_count=800, category="expert_review",
+                   sentiment="positive", confidence=0.9, review_status="pending", text="deep take",
+                   lang="en", posted_at=now, classification={"category": "expert_review"}, media_urls=[]))
+    # big account but non-English -> excluded by the language gate
+    s.add(Evidence(tweet_id="v-es", product_id=p.id, author_handle="bigspanish",
+                   author_followers=200_000, category="expert_review", sentiment="positive",
+                   confidence=0.9, review_status="pending", text="increíble", lang="es",
+                   posted_at=now, classification={"category": "expert_review"}, media_urls=[]))
+    s.commit()
+    dg = build_digest(s, days=7)
+    d = next(pd for pd in dg.products if pd.id == p.id)
+    s.close()
+    assert [e.author_handle for e in d.expert_reviews] == ["smallviral"]
+
+
+def test_digest_floor_excludes_demo_without_product_media():
+    from datetime import datetime, timezone
+    from app.db import SessionLocal
+    from app.digest import build_digest
+    from app.models import Evidence, Product
+
+    s = SessionLocal()
+    p = Product(name="DG-Demo", keywords=[], official_accounts=[], seed_kols=[])
+    s.add(p); s.commit()
+    now = datetime.now(timezone.utc)
+    # a "demo" the classifier marked WITHOUT product media (e.g. a meme) -> excluded
+    s.add(Evidence(tweet_id="d-meme", product_id=p.id, author_handle="memer",
+                   author_followers=50_000, category="demo", sentiment="positive", confidence=0.9,
+                   review_status="pending", text="lol", lang="en", posted_at=now,
+                   classification={"category": "demo", "has_media_evidence": False}, media_urls=[]))
+    s.commit()
+    dg = build_digest(s, days=7)
+    d = next(pd for pd in dg.products if pd.id == p.id)
+    s.close()
+    assert d.by_category["demo"] == 1     # counted
+    assert d.demos == []                  # but not headlined (no real product artifact)
+
+
 def test_digest_route_renders(digest_seed):
     from fastapi.testclient import TestClient
 

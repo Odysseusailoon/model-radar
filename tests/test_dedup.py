@@ -60,6 +60,35 @@ def test_build_query_returns_none_without_keywords():
     assert build_query(MagicMock(keywords=[])) is None
 
 
+def test_build_query_adds_lang_operator_only_when_requested():
+    p = MagicMock(keywords=["MiniMax"])
+    assert "lang:en" in build_query(p, lang="en")
+    assert "lang:" not in build_query(p)
+
+
+def test_kol_pool_skips_non_english_tweets():
+    from collections import Counter
+    from app import collector
+    from app.xclient import Author, Tweet
+    p = MagicMock(keywords=["MiniMax"], seed_kols=["k"]); p.name = "MiniMax"
+    client = MagicMock()
+    client.user_last_tweets.return_value = [
+        Tweet(id="1", text="MiniMax es increíble", lang="es", author=Author(handle="k")),
+        Tweet(id="2", text="MiniMax M2 is great", lang="en", author=Author(handle="k")),
+    ]
+    stored = []
+    orig = collector.process_tweet
+    collector.process_tweet = lambda s, pr, t, c: stored.append(t.id) or MagicMock(category="news")
+    try:
+        settings = MagicMock(max_seed_kols_per_cycle=15, collect_lang="en")
+        collector._kol_phase(MagicMock(), client, MagicMock(), [p], 300,
+                             {"fetched": 0, "processed": 0, "skipped_dup": 0, "alerts": 0, "kol_attributed": 0},
+                             Counter(), [], settings)
+    finally:
+        collector.process_tweet = orig
+    assert stored == ["2"]  # Spanish tweet skipped, English kept
+
+
 # ---- collector hardening: rotating KOL window + surfaced source failures ----
 def test_kol_window_rotates_and_caps():
     from app import collector

@@ -31,27 +31,48 @@ def _flag(ev: Evidence, key: str) -> bool:
     return bool((ev.classification or {}).get(key))
 
 
+def engagement(ev: Evidence) -> int:
+    """Weighted engagement: a retweet is a stronger endorsement than a like (it
+    re-broadcasts to a new audience), so RTs are weighted 2x."""
+    return ((ev.like_count or 0) + 2 * (ev.retweet_count or 0)
+            + (ev.quote_count or 0) + (ev.reply_count or 0))
+
+
+def impact(ev: Evidence) -> int:
+    """Ranking score combining reach (followers) AND traction (engagement), so a
+    smaller account's viral tweet can outrank a big account's ignored one.
+    followers are divided down to sit on a comparable scale to engagement."""
+    return engagement(ev) + (ev.author_followers or 0) // 100
+
+
 def _passes_floor(ev: Evidence, settings) -> bool:
     """Quality gate for the digest highlight lists (the GTM deliverable).
 
-    Keeps out the junk-small-account problem: a 49-follower blue-check's empty
-    praise should not headline the weekly report. Category-specific because the
-    right bar differs — an expert take is about the author's authority (follower
-    floor), a demo is about the artifact (needs media), a partnership is an event
-    (no follower gate at all). Everything still lives in the DB / feed regardless.
+    Keeps out the junk-small-account problem, but credits impact: an author is
+    credible if they have real reach (follower floor) OR the tweet went viral
+    (engagement floor) — a 50-follower account with a 5k-like tweet is worth
+    surfacing. Category-specific: partnership is an event (no author gate), a
+    demo is about the artifact (needs genuine product media). Non-English rows
+    are excluded here too (belt-and-suspenders; collection already filters).
+    Everything still lives in the DB / feed regardless of this gate.
     """
+    if settings.collect_lang and ev.lang and ev.lang != settings.collect_lang:
+        return False
     conf = ev.confidence or 0.0
+    if conf < settings.digest_min_confidence:
+        return False
     followers = ev.author_followers or 0
+    viral = engagement(ev) >= settings.digest_min_engagement
     cat = ev.category
     if cat == "partnership":
-        return conf >= settings.digest_min_confidence
+        return True
     if cat == "expert_review":
-        return followers >= settings.digest_min_followers_expert and conf >= settings.digest_min_confidence
+        return followers >= settings.digest_min_followers_expert or viral
     if cat == "customer_case":
-        return followers >= settings.digest_min_followers_case and conf >= settings.digest_min_confidence
+        return followers >= settings.digest_min_followers_case or viral
     if cat == "demo":
-        return conf >= settings.digest_min_confidence and _flag(ev, "has_media_evidence")
-    return conf >= settings.digest_min_confidence
+        return _flag(ev, "has_media_evidence")
+    return True
 
 
 def _benchmarks(ev: Evidence) -> list[str]:
@@ -174,21 +195,18 @@ def build_digest(session: Session, days: int = 7) -> Digest:
             d.eval_hits.append(ev)
 
     for d in pd.values():
-        # Impact-rank the highlight lists: bigger audience first, then confidence.
-        def _key(e: Evidence):
-            return (e.author_followers or 0, e.confidence or 0.0)
-
-        d.partnerships.sort(key=lambda e: (e.confidence or 0.0, e.author_followers or 0), reverse=True)
-        d.demos.sort(key=_key, reverse=True)
-        d.customer_cases.sort(key=_key, reverse=True)
-        d.expert_reviews.sort(key=_key, reverse=True)
+        # Rank highlights by impact = reach + traction, so viral tweets surface.
+        d.partnerships.sort(key=impact, reverse=True)
+        d.demos.sort(key=impact, reverse=True)
+        d.customer_cases.sort(key=impact, reverse=True)
+        d.expert_reviews.sort(key=impact, reverse=True)
         d.eval_hits.sort(key=lambda e: (e.posted_at or e.created_at or start), reverse=True)
 
         marketable = [e for e in d.demos + d.customer_cases + d.expert_reviews
                       if _flag(e, "usable_for_marketing") and (e.classification or {}).get("quotable_excerpt")]
-        d.top_quote = max(marketable, key=_key, default=None)
+        d.top_quote = max(marketable, key=impact, default=None)
         signal_rows = d.demos + d.customer_cases + d.expert_reviews
-        d.top_voice = max(signal_rows, key=lambda e: e.author_followers or 0, default=None)
+        d.top_voice = max(signal_rows, key=impact, default=None)
 
         d.partnerships = d.partnerships[:TOP_N]
         d.demos = d.demos[:TOP_N]

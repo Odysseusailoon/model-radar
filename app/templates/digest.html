@@ -10,6 +10,7 @@
       <span><strong>@{{ ev.author_handle }}</strong>
         {% if ev.author_verified %}<span class="muted">✔</span>{% endif %}
         <span class="muted">· {{ "{:,}".format(ev.author_followers) }} 粉丝</span>
+        <span class="muted">· ❤{{ ev.like_count }} 🔁{{ ev.retweet_count }} 💬{{ ev.reply_count }}</span>
         {% if ev.sentiment %}<span class="s-{{ ev.sentiment }}" style="font-size:11.5px">● {{ ev.sentiment }}</span>{% endif %}
       </span>
       {% if ev.tweet_url %}<a href="{{ ev.tweet_url }}" target="_blank" rel="noopener">原推 ↗</a>{% endif %}
