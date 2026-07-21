@@ -23,7 +23,7 @@ from .db import SessionLocal, init_db
 from .digest import build_digest
 from .follow_watch import run_daily_watch
 from .export import build_csv
-from .models import Evidence
+from .models import Evidence, Product
 from .pipeline import process_tweet
 from .charts import assign_colors, build_line_chart, build_sentiment_bars
 from .queries import EvidenceFilter, query_evidence
@@ -142,6 +142,17 @@ def health():
 def debug_collect(_: str = Depends(require_auth)):
     """Manually trigger one collection cycle (handy right after deploy)."""
     return collect_once()
+
+
+@app.post("/debug/reset")
+def debug_reset(_: str = Depends(require_auth), db=Depends(get_db)):
+    """Purge all collected evidence and reset per-product watermarks for a clean
+    re-pull under new collection rules. Keeps product config, the alert ledger
+    (so a re-pull doesn't re-spam Feishu), and follow snapshots."""
+    n = db.query(Evidence).delete()
+    db.query(Product).update({Product.last_seen_tweet_id: None})
+    db.commit()
+    return {"deleted_evidence": n, "watermarks_reset": True}
 
 
 @app.post("/debug/follow-watch")

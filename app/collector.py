@@ -42,15 +42,19 @@ _collect_lock = threading.Lock()
 _rotation = 0
 
 
-def build_query(product: Product) -> str | None:
+def build_query(product: Product, lang: str = "") -> str | None:
     """OR-join keywords; exclude retweets so we capture original evidence, not
     reshares. (Assumption: the spec's 'filter:retweets' means *exclude* RTs,
-    since a retweet is not original social proof — noted in README.)"""
+    since a retweet is not original social proof — noted in README.) When `lang`
+    is set, add the `lang:<code>` operator so only that language is returned."""
     kws = [k.strip() for k in (product.keywords or []) if k and k.strip()]
     if not kws:
         return None
     joined = " OR ".join(kws)
-    return f"({joined}) -filter:retweets"
+    q = f"({joined}) -filter:retweets"
+    if lang:
+        q += f" lang:{lang}"
+    return q
 
 
 def _as_int(tweet_id: str) -> int:
@@ -152,7 +156,7 @@ def _keyword_phase(session, client, classifier, products, budget,
     for product in products:
         if budget <= 0:
             break
-        query = build_query(product)
+        query = build_query(product, lang=settings.collect_lang)
         if not query:
             log.info("Product %s has no keywords; skipping keyword search.", product.name)
             continue
@@ -224,6 +228,9 @@ def _kol_phase(session, client, classifier, products, budget,
         for tweet in tweets:
             if budget <= 0:
                 break
+            # Language gate: only the configured language (default English).
+            if settings.collect_lang and tweet.lang and tweet.lang != settings.collect_lang:
+                continue
             matched = [p for p in products if _tweet_matches_product(tweet, p)]
             if not matched:
                 continue  # off-topic — no LLM call, no storage

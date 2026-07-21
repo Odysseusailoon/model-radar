@@ -53,6 +53,10 @@ class Settings(BaseSettings):
     # polling dozens of KOLs starves later products of the rate budget, so we poll
     # a rotating window of this size and cover the rest over subsequent cycles.
     max_seed_kols_per_cycle: int = 15
+    # Only collect tweets in this language (ISO code). Keyword search adds
+    # `lang:<code>`; KOL-pool tweets are filtered by tweet.lang. Set "" to disable
+    # (collect all languages). Non-matching tweets are never classified or stored.
+    collect_lang: str = "en"
 
     # ---- Digest quality floor (Issue: junk small accounts on the deliverable) ----
     # The weekly digest is the GTM-facing artifact, so it only surfaces credible
@@ -63,6 +67,10 @@ class Settings(BaseSettings):
     digest_min_followers_expert: int = 10_000
     digest_min_followers_case: int = 2_000
     digest_min_confidence: float = 0.6
+    # Engagement floor: a tweet whose weighted engagement (like + 2*RT + quote +
+    # reply) clears this bar counts as "viral" and passes the digest quality gate
+    # even from a smaller account — impact matters, not just follower count.
+    digest_min_engagement: int = 200
 
     # ---- Alert thresholds ----
     alert_min_followers: int = 10_000
