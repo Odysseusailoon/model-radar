@@ -98,7 +98,8 @@ def digest_seed():
     now = datetime.now(timezone.utc)
     rows = [
         ("partnership", {"is_competitor_signal": True, "summary_zh": "接入 Bedrock"}),
-        ("demo", {"usable_for_marketing": True, "quotable_excerpt": "made a video", "summary_zh": "x"}),
+        ("demo", {"usable_for_marketing": True, "quotable_excerpt": "made a video",
+                  "summary_zh": "x", "has_media_evidence": True}),
         ("expert_review", {"eval_signal": True, "benchmark_names": ["LMArena"], "summary_zh": "排名第二"}),
         ("news", {}),
     ]
@@ -130,6 +131,37 @@ def test_digest_buckets_highlights_and_eval(digest_seed):
     assert len(d.eval_hits) == 1           # the expert_review row carried eval_signal
     assert d.top_quote is not None         # the demo row is usable + quotable
     assert d.delta == 4                    # nothing in the prior window
+
+
+def test_digest_floor_excludes_junk_small_accounts():
+    """A 50-follower blue-check's empty praise must be counted but NOT headline
+    the digest (the junk-small-account complaint)."""
+    from datetime import datetime, timezone
+    from app.db import SessionLocal
+    from app.digest import build_digest
+    from app.models import Evidence, Product
+
+    s = SessionLocal()
+    p = Product(name="DG-Floor", keywords=[], official_accounts=[], seed_kols=[])
+    s.add(p); s.commit()
+    now = datetime.now(timezone.utc)
+    # junk: 50-follower "expert_review", plus a credible 80k-follower one
+    s.add(Evidence(tweet_id="fl-junk", product_id=p.id, author_handle="tiny",
+                   author_followers=50, category="expert_review", sentiment="positive",
+                   confidence=0.9, review_status="pending", text="increíble", posted_at=now,
+                   classification={"category": "expert_review"}, media_urls=[]))
+    s.add(Evidence(tweet_id="fl-real", product_id=p.id, author_handle="big",
+                   author_followers=80_000, category="expert_review", sentiment="positive",
+                   confidence=0.9, review_status="pending", text="substantive", posted_at=now,
+                   classification={"category": "expert_review", "quotable_excerpt": "real take"},
+                   media_urls=[]))
+    s.commit()
+    dg = build_digest(s, days=7)
+    d = next(pd for pd in dg.products if pd.id == p.id)
+    s.close()
+
+    assert d.by_category["expert_review"] == 2          # both counted (raw volume)
+    assert [e.author_handle for e in d.expert_reviews] == ["big"]  # only the credible one headlines
 
 
 def test_digest_route_renders(digest_seed):
