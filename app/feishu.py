@@ -44,14 +44,29 @@ def get_tenant_token() -> str:
         return _token_cache["value"]
 
 
+# Block separator: bot handlers join list items with this so the card renders
+# each item as its own section with a hairline between — much more scannable
+# than one wall of text.
+ITEM_SEP = "\n———\n"
+
+
 def build_card(title: str, text: str, template: str = "blue", url: str = "") -> dict:
-    """A lark_md interactive card. `text` may contain markdown/newlines."""
-    elements = [{"tag": "div", "text": {"tag": "lark_md", "content": text}}]
+    """A lark_md interactive card. `text` may contain markdown/newlines; blocks
+    separated by ITEM_SEP render as individual sections divided by hairlines.
+    A small footer note brands every card."""
+    elements = []
+    blocks = [b for b in text.split(ITEM_SEP) if b.strip()] or [text]
+    for i, block in enumerate(blocks):
+        if i:
+            elements.append({"tag": "hr"})
+        elements.append({"tag": "div", "text": {"tag": "lark_md", "content": block}})
     if url:
         elements.append({"tag": "action", "actions": [{
             "tag": "button", "text": {"tag": "plain_text", "content": "查看原推 ↗"},
             "type": "primary", "url": url,
         }]})
+    elements.append({"tag": "note", "elements": [
+        {"tag": "plain_text", "content": "🛰️ Model Radar · 发送 help 查看指令"}]})
     return {
         "config": {"wide_screen_mode": True},
         "header": {"template": template, "title": {"tag": "plain_text", "content": title}},
@@ -89,9 +104,12 @@ def send_card(chat_id: str, card: dict) -> bool:
 
 
 def send_dict(chat_id: str, payload: dict, template: str = "blue") -> bool:
-    """Convenience: send a {title, text[, url]} dict as a card."""
+    """Convenience: send a {title, text[, template, url]} dict as a card. A
+    template inside the payload (set per-command by the bot) wins."""
     return send_card(chat_id, build_card(payload.get("title", "Model Radar"),
-                                         payload.get("text", ""), template, payload.get("url", "")))
+                                         payload.get("text", ""),
+                                         payload.get("template", template),
+                                         payload.get("url", "")))
 
 
 def verify_event(token_from_event: str) -> bool:
