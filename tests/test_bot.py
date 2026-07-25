@@ -1,0 +1,222 @@
+"""Feishu GTM bot — comprehensive tests for the pure logic (parsing, triage,
+push gate, launch detection, query handlers, card building). No Feishu network."""
+from datetime import datetime, timezone
+
+import pytest
+
+from app import bot
+from app.feishu import build_card
+from app.models import Evidence
+
+
+# ---------------------------------------------------------------------------
+# command parsing
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("text,cmd,args", [
+    ("/digest", "digest", ""),
+    ("/digest MiniMax", "digest", "MiniMax"),
+    ("@_user_1 review GLM", "review", "GLM"),
+    ("  /partnership  ", "partnership", ""),
+    ("周报 MiniMax", "digest", "MiniMax"),
+    ("大佬评价 Kimi", "review", "Kimi"),
+    ("谁在聊 flux", "kol", "flux"),
+    ("周报MiniMax", "digest", "MiniMax"),      # chinese head, no space
+    ("/kol", "kol", ""),
+    ("nonsense words", "help", ""),
+    ("", "help", ""),
+])
+def test_parse_command(text, cmd, args):
+    assert bot.parse_command(text) == (cmd, args)
+
+
+# ---------------------------------------------------------------------------
+# launch detection
+# ---------------------------------------------------------------------------
+def _ev(text="", cat="news", followers=1000, conf=0.9, likes=0, rt=0, relevant=True, failed=False):
+    return Evidence(
+        tweet_id="t", text=text, category=cat, author_followers=followers, confidence=conf,
+        like_count=likes, retweet_count=rt, classification_failed=failed,
+        classification={"relevant": relevant, "category": cat},
+    )
+
+
+def test_is_launch_positive():
+    assert bot.is_launch(_ev("We just released MiniMax H3, open-source SOTA video!", cat="news"))
+    assert bot.is_launch(_ev("Introducing Kling 3.0 — now available", cat="promo"))
+    assert bot.is_launch(_ev("weights are out on HuggingFace", cat="news"))
+
+
+def test_is_launch_negative():
+    assert not bot.is_launch(_ev("this model is really good", cat="expert_review"))
+    assert not bot.is_launch(_ev("launched my new blog", cat="irrelevant"))          # not relevant category
+    assert not bot.is_launch(_ev("Kling launched", cat="news", relevant=False))       # not relevant
+
+
+# ---------------------------------------------------------------------------
+# triage — the core importance judgement
+# ---------------------------------------------------------------------------
+def test_triage_launch_is_realtime():
+    v = bot.triage(_ev("Seedance 2.5 released, weights out", cat="news"))
+    assert v.tier == "realtime" and v.kind == "launch"
+
+
+def test_triage_partnership_is_realtime():
+    v = bot.triage(_ev("We integrated GLM into our product", cat="partnership", conf=0.9))
+    assert v.tier == "realtime" and v.kind == "partnership"
+
+
+def test_triage_mega_account_is_realtime():
+    v = bot.triage(_ev("nice model", cat="expert_review", followers=500_000))
+    assert v.tier == "realtime" and v.kind == "mega"
+
+
+def test_triage_viral_is_realtime():
+    v = bot.triage(_ev("cool demo", cat="demo", followers=800, likes=5000, rt=900))
+    assert v.tier == "realtime" and v.kind == "viral"
+
+
+def test_triage_normal_demo_is_digest():
+    v = bot.triage(_ev("made a video with it", cat="demo", followers=8000, likes=10))
+    assert v.tier == "digest"
+
+
+def test_triage_small_expert_dropped():
+    v = bot.triage(_ev("increíble", cat="expert_review", followers=50, likes=1))
+    assert v.tier == "drop"
+
+
+def test_triage_irrelevant_dropped():
+    assert bot.triage(_ev("k3 the car", cat="irrelevant", relevant=False)).tier == "drop"
+    assert bot.triage(_ev("x", failed=True)).tier == "drop"
+
+
+# ---------------------------------------------------------------------------
+# push gate — anti-spam guardrails
+# ---------------------------------------------------------------------------
+def test_push_gate_daily_cap_and_overflow():
+    g = bot.PushGate(daily_cap=2, quiet_start=0, quiet_end=0)
+    now = datetime(2026, 7, 25, 18, tzinfo=timezone.utc)
+    v = bot.Verdict("realtime", "viral", "viral")
+    assert g.allow(v, now) is True
+    assert g.allow(v, now) is True
+    assert g.allow(v, now) is False          # over cap
+    assert len(g.overflow) == 1              # overflow recorded for the digest
+
+
+def test_push_gate_launch_bypasses_cap_and_quiet():
+    g = bot.PushGate(daily_cap=0, quiet_start=0, quiet_end=23)   # capped + always-quiet
+    now = datetime(2026, 7, 25, 3, tzinfo=timezone.utc)
+    launch = bot.Verdict("realtime", "launch", "launch")
+    assert g.allow(launch, now) is True      # launch always gets through
+
+
+def test_push_gate_quiet_hours():
+    g = bot.PushGate(daily_cap=10, quiet_start=8, quiet_end=15)
+    v = bot.Verdict("realtime", "viral", "viral")
+    assert g.allow(v, datetime(2026, 7, 25, 10, tzinfo=timezone.utc)) is False   # in quiet window
+    assert g.allow(v, datetime(2026, 7, 25, 18, tzinfo=timezone.utc)) is True    # outside
+
+
+def test_push_gate_ignores_non_realtime():
+    g = bot.PushGate(daily_cap=10, quiet_start=0, quiet_end=0)
+    assert g.allow(bot.Verdict("digest", "x"), datetime(2026, 7, 25, 12, tzinfo=timezone.utc)) is False
+
+
+# ---------------------------------------------------------------------------
+# query handlers — against the SQLite test DB
+# ---------------------------------------------------------------------------
+@pytest.fixture(scope="module")
+def seeded():
+    from app.db import init_db, SessionLocal
+    from app.models import Product
+    init_db()
+    s = SessionLocal()
+    p = Product(name="MiniMax", keywords=[], official_accounts=[], seed_kols=[])
+    s.add(p); s.commit()
+    now = datetime.now(timezone.utc)
+    rows = [
+        ("bot-p", "partnership", "acme", 40000, "MiniMax now on AWS Bedrock", 30, {"quotable_excerpt": "MiniMax now on AWS Bedrock"}),
+        ("bot-d", "demo", "maker", 60000, "made a full film with Hailuo", 200, {"has_media_evidence": True, "quotable_excerpt": "made a full film"}),
+        ("bot-r", "expert_review", "bigvoice", 120000, "Hailuo physics is SOTA, beats Veo on fluids", 90, {"quotable_excerpt": "Hailuo physics is SOTA"}),
+        ("bot-l", "news", "press", 20000, "MiniMax released H3, open-source weights out now", 300, {}),
+        ("bot-junk", "expert_review", "tiny", 40, "increíble", 0, {}),
+    ]
+    for tid, cat, h, f, text, likes, extra in rows:
+        s.add(Evidence(tweet_id=tid, product_id=p.id, author_handle=h, author_followers=f,
+                       category=cat, confidence=0.9, like_count=likes, text=text, posted_at=now,
+                       tweet_url=f"https://x.com/{h}/status/1", review_status="pending",
+                       classification={"relevant": True, "category": cat, **extra}, media_urls=[]))
+    s.commit(); s.close()
+    yield
+    # teardown: keep the shared SQLite evidence table clean for other test modules
+    s = SessionLocal()
+    s.query(Evidence).filter(Evidence.tweet_id.like("bot-%")).delete(synchronize_session=False)
+    s.query(Product).filter_by(name="MiniMax").delete()
+    s.commit(); s.close()
+
+
+def _run(handler, args=""):
+    from app.db import SessionLocal
+    s = SessionLocal()
+    try:
+        return handler(s, args)
+    finally:
+        s.close()
+
+
+def test_handle_partnership(seeded):
+    card = _run(bot.handle_partnership)
+    assert "合作" in card["title"]
+    assert "acme" in card["text"] and "Bedrock" in card["text"]
+
+
+def test_handle_demo(seeded):
+    assert "maker" in _run(bot.handle_demo, "MiniMax")["text"]
+
+
+def test_handle_review_filters_small_accounts(seeded):
+    text = _run(bot.handle_review)["text"]
+    assert "bigvoice" in text          # 120k-follower expert kept
+    assert "tiny" not in text          # 40-follower junk filtered by follower floor
+
+
+def test_handle_launch(seeded):
+    text = _run(bot.handle_launch)["text"]
+    assert "press" in text and "H3" in text
+
+
+def test_handle_kol(seeded):
+    text = _run(bot.handle_kol, "Hailuo")["text"]
+    assert "bigvoice" in text or "maker" in text
+
+
+def test_handle_digest(seeded):
+    card = _run(bot.handle_digest, "MiniMax")
+    assert "周报" in card["title"] and "MiniMax" in card["text"]
+
+
+def test_dispatch_routes(seeded):
+    from app.db import SessionLocal
+    s = SessionLocal()
+    try:
+        assert "指令" in bot.dispatch(s, "help")["title"]
+        assert "合作" in bot.dispatch(s, "/partnership")["title"]
+        assert "周报" in bot.dispatch(s, "周报")["title"]
+    finally:
+        s.close()
+
+
+# ---------------------------------------------------------------------------
+# card building (pure)
+# ---------------------------------------------------------------------------
+def test_build_card_shape():
+    c = build_card("T", "hello\nworld", template="red", url="https://x.com/a/1")
+    assert c["header"]["template"] == "red"
+    assert c["header"]["title"]["content"] == "T"
+    assert c["elements"][0]["text"]["content"] == "hello\nworld"
+    assert c["elements"][1]["actions"][0]["url"] == "https://x.com/a/1"
+
+
+def test_build_card_no_url():
+    c = build_card("T", "x")
+    assert len(c["elements"]) == 1     # no action button when no url

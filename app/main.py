@@ -22,6 +22,8 @@ from .crud import delete_product, get_product, list_products, seed_from_file, up
 from .db import SessionLocal, init_db
 from .digest import build_digest
 from .follow_watch import run_daily_watch
+from . import feishu
+from .bot import dispatch
 from .export import build_csv
 from .models import Evidence, Product
 from .pipeline import process_tweet
@@ -161,6 +163,52 @@ def debug_follow_watch(_: str = Depends(require_auth)):
     Also lets an external cron drive it if the app is ever scaled to >1 instance
     (in-process APScheduler would otherwise double-run)."""
     return run_daily_watch()
+
+
+# --------------------------------------------------------------------------
+# Feishu GTM bot — inbound commands + outbound push
+# --------------------------------------------------------------------------
+@app.post("/feishu/event")
+async def feishu_event(request: Request):
+    """Inbound Feishu event subscription: url-verification handshake + bot
+    command messages. Dispatches to bot.dispatch and replies in the chat."""
+    body = await request.json()
+    if body.get("type") == "url_verification":            # subscription handshake
+        return {"challenge": body.get("challenge")}
+    token = (body.get("header") or {}).get("token") or body.get("token")
+    if not feishu.verify_event(token):
+        raise HTTPException(401, "bad verification token")
+    header = body.get("header") or {}
+    if header.get("event_type") == "im.message.receive_v1":
+        import json as _json
+        msg = (body.get("event") or {}).get("message") or {}
+        text = ""
+        if msg.get("message_type") == "text":
+            try:
+                text = _json.loads(msg.get("content") or "{}").get("text", "")
+            except Exception:
+                text = ""
+        db = SessionLocal()
+        try:
+            reply = dispatch(db, text)
+        finally:
+            db.close()
+        feishu.send_dict(msg.get("chat_id"), reply)
+    return {"ok": True}
+
+
+@app.post("/debug/bot-digest")
+def debug_bot_digest(_: str = Depends(require_auth), db=Depends(get_db)):
+    """Push the weekly digest to the configured GTM group (P1 outbound)."""
+    return {"pushed": feishu.send_dict(settings.feishu_bot_chat_id, dispatch(db, "/digest"))}
+
+
+@app.post("/debug/bot-push")
+def debug_bot_push(text: str = "🛰️ **Model Radar** 已接入本群。发送 `help` 查看指令。",
+                   _: str = Depends(require_auth)):
+    """Send a one-off card to the GTM group — used to connect / smoke-test."""
+    return {"pushed": feishu.send_dict(settings.feishu_bot_chat_id,
+                                       {"title": "Model Radar", "text": text})}
 
 
 # --------------------------------------------------------------------------

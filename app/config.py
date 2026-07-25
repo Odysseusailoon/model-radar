@@ -39,6 +39,21 @@ class Settings(BaseSettings):
     # ---- Feishu alerting ----
     feishu_webhook_url: str = ""
 
+    # ---- Feishu GTM bot (interactive, tiered delivery) ----
+    # App credentials from the Feishu developer console (open.feishu.cn/app).
+    feishu_app_id: str = ""
+    feishu_app_secret: str = ""
+    feishu_base_url: str = "https://open.feishu.cn"
+    # Target group for pushes (e.g. the US GTM chat). chat_id like "oc_...".
+    feishu_bot_chat_id: str = ""
+    # Event-subscription verification token (inbound command events).
+    feishu_verification_token: str = ""
+    # Bot triage / anti-spam guardrails.
+    bot_viral_engagement: int = 1500      # weighted (like+2*RT+quote+reply) to count as "viral"
+    bot_daily_push_cap: int = 5           # max non-launch real-time pushes/day; overflow -> digest
+    bot_quiet_start_utc: int = 8          # quiet-hours start (UTC); ~01:00 PT
+    bot_quiet_end_utc: int = 15           # quiet-hours end (UTC); ~08:00 PT. start==end disables.
+
     # ---- Inbound webhook (reserved) ----
     webhook_secret: str = ""
 

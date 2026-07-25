@@ -66,11 +66,13 @@ log = logging.getLogger(__name__)
 ADVANCED_SEARCH_PATH = "/twitter/tweet/advanced_search"
 USER_LAST_TWEETS_PATH = "/twitter/user/last_tweets"
 USER_FOLLOWINGS_PATH = "/twitter/user/followings"
+USER_FOLLOWERS_PATH = "/twitter/user/followers"
 AUTH_HEADER = "X-API-Key"
 
 # ---- Response envelope keys ----------------------------------------------
 KEY_TWEETS = "tweets"
 KEY_FOLLOWINGS = "followings"
+KEY_FOLLOWERS = "followers"
 KEY_HAS_NEXT = "has_next_page"
 KEY_NEXT_CURSOR = "next_cursor"
 
@@ -338,6 +340,25 @@ class XDataClient:
         for _ in range(max_pages):
             data = self._get(USER_FOLLOWINGS_PATH, {"userName": user_name, "cursor": cursor})
             for raw in data.get(KEY_FOLLOWINGS, []) or []:
+                yield _map_user(raw)
+            if not data.get(KEY_HAS_NEXT):
+                break
+            cursor = data.get(KEY_NEXT_CURSOR) or ""
+            if not cursor:
+                break
+
+    def user_followers(
+        self,
+        user_name: str,
+        max_pages: int = 150,
+    ) -> Iterator[Author]:
+        """Yield the accounts that follow `user_name` (200 per page). Same object
+        shape as followings (snake_case), so `_map_user` applies. Large accounts
+        span many pages — `max_pages` is the hard cost cap (~5s/page free tier)."""
+        cursor = ""
+        for _ in range(max_pages):
+            data = self._get(USER_FOLLOWERS_PATH, {"userName": user_name, "cursor": cursor})
+            for raw in data.get(KEY_FOLLOWERS, []) or []:
                 yield _map_user(raw)
             if not data.get(KEY_HAS_NEXT):
                 break
