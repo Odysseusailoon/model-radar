@@ -211,6 +211,14 @@ def debug_bot_push(text: str = "🛰️ **Model Radar** 已接入本群。发送
                                        {"title": "Model Radar", "text": text})}
 
 
+@app.post("/debug/bot-query")
+def debug_bot_query(text: str = "help", _: str = Depends(require_auth), db=Depends(get_db)):
+    """Run any bot command against the live evidence DB and return the reply
+    card content. Lets every bot feature be exercised end-to-end before the
+    Feishu event subscription is wired up."""
+    return dispatch(db, text)
+
+
 # --------------------------------------------------------------------------
 # Overview dashboard (/)
 # --------------------------------------------------------------------------

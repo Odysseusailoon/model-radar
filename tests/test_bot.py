@@ -220,3 +220,14 @@ def test_build_card_shape():
 def test_build_card_no_url():
     c = build_card("T", "x")
     assert len(c["elements"]) == 1     # no action button when no url
+
+
+def test_debug_bot_query_endpoint(seeded):
+    from fastapi.testclient import TestClient
+    from app.main import app
+    with TestClient(app) as c:
+        assert c.post("/debug/bot-query?text=help").status_code == 401   # auth required
+        r = c.post("/debug/bot-query?text=help", auth=("smoke-user", "smoke-pass"))
+        assert r.status_code == 200 and "指令" in r.json()["title"]
+        r = c.post("/debug/bot-query?text=/partnership", auth=("smoke-user", "smoke-pass"))
+        assert "合作" in r.json()["title"]
