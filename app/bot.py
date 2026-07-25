@@ -182,67 +182,96 @@ def parse_command(text: str) -> tuple[str, str]:
 # Query handlers — pull-only. Each returns a plain dict the transport renders.
 # --------------------------------------------------------------------------
 def _product_id(db: Session, name: str) -> Optional[int]:
+    """Resolve a user-typed product reference. Matches the product name first,
+    then its keywords — so aliases like 'Hailuo' resolve to the MiniMax product
+    whose keyword list contains them."""
     if not name:
         return None
     from .crud import list_products
     name_l = name.strip().lower()
-    for p in list_products(db):
+    products = list_products(db)
+    for p in products:
         if name_l in p.name.lower():
             return p.id
+    for p in products:
+        for kw in (p.keywords or []):
+            if name_l in str(kw).strip().strip('"').lower():
+                return p.id
     return None
 
 
+def _fmt_n(n) -> str:
+    """Compact Chinese-style count: 316748 -> 31.7万, 4770 -> 4,770."""
+    n = int(n or 0)
+    if n >= 10_000:
+        v = f"{n / 10_000:.1f}"
+        return (v.rstrip("0").rstrip(".") or "0") + "万"
+    return f"{n:,}"
+
+
 def _line(ev: Evidence) -> str:
+    """One evidence item as a card block: author + reach + engagement on the
+    first line, the quotable bit on the second, inline link on the third."""
     data = ev.classification or {}
-    q = data.get("quotable_excerpt") or data.get("summary_zh") or (ev.text or "")[:80]
-    return (f"@{ev.author_handle} ({ev.author_followers:,}粉 · ❤{ev.like_count} 🔁{ev.retweet_count}) "
-            f"{q[:120]}" + (f"  {ev.tweet_url}" if ev.tweet_url else ""))
+    q = (data.get("quotable_excerpt") or data.get("summary_zh") or (ev.text or ""))[:140]
+    head = f"**@{ev.author_handle}**  {_fmt_n(ev.author_followers)}粉 · ❤{_fmt_n(ev.like_count)} 🔁{_fmt_n(ev.retweet_count)}"
+    when = f" · {ev.posted_at.strftime('%m-%d')}" if ev.posted_at else ""
+    link = f"\n[原推 ↗]({ev.tweet_url})" if ev.tweet_url else ""
+    return f"{head}{when}\n{q}{link}"
+
+
+from .feishu import ITEM_SEP
 
 
 def handle_digest(db: Session, args: str) -> dict:
     pid = _product_id(db, args)
     dg = build_digest(db, days=7)
     products = [p for p in dg.products if (pid is None or p.id == pid)]
-    lines = [f"📊 本周 GTM 周报 · {dg.start.strftime('%m-%d')}→{dg.end.strftime('%m-%d')}"]
+    blocks = [f"📅 {dg.start.strftime('%m-%d')} → {dg.end.strftime('%m-%d')} · 近 7 天"]
     for p in products:
         if p.is_quiet:
             continue
-        lines.append(f"\n**{p.name}** — 本周 {p.total} 条 (环比 {p.delta:+d})")
-        if p.partnerships:
-            lines.append(f"  🤝 合作 {len(p.partnerships)} · 🎬 Demo {len(p.demos)} · 🗣 大佬评价 {len(p.expert_reviews)} · 📊 评测 {len(p.eval_hits)}")
+        arrow = "📈" if p.delta > 0 else ("📉" if p.delta < 0 else "➖")
+        lines = [f"**{p.name}** — {p.total} 条 {arrow} 环比 {p.delta:+d}",
+                 f"🤝 合作 {len(p.partnerships)} · 🎬 Demo {len(p.demos)} · 🗣 评价 {len(p.expert_reviews)} · 📊 评测 {len(p.eval_hits)}"]
         if p.top_quote:
             data = p.top_quote.classification or {}
-            lines.append(f"  💬 {data.get('quotable_excerpt','')[:100]}")
-    if len(lines) == 1:
-        lines.append("本周暂无新证据。")
-    return {"title": "GTM 周报", "text": "\n".join(lines)}
+            q = data.get("quotable_excerpt", "")[:110]
+            if q:
+                lines.append(f"💬 “{q}” — @{p.top_quote.author_handle}")
+        blocks.append("\n".join(lines))
+    if len(blocks) == 1:
+        blocks.append("本周暂无新证据。")
+    return {"title": "📊 GTM 周报", "template": "indigo", "text": ITEM_SEP.join(blocks)}
 
 
-def _evidence_card(db: Session, title: str, f: EvidenceFilter, empty: str) -> dict:
+def _evidence_card(db: Session, title: str, template: str, f: EvidenceFilter, empty: str) -> dict:
     items = query_evidence(db, f)
     items = [e for e in items if (e.confidence or 0) >= 0.5]
     items.sort(key=impact, reverse=True)
-    lines = [title] + [f"• {_line(e)}" for e in items[:8]]
-    if len(lines) == 1:
-        lines.append(empty)
-    return {"title": title, "text": "\n".join(lines)}
+    top = items[:8]
+    blocks = [f"共 {len(items)} 条 · 按影响力(粉丝+互动)排序,展示前 {len(top)} 条"] if top else []
+    blocks += [_line(e) for e in top]
+    if not blocks:
+        blocks = [empty]
+    return {"title": title, "template": template, "text": ITEM_SEP.join(blocks)}
 
 
 def handle_partnership(db: Session, args: str) -> dict:
-    return _evidence_card(db, "🤝 近期合作/集成情报",
+    return _evidence_card(db, "🤝 近期合作/集成情报", "turquoise",
                           EvidenceFilter(product_id=_product_id(db, args), category="partnership", limit=40),
                           "近期无合作信号。")
 
 
 def handle_demo(db: Session, args: str) -> dict:
-    return _evidence_card(db, f"🎬 真实 Demo{(' · '+args) if args else ''}",
+    return _evidence_card(db, f"🎬 真实 Demo{(' · '+args) if args else ''}", "green",
                           EvidenceFilter(product_id=_product_id(db, args), category="demo", limit=40),
                           "近期无可引用 demo。")
 
 
 def handle_review(db: Session, args: str) -> dict:
     s = get_settings()
-    return _evidence_card(db, f"🗣 大佬评价{(' · '+args) if args else ''}",
+    return _evidence_card(db, f"🗣 大佬评价{(' · '+args) if args else ''}", "orange",
                           EvidenceFilter(product_id=_product_id(db, args), category="expert_review",
                                          min_followers=s.digest_min_followers_expert, limit=40),
                           "近期无够格的大佬评价。")
@@ -252,10 +281,9 @@ def handle_launch(db: Session, args: str) -> dict:
     f = EvidenceFilter(product_id=_product_id(db, args), limit=120)
     items = [e for e in query_evidence(db, f) if is_launch(e)]
     items.sort(key=impact, reverse=True)
-    lines = ["🚀 近期发布/上线动向"] + [f"• {_line(e)}" for e in items[:8]]
-    if len(lines) == 1:
-        lines.append("近期无发布动向。")
-    return {"title": "发布动向", "text": "\n".join(lines)}
+    top = items[:8]
+    blocks = ([f"共 {len(items)} 条发布/上线信号,展示前 {len(top)} 条"] + [_line(e) for e in top]) if top else ["近期无发布动向。"]
+    return {"title": "🚀 发布动向", "template": "red", "text": ITEM_SEP.join(blocks)}
 
 
 def handle_kol(db: Session, args: str) -> dict:

@@ -215,11 +215,52 @@ def test_build_card_shape():
     assert c["header"]["title"]["content"] == "T"
     assert c["elements"][0]["text"]["content"] == "hello\nworld"
     assert c["elements"][1]["actions"][0]["url"] == "https://x.com/a/1"
+    assert c["elements"][-1]["tag"] == "note"          # branded footer on every card
 
 
 def test_build_card_no_url():
     c = build_card("T", "x")
-    assert len(c["elements"]) == 1     # no action button when no url
+    assert len(c["elements"]) == 2     # div + footer note, no action button
+
+
+def test_build_card_splits_item_blocks():
+    from app.feishu import ITEM_SEP
+    c = build_card("T", ITEM_SEP.join(["a", "b", "c"]))
+    tags = [e["tag"] for e in c["elements"]]
+    assert tags == ["div", "hr", "div", "hr", "div", "note"]   # sections + hairlines
+
+
+def test_fmt_n_compact():
+    assert bot._fmt_n(316748) == "31.7万"
+    assert bot._fmt_n(65694) == "6.6万"
+    assert bot._fmt_n(10000) == "1万"
+    assert bot._fmt_n(4770) == "4,770"
+    assert bot._fmt_n(None) == "0"
+
+
+def test_handler_cards_carry_template(seeded):
+    from app.db import SessionLocal
+    s = SessionLocal()
+    try:
+        assert bot.handle_partnership(s, "")["template"] == "turquoise"
+        assert bot.handle_launch(s, "")["template"] == "red"
+        assert bot.handle_digest(s, "")["template"] == "indigo"
+    finally:
+        s.close()
+
+
+def test_product_alias_resolves_via_keywords(seeded):
+    """'Hailuo' is a MiniMax keyword, not a product name — must still resolve."""
+    from app.db import SessionLocal
+    from app.crud import upsert_product
+    s = SessionLocal()
+    try:
+        upsert_product(s, {"name": "MiniMax", "keywords": ["MiniMax", "Hailuo"],
+                           "official_accounts": [], "seed_kols": []})
+        pid = bot._product_id(s, "Hailuo")
+        assert pid is not None
+    finally:
+        s.close()
 
 
 def test_debug_bot_query_endpoint(seeded):
