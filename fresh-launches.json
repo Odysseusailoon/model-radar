@@ -1,0 +1,802 @@
+{
+ "bfl_official": [
+  {
+   "date": "07-02 19:47",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 6,
+   "rt": 0,
+   "views": 2687,
+   "text": "Use it at → https://t.co/naCtEqSoHX",
+   "url": "https://x.com/bfl_ai/status/2072769263228932194"
+  },
+  {
+   "date": "07-02 19:47",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 148,
+   "rt": 13,
+   "views": 13662,
+   "text": "You have a new Dev Playground for testing existing and upcoming FLUX models: ⏎  ⏎ 𝗖𝗼𝗺𝗽𝗮𝗿𝗲 𝗺𝗼𝗱𝗲𝗹𝘀 𝘀𝗶𝗱𝗲-𝗯𝘆-𝘀𝗶𝗱𝗲. Run the same prompt across multiple FLUX models at once and see the differences. ⏎  ⏎ 𝗖𝗼𝗻𝘁𝗿𝗼𝗹 𝗽𝗮𝗿𝗮𝗺𝗲𝘁𝗲𝗿𝘀. Adjust API parameters from the UI, so what you test is exactly ",
+   "url": "https://x.com/bfl_ai/status/2072769250671104368"
+  },
+  {
+   "date": "07-02 19:48",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 12,
+   "rt": 0,
+   "views": 2480,
+   "text": "Compare multiple results side by side. https://t.co/eqoDm0tXZb",
+   "url": "https://x.com/bfl_ai/status/2072769327540158708"
+  },
+  {
+   "date": "07-10 15:55",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 47,
+   "rt": 5,
+   "views": 11673,
+   "text": "BFL's @robrombach talks to @Jason about models that understand the world, working with Martin Scorsese, and what's coming next from BFL 👀. Starts at 41:00. ⏎  ⏎ https://t.co/88It49bAGb",
+   "url": "https://x.com/bfl_ai/status/2075609872247517513"
+  },
+  {
+   "date": "07-14 13:36",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 112,
+   "rt": 11,
+   "views": 19474,
+   "text": "\"Fear-mongering around AI models is only going to lead to them being more closed, &amp; that's ultimately going to slow down AI progress.\" ⏎  ⏎ @robrombach talked to @MollySOShea last week at RAISE about open vs closed models and Europe being known for more than having nice castl",
+   "url": "https://x.com/bfl_ai/status/2077024494665818303"
+  },
+  {
+   "date": "07-21 21:40",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 75,
+   "rt": 0,
+   "views": 2640,
+   "text": "@robrombach 👀",
+   "url": "https://x.com/bfl_ai/status/2079682936660484312"
+  },
+  {
+   "date": "07-23 15:08",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 284,
+   "rt": 5,
+   "views": 20417,
+   "text": "P.S. some early samples from FLUX 3 Image 👀 https://t.co/96IyRdjz1Y",
+   "url": "https://x.com/bfl_ai/status/2080309171245973658"
+  },
+  {
+   "date": "07-23 15:08",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 249,
+   "rt": 17,
+   "views": 43005,
+   "text": "https://t.co/r2QBfy3z99",
+   "url": "https://x.com/bfl_ai/status/2080309131068764265"
+  },
+  {
+   "date": "07-23 15:08",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 174,
+   "rt": 11,
+   "views": 23403,
+   "text": "Action: An early version of FLUX 3 is now running on robots. @mimicrobotics was one of the first partners to gain early access to FLUX 3. Together we developed FLUX-mimic, a video-action model combining the FLUX 3 backbone with mimic's expertise in robot learning for dexterous ma",
+   "url": "https://x.com/bfl_ai/status/2080309024806125879"
+  },
+  {
+   "date": "07-23 15:08",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 284,
+   "rt": 14,
+   "views": 30810,
+   "text": "Over the next few weeks and months, we’ll make the following capabilities available, each after an early access phase for ensuring smooth rollout: ⏎  ⏎ • Video with native audio generation (now in early access). ⏎ • Action prediction through selected research and commercial partn",
+   "url": "https://x.com/bfl_ai/status/2080309012860711273"
+  },
+  {
+   "date": "07-23 15:08",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 365,
+   "rt": 29,
+   "views": 96771,
+   "text": "Request Early Access to FLUX 3 Video: https://t.co/Cn54uou4Nx",
+   "url": "https://x.com/bfl_ai/status/2080309000898478217"
+  },
+  {
+   "date": "07-23 15:08",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 5939,
+   "rt": 841,
+   "views": 1029240,
+   "text": "Introducing FLUX 3. ⏎  ⏎ One multi-modal model for Image, Video, Audio and Action-Prediction. Creations are truer to life in every kind of style. ⏎  ⏎ FLUX 3 Video is now available in early access (link below). ⏎  ⏎ Jointly trained in one unified architecture, our model can be ex",
+   "url": "https://x.com/bfl_ai/status/2080308988961554582"
+  }
+ ],
+ "mj_official": [
+  {
+   "date": "07-02 15:35",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 1248,
+   "rt": 71,
+   "views": 132291,
+   "text": "Marcin is a hardware engineer at Midjourney (and a YouTube star). So we asked him to make a video!",
+   "url": "https://x.com/midjourney/status/2072705638468292629"
+  },
+  {
+   "date": "07-02 16:21",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 7,
+   "rt": 0,
+   "views": 507,
+   "text": "@yernarmerkhanov it's already legendary to us 🥺",
+   "url": "https://x.com/midjourney/status/2072717410009067627"
+  },
+  {
+   "date": "07-02 16:22",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2,
+   "rt": 0,
+   "views": 301,
+   "text": "@midsusnight let us know what u think!",
+   "url": "https://x.com/midjourney/status/2072717599386087616"
+  },
+  {
+   "date": "07-02 16:22",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 4,
+   "rt": 0,
+   "views": 402,
+   "text": "@0xV0LYX he's great! his YouTube channel has lots of other great non Midjourney related builds too",
+   "url": "https://x.com/midjourney/status/2072717535406125071"
+  },
+  {
+   "date": "07-02 16:30",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2,
+   "rt": 0,
+   "views": 413,
+   "text": "@RosaryMum we do one every week!",
+   "url": "https://x.com/midjourney/status/2072719609304875125"
+  },
+  {
+   "date": "07-02 16:33",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 8,
+   "rt": 0,
+   "views": 1608,
+   "text": "@UberJumper @DavidSHolz ❤️",
+   "url": "https://x.com/midjourney/status/2072720280930439330"
+  },
+  {
+   "date": "07-02 17:17",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 3,
+   "rt": 0,
+   "views": 506,
+   "text": "@i_mika_el we wanted to have both! polished, technical and behind the scenes",
+   "url": "https://x.com/midjourney/status/2072731482830070210"
+  },
+  {
+   "date": "07-02 17:17",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 1,
+   "rt": 0,
+   "views": 251,
+   "text": "@GearlessRoe @yernarmerkhanov 🫡",
+   "url": "https://x.com/midjourney/status/2072731334443929708"
+  },
+  {
+   "date": "07-02 22:10",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2,
+   "rt": 0,
+   "views": 474,
+   "text": "@jonpaul he's so great! we are lucky to have him",
+   "url": "https://x.com/midjourney/status/2072805133537427673"
+  },
+  {
+   "date": "07-19 21:42",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 11,
+   "rt": 0,
+   "views": 2435,
+   "text": "@The_Sycomore how do you like the latest version of preview versus the previous versions?",
+   "url": "https://x.com/midjourney/status/2078958795376746625"
+  },
+  {
+   "date": "07-19 21:43",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2,
+   "rt": 0,
+   "views": 2071,
+   "text": "@juliewdesign_ how do you like the latest version of preview versus the previous versions?",
+   "url": "https://x.com/midjourney/status/2078958971428495716"
+  },
+  {
+   "date": "07-19 21:43",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 4,
+   "rt": 0,
+   "views": 2908,
+   "text": "@alban_gz how do you like the latest version of preview versus the previous versions?",
+   "url": "https://x.com/midjourney/status/2078958903463948295"
+  },
+  {
+   "date": "07-24 15:09",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2062,
+   "rt": 95,
+   "views": 1519251,
+   "text": "Midjourney is acquiring Co-Star. CEO @banu__guler is now Chief Design Officer at Midjourney. She's building a cross-functional design, product and frontend team for all our efforts. The Co-Star app will continue to operate under Banus complete control. Welcome Banu and team &lt;3",
+   "url": "https://x.com/midjourney/status/2080671833322672148"
+  },
+  {
+   "date": "07-24 22:24",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 1213,
+   "rt": 122,
+   "views": 197585,
+   "text": "We're releasing V8.2 today and making it the default model on Midjourney. This is a release focused on aesthetics, personalization, and image quality. Our new style is more creative, bold, edgy and fresh and personalization works better than ever. Have fun! https://t.co/AE7vEPHMn",
+   "url": "https://x.com/midjourney/status/2080781271043911807"
+  },
+  {
+   "date": "07-24 22:26",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 7,
+   "rt": 0,
+   "views": 1250,
+   "text": "@MochiTechs soonTM",
+   "url": "https://x.com/midjourney/status/2080781813031772612"
+  },
+  {
+   "date": "07-24 22:43",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 12,
+   "rt": 0,
+   "views": 1527,
+   "text": "@trbdrk we spent a lot of time trying to make it as good as possible based on feedback, thanks!",
+   "url": "https://x.com/midjourney/status/2080786041691349112"
+  },
+  {
+   "date": "07-24 22:44",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 5,
+   "rt": 0,
+   "views": 838,
+   "text": "@laf131 soonTM",
+   "url": "https://x.com/midjourney/status/2080786104392065152"
+  },
+  {
+   "date": "07-24 22:48",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 1,
+   "rt": 0,
+   "views": 1596,
+   "text": "@visiomancer everything should be slightly better at least",
+   "url": "https://x.com/midjourney/status/2080787323034497513"
+  },
+  {
+   "date": "07-24 22:49",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2,
+   "rt": 0,
+   "views": 1124,
+   "text": "@dixitbavu not rn",
+   "url": "https://x.com/midjourney/status/2080787426562478118"
+  },
+  {
+   "date": "07-24 22:49",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 1,
+   "rt": 0,
+   "views": 1255,
+   "text": "@josipapelko1 you can make things at 2048 too",
+   "url": "https://x.com/midjourney/status/2080787389073834227"
+  },
+  {
+   "date": "07-24 23:01",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2,
+   "rt": 0,
+   "views": 889,
+   "text": "@laf131 yay",
+   "url": "https://x.com/midjourney/status/2080790492913242379"
+  },
+  {
+   "date": "07-24 23:01",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 4,
+   "rt": 0,
+   "views": 714,
+   "text": "@chetbff exp is new too!",
+   "url": "https://x.com/midjourney/status/2080790446637486390"
+  },
+  {
+   "date": "07-24 23:01",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 5,
+   "rt": 0,
+   "views": 2538,
+   "text": "@ibexdream yay!",
+   "url": "https://x.com/midjourney/status/2080790407575949676"
+  },
+  {
+   "date": "07-25 00:34",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 10,
+   "rt": 0,
+   "views": 1514,
+   "text": "@thefinnmckenty @dcbruck this is the latest preview that was only tested for a day or two",
+   "url": "https://x.com/midjourney/status/2080814016017178917"
+  },
+  {
+   "date": "07-25 00:35",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 0,
+   "rt": 0,
+   "views": 1040,
+   "text": "@iluccasbr what would you want to use it for",
+   "url": "https://x.com/midjourney/status/2080814160527736907"
+  },
+  {
+   "date": "07-25 00:35",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 2,
+   "rt": 0,
+   "views": 972,
+   "text": "@0xMGWR it was the latest preview that was only tested for a day or two",
+   "url": "https://x.com/midjourney/status/2080814091850092737"
+  },
+  {
+   "date": "07-25 00:52",
+   "handle": "midjourney",
+   "followers": 460661,
+   "likes": 7,
+   "rt": 0,
+   "views": 852,
+   "text": "@VictorInFocus we spent a lot of time on it!",
+   "url": "https://x.com/midjourney/status/2080818353791504447"
+  }
+ ],
+ "holz": [
+  {
+   "date": "07-24 16:25",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 5,
+   "rt": 1,
+   "views": 200,
+   "text": "@LegalPrimes @rws1st @midjourney @banu__guler idk about that",
+   "url": "https://x.com/DavidSHolz/status/2080690860753355219"
+  },
+  {
+   "date": "07-24 16:54",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 4,
+   "rt": 1,
+   "views": 458,
+   "text": "@zachorsomthin @omgmaddie bear?",
+   "url": "https://x.com/DavidSHolz/status/2080698202236527081"
+  },
+  {
+   "date": "07-24 16:55",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 99,
+   "rt": 4,
+   "views": 2766,
+   "text": "@SP1NS1R it will also get weirder after morale improves",
+   "url": "https://x.com/DavidSHolz/status/2080698311225614833"
+  },
+  {
+   "date": "07-24 16:59",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 4,
+   "rt": 1,
+   "views": 250,
+   "text": "@bastillebaby @banu__guler both",
+   "url": "https://x.com/DavidSHolz/status/2080699417712337275"
+  },
+  {
+   "date": "07-24 20:31",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 59,
+   "rt": 5,
+   "views": 2195,
+   "text": "@MTSlive wrote a tiny bit more here: https://t.co/jQgsKEIuPs",
+   "url": "https://x.com/DavidSHolz/status/2080752666519744858"
+  },
+  {
+   "date": "07-24 22:37",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 438,
+   "rt": 16,
+   "views": 31992,
+   "text": "new MJ model is gud, especially personalization, give it a try",
+   "url": "https://x.com/DavidSHolz/status/2080784456315752647"
+  },
+  {
+   "date": "07-24 22:43",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 9,
+   "rt": 0,
+   "views": 479,
+   "text": "@venturetwins i feel like we could be 5x faster still, but we are trying our best 🥺",
+   "url": "https://x.com/DavidSHolz/status/2080785868479242611"
+  },
+  {
+   "date": "07-24 22:48",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 3,
+   "rt": 0,
+   "views": 231,
+   "text": "@artisin_ai the new image pool is much large now so hopefully I'll have a better experience",
+   "url": "https://x.com/DavidSHolz/status/2080787212858454066"
+  },
+  {
+   "date": "07-24 23:15",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 1,
+   "rt": 1,
+   "views": 198,
+   "text": "@zenohosting no plans",
+   "url": "https://x.com/DavidSHolz/status/2080793995001864610"
+  },
+  {
+   "date": "07-24 23:15",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 0,
+   "rt": 0,
+   "views": 164,
+   "text": "@joshtrazyn yay it was a big effort",
+   "url": "https://x.com/DavidSHolz/status/2080793970406572271"
+  },
+  {
+   "date": "07-24 23:59",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 8,
+   "rt": 0,
+   "views": 258,
+   "text": "@arithmoquine @midjourney we are very thoughtful with aesthetics!",
+   "url": "https://x.com/DavidSHolz/status/2080805141637370307"
+  },
+  {
+   "date": "07-25 00:25",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 1,
+   "rt": 1,
+   "views": 190,
+   "text": "@zenohosting what kind do you mean",
+   "url": "https://x.com/DavidSHolz/status/2080811735855006135"
+  },
+  {
+   "date": "07-25 00:25",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 0,
+   "rt": 0,
+   "views": 133,
+   "text": "@leanderriefel what would you use it for",
+   "url": "https://x.com/DavidSHolz/status/2080811686987280736"
+  },
+  {
+   "date": "07-25 00:26",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 20,
+   "rt": 0,
+   "views": 892,
+   "text": "@willdepue people talk about it in design and film and gaming type circles I think",
+   "url": "https://x.com/DavidSHolz/status/2080811986695426381"
+  },
+  {
+   "date": "07-25 00:26",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 18,
+   "rt": 0,
+   "views": 2701,
+   "text": "@adhik_Joshi unfortunately they are still too advanced on many axes and we think it's important to keep our edge",
+   "url": "https://x.com/DavidSHolz/status/2080811859012473192"
+  },
+  {
+   "date": "07-25 00:34",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 3,
+   "rt": 0,
+   "views": 151,
+   "text": "@cheafofstaff @midjourney @banu__guler so much",
+   "url": "https://x.com/DavidSHolz/status/2080813903496589584"
+  },
+  {
+   "date": "07-25 01:36",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 9,
+   "rt": 3,
+   "views": 461,
+   "text": "@chetbff @midjourney she's beautiful 🥺",
+   "url": "https://x.com/DavidSHolz/status/2080829610020000160"
+  },
+  {
+   "date": "07-25 03:47",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 17,
+   "rt": 3,
+   "views": 930,
+   "text": "@lloydcreates happy you like it!",
+   "url": "https://x.com/DavidSHolz/status/2080862575991152918"
+  },
+  {
+   "date": "07-25 03:49",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 1,
+   "rt": 0,
+   "views": 120,
+   "text": "@jarenoid @midjourney what do you think the UX should look like in an ideal world?",
+   "url": "https://x.com/DavidSHolz/status/2080862947665125601"
+  },
+  {
+   "date": "07-25 03:50",
+   "handle": "DavidSHolz",
+   "followers": 119157,
+   "likes": 1,
+   "rt": 0,
+   "views": 71,
+   "text": "@supernalmystic happy you like it!",
+   "url": "https://x.com/DavidSHolz/status/2080863302176154081"
+  }
+ ],
+ "flux3_wave": [
+  {
+   "date": "07-23 15:08",
+   "handle": "bfl_ai",
+   "followers": 47957,
+   "likes": 5939,
+   "rt": 841,
+   "views": 1029270,
+   "text": "Introducing FLUX 3. ⏎  ⏎ One multi-modal model for Image, Video, Audio and Action-Prediction. Creations are truer to life in every kind of style. ⏎  ⏎ FLUX 3 Video is now available in early access (link below). ⏎  ⏎ Jointly trained in one unified architecture, our model can be ex",
+   "url": "https://x.com/bfl_ai/status/2080308988961554582"
+  },
+  {
+   "date": "07-23 15:50",
+   "handle": "chrisfirst",
+   "followers": 19128,
+   "likes": 17,
+   "rt": 2,
+   "views": 1327,
+   "text": "Black Forest Labs just announced FLUX 3.  ⏎  ⏎ A new multi-modal model for image, video and audio. https://t.co/qHQvfExBTG",
+   "url": "https://x.com/chrisfirst/status/2080319558653497653"
+  },
+  {
+   "date": "07-23 16:41",
+   "handle": "umesh_ai",
+   "followers": 45911,
+   "likes": 533,
+   "rt": 45,
+   "views": 58661,
+   "text": "Flux 3 is here! ⏎  ⏎ One of my first tests. ⏎  ⏎ Very impressive.  ⏎  ⏎ Prompt : Hyper realistic blockbuster cinematic 15 second action sequence in one true unbroken continuous shot, with no cuts, no morphing, and no scene transitions. A rally car races along a narrow alpine clif",
+   "url": "https://x.com/umesh_ai/status/2080332510358282688"
+  },
+  {
+   "date": "07-23 18:46",
+   "handle": "Lars_pragmata",
+   "followers": 551,
+   "likes": 422,
+   "rt": 30,
+   "views": 31414,
+   "text": "🔥👀SEEDANCE 2 IS COOKED ⏎  ⏎ Flux 3 video is coming soon and its a beast ⏎ - seedance 2.5 level generation ⏎ - opensource model ⏎ - more accesible and less censored  ⏎  ⏎ lots of examples in the video below 👇 ⏎ https://t.co/oCqbSme8Yc",
+   "url": "https://x.com/Lars_pragmata/status/2080363965620662506"
+  },
+  {
+   "date": "07-23 22:36",
+   "handle": "mightyking",
+   "followers": 910,
+   "likes": 7,
+   "rt": 0,
+   "views": 750,
+   "text": "FLUX 3 was preferred around 50% of the time! ⏎  ⏎ You might think it means the model is not that good ⏎  ⏎ But coming from an open source lab ⏎  ⏎ This means more competition on the pricing end for models like Seedance 2 family ⏎  ⏎ Also what will Flux 3.5 or 4 look like... https",
+   "url": "https://x.com/mightyking/status/2080421763180036210"
+  },
+  {
+   "date": "07-23 22:56",
+   "handle": "koltregaskes",
+   "followers": 19781,
+   "likes": 13,
+   "rt": 2,
+   "views": 1367,
+   "text": "FLUX 3 is one model trained for image, video, audio and action-prediction for robotics. ⏎  ⏎ FLUX-mimic is already running on factory robots at Audi doing wiring, sorting and assembly work. ⏎  ⏎ FLUX 3 Video early access is live now, check the waitlist. Native audio, action predi",
+   "url": "https://x.com/koltregaskes/status/2080426734122676728"
+  },
+  {
+   "date": "07-23 23:57",
+   "handle": "jerrod_lew",
+   "followers": 19203,
+   "likes": 539,
+   "rt": 45,
+   "views": 35726,
+   "text": "FLUX 3 is here. ⏎  ⏎ Been testing it today, and it is outstanding. ⏎  ⏎ 20 second generations, does very well with detailed prompts and with amazing cinematography. ⏎  ⏎ Here's some examples: https://t.co/qqXYSn6oDi",
+   "url": "https://x.com/jerrod_lew/status/2080442194427511004"
+  },
+  {
+   "date": "07-24 05:27",
+   "handle": "OderintMetuant",
+   "followers": 246,
+   "likes": 2,
+   "rt": 1,
+   "views": 112,
+   "text": "FLUX 3 really looks amazing. ⏎  ⏎ Looks like a quantum leap of capabilities over FLUX 2. ⏎  ⏎ https://t.co/JYoog3Ot8D",
+   "url": "https://x.com/OderintMetuant/status/2080525314875105679"
+  },
+  {
+   "date": "07-24 08:08",
+   "handle": "SD_Tutorial",
+   "followers": 4855,
+   "likes": 155,
+   "rt": 14,
+   "views": 9425,
+   "text": "Flux 3 😎🧐 ⏎  ⏎ Its going to be Open !!! https://t.co/MQwkwpVxC0",
+   "url": "https://x.com/SD_Tutorial/status/2080565896930869507"
+  },
+  {
+   "date": "07-24 09:15",
+   "handle": "DucDeBerrry",
+   "followers": 281,
+   "likes": 2,
+   "rt": 0,
+   "views": 208,
+   "text": "flux 3 no open weights 😭",
+   "url": "https://x.com/DucDeBerrry/status/2080582572145328265"
+  },
+  {
+   "date": "07-24 17:00",
+   "handle": "jerrod_lew",
+   "followers": 19203,
+   "likes": 132,
+   "rt": 12,
+   "views": 5930,
+   "text": "FLUX 3 can be prompted with multiple images as well. ⏎  ⏎ Here I used 6 different images as part of a prompt and it brought each one to life and stitched together for a 15 second video. ⏎  ⏎ Still testing to find the best use cases for the model. ⏎  ⏎ Huge props to @bfl_ai for th",
+   "url": "https://x.com/jerrod_lew/status/2080699603171860746"
+  },
+  {
+   "date": "07-24 18:30",
+   "handle": "jerrod_lew",
+   "followers": 19203,
+   "likes": 66,
+   "rt": 6,
+   "views": 4431,
+   "text": "Testing some funnier scenes with FLUX 3. ⏎  ⏎ I feel we are only scratching the surface for what we can do with this, can't wait for everyone to jump in and try. ⏎  ⏎ Hoping we get native 1080p as well at some point! https://t.co/fmpq4shhOr",
+   "url": "https://x.com/jerrod_lew/status/2080722217009324284"
+  },
+  {
+   "date": "07-24 18:42",
+   "handle": "TheDarkWebDev",
+   "followers": 63,
+   "likes": 11,
+   "rt": 2,
+   "views": 921,
+   "text": "For those testing Flux 3 please don’t “Seedance 2 Us” for views ie try not to post things that will attract negative attention &amp; nerf the model before the rest of us get to try it. Thank you in advance. :) #FutureVisionXPRIZE #aifilm #seedance2 #flux #flux3",
+   "url": "https://x.com/TheDarkWebDev/status/2080725271561261190"
+  },
+  {
+   "date": "07-24 19:54",
+   "handle": "cocktailpeanut",
+   "followers": 33645,
+   "likes": 141,
+   "rt": 11,
+   "views": 8858,
+   "text": "PLEASE DO NOT ADD SAFETY GUARD IN FLUX 3 DEV PLEASE DO NOT ADD SAFETY GUARD IN FLUX 3 DEV PLEASE DO NOT ADD SAFETY GUARD IN FLUX 3 DEV PLEASE DO NOT ADD SAFETY GUARD IN FLUX 3 DEV PLEASE DO NOT ADD SAFETY GUARD IN FLUX 3 DEV ⏎  ⏎ That's all it takes to win it all @bfl_ai",
+   "url": "https://x.com/cocktailpeanut/status/2080743353390379142"
+  },
+  {
+   "date": "07-25 03:14",
+   "handle": "AIandDesign",
+   "followers": 15933,
+   "likes": 104,
+   "rt": 4,
+   "views": 3694,
+   "text": "Careful on those stairs! FLUX 3 is pretty amazing. @bfl_ai  #flux3 https://t.co/onXWrmnuvB",
+   "url": "https://x.com/AIandDesign/status/2080854082525540465"
+  },
+  {
+   "date": "07-25 07:55",
+   "handle": "junwatu",
+   "followers": 4261,
+   "likes": 61,
+   "rt": 4,
+   "views": 2392,
+   "text": "Using FLUX 3 to create giant creatures. ⏎  ⏎ These scenes are pure text-to-video (T2V) generations, no reference images involved. Quite impressive. https://t.co/OaaPYmz1j1",
+   "url": "https://x.com/junwatu/status/2080924974278463982"
+  },
+  {
+   "date": "07-25 13:28",
+   "handle": "dreamingtulpa",
+   "followers": 54815,
+   "likes": 290,
+   "rt": 24,
+   "views": 10466,
+   "text": "seriously impressed by how flux 3 can do dialogue with super vague prompts like \"ranting about ai\" https://t.co/pcUazyrYyr",
+   "url": "https://x.com/dreamingtulpa/status/2081008781870198975"
+  },
+  {
+   "date": "07-25 14:03",
+   "handle": "HBCoop_",
+   "followers": 54566,
+   "likes": 34,
+   "rt": 4,
+   "views": 1350,
+   "text": "FLUX 3 is really good at maintaining characters and voices throughout a 20-second video. ⏎  ⏎ Prompt below: https://t.co/ASUTYgRSxJ",
+   "url": "https://x.com/HBCoop_/status/2081017422073729425"
+  },
+  {
+   "date": "07-25 14:34",
+   "handle": "seeksteve",
+   "followers": 1026,
+   "likes": 1,
+   "rt": 0,
+   "views": 31,
+   "text": "i’ve seen enough ⏎  ⏎ flux 3 may be better than sora  ⏎  ⏎ @bfl_ai or someone with the inside track: unleash me with access please 🙏",
+   "url": "https://x.com/seeksteve/status/2081025180080418957"
+  },
+  {
+   "date": "07-25 14:41",
+   "handle": "jerrod_lew",
+   "followers": 19203,
+   "likes": 14,
+   "rt": 1,
+   "views": 605,
+   "text": "A magical battle. ⏎  ⏎ Created with FLUX 3. https://t.co/7gGz9fjYjO",
+   "url": "https://x.com/jerrod_lew/status/2081027030658003237"
+  }
+ ],
+ "flux3_wave2": [],
+ "mj_wave": []
+}
