@@ -272,3 +272,85 @@ def test_debug_bot_query_endpoint(seeded):
         assert r.status_code == 200 and "指令" in r.json()["title"]
         r = c.post("/debug/bot-query?text=/partnership", auth=("smoke-user", "smoke-pass"))
         assert "合作" in r.json()["title"]
+
+
+# ---------------------------------------------------------------------------
+# real-time pipeline push (maybe_bot_push)
+# ---------------------------------------------------------------------------
+def _push_ev(tid, text="MiniMax released H3, weights out now", cat="news", followers=50000):
+    from datetime import datetime, timezone
+    return Evidence(tweet_id=tid, text=text, category=cat, author_followers=followers,
+                    confidence=0.9, like_count=100, retweet_count=10,
+                    author_handle="press", tweet_url="https://x.com/press/1",
+                    posted_at=datetime.now(timezone.utc),
+                    classification={"relevant": True, "category": cat}, media_urls=[])
+
+
+def test_maybe_bot_push_noop_without_config(monkeypatch, seeded):
+    from app.db import SessionLocal
+    s = SessionLocal()
+    try:
+        # settings have no feishu app creds in tests -> must be a clean no-op
+        assert bot.maybe_bot_push(s, type("P", (), {"name": "X"})(), _push_ev("push-0")) is False
+    finally:
+        s.close()
+
+
+def test_maybe_bot_push_sends_and_dedupes(monkeypatch, seeded):
+    from app.db import SessionLocal
+    from app.models import AlertSent
+    from app.config import get_settings
+    s = SessionLocal()
+    st = get_settings()
+    monkeypatch.setattr(st, "feishu_app_id", "cli_x")
+    monkeypatch.setattr(st, "feishu_app_secret", "sec")
+    monkeypatch.setattr(st, "feishu_bot_chat_id", "oc_x")
+    monkeypatch.setattr(st, "bot_quiet_start_utc", 0)
+    monkeypatch.setattr(st, "bot_quiet_end_utc", 0)
+    sent = []
+    from app import feishu
+    monkeypatch.setattr(feishu, "send_dict", lambda chat, payload: sent.append(payload) or True)
+    p = type("P", (), {"name": "MiniMax"})()
+    ev = _push_ev("push-1")
+    try:
+        assert bot.maybe_bot_push(s, p, ev) is True         # launch -> pushed
+        assert "🚀" in sent[0]["title"]
+        assert bot.maybe_bot_push(s, p, ev) is False        # dedup: same tweet never twice
+        assert s.query(AlertSent).filter_by(tweet_id="push-1", alert_type="bot_push").count() == 1
+        # a non-realtime item never pushes
+        calm = _push_ev("push-2", text="just a nice thought", cat="expert_review", followers=500)
+        assert bot.maybe_bot_push(s, p, calm) is False
+    finally:
+        s.query(AlertSent).filter(AlertSent.alert_type == "bot_push").delete()
+        s.commit(); s.close()
+
+
+def test_maybe_bot_push_respects_daily_cap(monkeypatch, seeded):
+    from app.db import SessionLocal
+    from app.models import AlertSent
+    from app.config import get_settings
+    s = SessionLocal()
+    st = get_settings()
+    monkeypatch.setattr(st, "feishu_app_id", "cli_x")
+    monkeypatch.setattr(st, "feishu_app_secret", "sec")
+    monkeypatch.setattr(st, "feishu_bot_chat_id", "oc_x")
+    monkeypatch.setattr(st, "bot_daily_push_cap", 1)
+    monkeypatch.setattr(st, "bot_quiet_start_utc", 0)
+    monkeypatch.setattr(st, "bot_quiet_end_utc", 0)
+    from app import feishu
+    monkeypatch.setattr(feishu, "send_dict", lambda chat, payload: True)
+    p = type("P", (), {"name": "MiniMax"})()
+    try:
+        # viral (non-launch) pushes respect the cap
+        v1 = _push_ev("push-c1", text="insane demo", cat="demo", followers=500)
+        v1.like_count = 5000; v1.retweet_count = 900
+        v2 = _push_ev("push-c2", text="insane demo 2", cat="demo", followers=500)
+        v2.like_count = 5000; v2.retweet_count = 900
+        assert bot.maybe_bot_push(s, p, v1) is True
+        assert bot.maybe_bot_push(s, p, v2) is False        # cap of 1 reached
+        # ...but a LAUNCH bypasses the cap
+        l = _push_ev("push-c3")
+        assert bot.maybe_bot_push(s, p, l) is True
+    finally:
+        s.query(AlertSent).filter(AlertSent.alert_type == "bot_push").delete()
+        s.commit(); s.close()

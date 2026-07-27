@@ -138,6 +138,64 @@ class PushGate:
 
 
 # --------------------------------------------------------------------------
+# Real-time push into the GTM group (called from the collection pipeline)
+# --------------------------------------------------------------------------
+_PUSH_KIND = {
+    "launch": ("🚀", "发布动向", "red"),
+    "partnership": ("🤝", "合作情报", "turquoise"),
+    "mega": ("📣", "高影响力提及", "carmine"),
+    "viral": ("🔥", "爆款", "purple"),
+}
+
+
+def _sent_today(session: Session, now: datetime) -> int:
+    from sqlalchemy import func, select
+    from .models import AlertSent
+    day_start = datetime(now.year, now.month, now.day, tzinfo=timezone.utc)
+    return int(session.scalar(
+        select(func.count(AlertSent.id)).where(
+            AlertSent.alert_type == "bot_push", AlertSent.created_at >= day_start)
+    ) or 0)
+
+
+def maybe_bot_push(session: Session, product, ev: Evidence) -> bool:
+    """Triage one freshly-ingested evidence row and, if it clears the real-time
+    bar AND the anti-spam gate, push a card to the GTM group. Deduped through
+    the alerts_sent ledger (alert_type='bot_push'). Never raises."""
+    try:
+        s = get_settings()
+        if not (s.feishu_app_id and s.feishu_app_secret and s.feishu_bot_chat_id):
+            return False
+        v = triage(ev, s)
+        if v.tier != "realtime":
+            return False
+        from sqlalchemy import select
+        from .models import AlertSent
+        if session.scalar(select(AlertSent.id).where(
+                AlertSent.tweet_id == ev.tweet_id, AlertSent.alert_type == "bot_push")):
+            return False
+        now = datetime.now(timezone.utc)
+        gate = PushGate(daily_cap=s.bot_daily_push_cap, quiet_start=s.bot_quiet_start_utc,
+                        quiet_end=s.bot_quiet_end_utc, sent_today=_sent_today(session, now))
+        if not gate.allow(v, now):
+            return False
+        icon, label, template = _PUSH_KIND.get(v.kind, ("📡", "情报", "blue"))
+        text = _line(ev) + f"\n\n*触发:{v.reason} · 置信 {ev.confidence:.2f} · {product.name}*"
+        from . import feishu
+        ok = feishu.send_dict(s.feishu_bot_chat_id,
+                              {"title": f"{icon} {product.name} · {label}", "text": text,
+                               "template": template})
+        if ok:
+            session.add(AlertSent(tweet_id=ev.tweet_id, alert_type="bot_push"))
+            session.commit()
+        return ok
+    except Exception:
+        import logging
+        logging.getLogger(__name__).exception("maybe_bot_push failed (non-fatal)")
+        return False
+
+
+# --------------------------------------------------------------------------
 # Command parsing (inbound queries)
 # --------------------------------------------------------------------------
 COMMANDS = ("digest", "partnership", "launch", "demo", "review", "kol", "leaderboard", "help")
