@@ -147,6 +147,11 @@ def _handle_tweet(session, product, tweet, classifier, totals, category_dist) ->
             totals["alerts"] += 1
     except Exception:
         log.exception("Alerting failed for tweet %s (non-fatal)", tweet.id)
+    # Real-time bot push into the GTM group (launch/partnership/mega/viral only,
+    # gated + deduped inside; no-op when the Feishu bot isn't configured).
+    from .bot import maybe_bot_push
+    if maybe_bot_push(session, product, ev):
+        totals["bot_pushes"] = totals.get("bot_pushes", 0) + 1
     return True
 
 
