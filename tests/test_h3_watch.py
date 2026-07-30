@@ -31,7 +31,7 @@ def test_second_cycle_pushes_only_new(monkeypatch):
     sent = []
     monkeypatch.setattr(hw.feishu, "send_card", lambda cid, card: sent.append(card) or True)
     out = hw.run_h3_watch()
-    assert out == {"new": 2, "shown": 2, "pushed": True}
+    assert out == {"new": 2, "quality": 2, "pushed": True}
     assert hw._watermark == 103
     assert len(sent) == 1
     assert "2 new posts" in sent[0]["header"]["title"]["content"]
@@ -62,11 +62,15 @@ def test_card_groups_by_theme():
     assert card["header"]["template"] == "red"
 
 
-def test_card_overflow_counter():
-    tweets = [_tw(i, likes=i, text="amazing lipsync") for i in range(1, 10)]
-    card = hw.build_h3_card(tweets)
+def test_card_stats_cover_full_batch_examples_filtered():
+    junk = [_tw(i, likes=0, followers=50, handle=f"junk{i}", text="lipsync thing") for i in range(1, 8)]
+    star = _tw(99, likes=80, followers=5000, text="lipsync is amazing")
+    card = hw.build_h3_card(junk + [star])
     body = "\n".join(el["text"]["content"] for el in card["elements"] if el.get("tag") == "div")
-    assert "7 more" in body  # theme cap shows 2 per theme
+    assert "8 total" in body               # stats over everything
+    assert "LIPSYNC/AUDIO — 8" in body     # theme count over everything
+    assert "@junk1" not in body            # junk not shown as example
+    assert "❤80" in body                   # star post is the example
 
 
 def test_quality_floor_drops_reply_noise():
