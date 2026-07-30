@@ -54,6 +54,13 @@ class Settings(BaseSettings):
     bot_quiet_start_utc: int = 8          # quiet-hours start (UTC); ~01:00 PT
     bot_quiet_end_utc: int = 15           # quiet-hours end (UTC); ~08:00 PT. start==end disables.
 
+    # ---- H3 launch watch (near-real-time buzz stream; launch window only) ----
+    # Bypasses PushGate by design. Turn off with H3_WATCH_ENABLED=false after
+    # the launch window. No-ops when Feishu credentials are absent (local dev).
+    h3_watch_enabled: bool = True
+    h3_watch_interval_min: int = 10
+    h3_watch_query: str = "(@Hailuo_AI OR #MiniMaxH3) -filter:retweets"
+
     # ---- Inbound webhook (reserved) ----
     webhook_secret: str = ""
 
