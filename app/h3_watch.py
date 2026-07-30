@@ -107,6 +107,35 @@ def _quality(tweets: list) -> list:
 
 _SENT_EMOJI = {"pos": "🟢", "neg": "🔴", "mixed": "🟡", "neutral": "⚪"}
 
+# Paid-partnership disclosure / call-out detection. The X API doesn't expose the
+# official "Paid partnership" label, so we detect the textual signals: western
+# disclosure tags, the Japanese CPP "[PR]" convention, and any literal
+# "paid partnership" phrasing (which also catches call-out/criticism posts).
+_PAID_TAG = re.compile(
+    r"#ad\b|#sponsored\b|#paidpartnership\b|paid partnership|"
+    r"\[\s?PR\s?\]|［\s?PR\s?］|#タイアップ|#プロモーション", re.I)
+
+
+def build_paid_alert_card(tweets: list) -> dict:
+    """Immediate alert: posts carrying a paid-partnership disclosure or
+    talking about paid partnerships. Bypasses the quality floor — these matter
+    at any size."""
+    tweets = sorted(tweets, key=_eng, reverse=True)
+    lines = [_line(t) for t in tweets[:8]]
+    if len(tweets) > 8:
+        lines.append(f"… +{len(tweets) - 8} more")
+    body = ("**Posts tagging/mentioning paid partnership on H3 content.**\n"
+            "Check: disclosure compliance ✅ vs astroturfing call-outs ⚠️\n"
+            + feishu.ITEM_SEP + "\n".join(lines))
+    card = feishu.build_card(
+        f"🚨 Paid-partnership signal · {len(tweets)} post(s)", body, template="orange",
+    )
+    for el in card["elements"]:
+        if el.get("tag") == "note":
+            el["elements"] = [{"tag": "plain_text",
+                               "content": "🛰️ Model Radar · paid-disclosure watch"}]
+    return card
+
 
 def _themes(text: str) -> list:
     return [name for name, pat in _FEATURES if pat.search(text or "")]
@@ -208,8 +237,20 @@ def run_h3_watch() -> dict:
 
     # Card stats cover ALL new posts; the floor only picks the examples shown.
     pushed = feishu.send_card(s.feishu_bot_chat_id, build_h3_card(new))
+
+    # Separate immediate alert for paid-partnership disclosures / call-outs.
+    paid = [t for t in new if _PAID_TAG.search(t.text or "")]
+    paid_pushed = False
+    if paid:
+        paid_pushed = feishu.send_card(s.feishu_bot_chat_id, build_paid_alert_card(paid))
+        log.info("H3 watch: %d paid-partnership signal(s), alert pushed=%s", len(paid), paid_pushed)
+
     log.info("H3 watch: %d new, %d quality, pushed=%s", len(new), len(worthy), pushed)
-    return {"new": len(new), "quality": len(worthy), "pushed": pushed}
+    out = {"new": len(new), "quality": len(worthy), "pushed": pushed}
+    if paid:
+        out["paid_signals"] = len(paid)
+        out["paid_alert"] = paid_pushed
+    return out
 
 
 def run_h3_demo() -> dict:
