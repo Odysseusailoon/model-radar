@@ -222,6 +222,13 @@ def debug_h3_watch(force: bool = False, _: str = Depends(require_auth)):
     return run_h3_demo() if force else run_h3_watch()
 
 
+@app.post("/debug/send-card")
+def debug_send_card(card: dict, _: str = Depends(require_auth)):
+    """Send a raw interactive-card JSON to the GTM group (for one-off digests
+    built offline, e.g. backfill summaries)."""
+    return {"pushed": feishu.send_card(settings.feishu_bot_chat_id, card)}
+
+
 @app.post("/debug/bot-push")
 def debug_bot_push(text: str = "🛰️ **Model Radar** 已接入本群。发送 `help` 查看指令。",
                    _: str = Depends(require_auth)):

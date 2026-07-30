@@ -105,49 +105,62 @@ def _quality(tweets: list) -> list:
     return sorted(best.values(), key=_eng, reverse=True)
 
 
+_SENT_EMOJI = {"pos": "🟢", "neg": "🔴", "mixed": "🟡", "neutral": "⚪"}
+
+
+def _themes(text: str) -> list:
+    return [name for name, pat in _FEATURES if pat.search(text or "")]
+
+
 def build_h3_card(tweets: list) -> dict:
-    """English digest: feature tally + posts grouped positive / negative / top
-    showcase, one hairline-separated card section per group."""
+    """English digest grouped BY THEME: each top theme is its own hairline
+    section with sentiment tally and its best posts; theme-less posts fall
+    into a Showcase section."""
     tweets = sorted(tweets, key=_eng, reverse=True)
-    groups = {"pos": [], "neg": [], "mixed": [], "neutral": []}
-    feat_tally: dict[str, int] = {}
+    by_theme: dict[str, list] = {}
+    themeless = []
     for t in tweets:
-        groups[_sentiment(t.text)].append(t)
-        for name, pat in _FEATURES:
-            if pat.search(t.text or ""):
-                feat_tally[name] = feat_tally.get(name, 0) + 1
+        ths = _themes(t.text)
+        if not ths:
+            themeless.append(t)
+            continue
+        for th in ths[:2]:  # a post counts toward its two strongest themes
+            by_theme.setdefault(th, []).append(t)
 
-    sections = []
-    if feat_tally:
-        top_feats = sorted(feat_tally.items(), key=lambda kv: -kv[1])[:6]
-        sections.append("**📌 FEATURE MENTIONS**\n" +
-                        "  ·  ".join(f"{k} ×{v}" for k, v in top_feats))
+    pos_n = sum(1 for t in tweets if _sentiment(t.text) == "pos")
+    neg_n = sum(1 for t in tweets if _sentiment(t.text) in ("neg", "mixed"))
+    sections = [f"**Overview:** 🟢 {pos_n} positive · 🔴 {neg_n} issues · {len(tweets)} total"]
 
-    def _section(label: str, items: list, cap: int) -> None:
-        if items:
-            body = "\n".join(_line(t) for t in items[:cap])
-            sections.append(f"**{label} — {len(items)} post{'s' if len(items) > 1 else ''}**\n{body}")
+    def _titem(t) -> str:
+        return f"{_SENT_EMOJI[_sentiment(t.text)]} {_line(t)}"
 
-    pos = groups["pos"]
-    neg = groups["neg"] + groups["mixed"]
-    rest = groups["neutral"]
-    _section("🟢 POSITIVE", pos, 4)
-    _section("🔴 NEGATIVE / ISSUES", neg, 4)
-    _section("⚪ TOP SHOWCASE", rest, 3)
+    shown_ids = set()
+    top_themes = sorted(by_theme.items(), key=lambda kv: -len(kv[1]))[:5]
+    for th, items in top_themes:
+        neg_in = sum(1 for t in items if _sentiment(t.text) in ("neg", "mixed"))
+        flag = f" · 🔴{neg_in}" if neg_in else ""
+        picks = items[:2]
+        shown_ids.update(id(t) for t in picks)
+        body = "\n".join(_titem(t) for t in picks)
+        sections.append(f"**🎯 {th.upper()} — {len(items)}{flag}**\n{body}")
 
-    shown = min(len(pos), 4) + min(len(neg), 4) + min(len(rest), 3)
-    extra = len(tweets) - shown
+    if themeless:
+        picks = [t for t in themeless[:2]]
+        shown_ids.update(id(t) for t in picks)
+        body = "\n".join(_titem(t) for t in picks)
+        sections.append(f"**📎 SHOWCASE / OTHER — {len(themeless)}**\n{body}")
+
+    extra = len(tweets) - len(shown_ids)
     if extra > 0:
-        sections.append(f"➕ **{extra} more** in this window → full data in the **H3 X Buzz** Feishu table")
+        sections.append(f"➕ **{extra} more** → filter by 主题 in the **H3 X Buzz** Feishu table")
 
     card = feishu.build_card(
         f"🎬 H3 Buzz · {len(tweets)} new posts", feishu.ITEM_SEP.join(sections), template="red",
     )
-    # English footer for this card (build_card's default note is Chinese).
     for el in card["elements"]:
         if el.get("tag") == "note":
             el["elements"] = [{"tag": "plain_text",
-                               "content": "🛰️ Model Radar · H3 watch · every 3h · sentiment-grouped"}]
+                               "content": "🛰️ Model Radar · H3 watch · theme-grouped digest"}]
     return card
 
 
