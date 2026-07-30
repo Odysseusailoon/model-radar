@@ -81,13 +81,33 @@ def _sentiment(text: str) -> str:
 
 def _line(t) -> str:
     au = t.author
-    text = (t.text or "").replace("\n", " ")[:80]
-    return (f"❤{t.like_count or 0} · @{au.handle} ({_fmt_count(au.followers or 0)}) "
-            f"{text} [post]({t.url})")
+    text = (t.text or "").replace("\n", " ")[:90]
+    return (f"**❤{t.like_count or 0}** 🔁{t.retweet_count or 0} · "
+            f"[@{au.handle}](https://x.com/{au.handle}) ({_fmt_count(au.followers or 0)})\n"
+            f"{text} [view ↗]({t.url})")
+
+
+def _quality(tweets: list) -> list:
+    """Display floor: drop reply-noise and zero-signal posts, keep one (best)
+    post per author. A post earns its card slot with either engagement (❤≥5)
+    or a real audience (≥800 followers); @-prefixed reply text is dropped
+    outright (belt-and-braces next to the query-level -filter:replies)."""
+    best: dict[str, object] = {}
+    for t in tweets:
+        text = (t.text or "").strip()
+        if text.startswith("@"):
+            continue
+        if (t.like_count or 0) < 5 and (t.author.followers or 0) < 800:
+            continue
+        key = (t.author.handle or "").lower()
+        if key not in best or _eng(t) > _eng(best[key]):
+            best[key] = t
+    return sorted(best.values(), key=_eng, reverse=True)
 
 
 def build_h3_card(tweets: list) -> dict:
-    """English digest: feature tally + posts grouped positive / negative / top showcase."""
+    """English digest: feature tally + posts grouped positive / negative / top
+    showcase, one hairline-separated card section per group."""
     tweets = sorted(tweets, key=_eng, reverse=True)
     groups = {"pos": [], "neg": [], "mixed": [], "neutral": []}
     feat_tally: dict[str, int] = {}
@@ -97,34 +117,38 @@ def build_h3_card(tweets: list) -> dict:
             if pat.search(t.text or ""):
                 feat_tally[name] = feat_tally.get(name, 0) + 1
 
-    parts = []
+    sections = []
     if feat_tally:
         top_feats = sorted(feat_tally.items(), key=lambda kv: -kv[1])[:6]
-        parts.append("**📌 Feature mentions:** " + " · ".join(f"{k} ×{v}" for k, v in top_feats))
+        sections.append("**📌 FEATURE MENTIONS**\n" +
+                        "  ·  ".join(f"{k} ×{v}" for k, v in top_feats))
+
+    def _section(label: str, items: list, cap: int) -> None:
+        if items:
+            body = "\n".join(_line(t) for t in items[:cap])
+            sections.append(f"**{label} — {len(items)} post{'s' if len(items) > 1 else ''}**\n{body}")
 
     pos = groups["pos"]
-    if pos:
-        parts.append(f"**🟢 Positive ({len(pos)})**")
-        parts += [_line(t) for t in pos[:4]]
-
     neg = groups["neg"] + groups["mixed"]
-    if neg:
-        parts.append(f"**🔴 Negative / issues ({len(neg)})**")
-        parts += [_line(t) for t in neg[:4]]
-
     rest = groups["neutral"]
-    if rest:
-        parts.append(f"**⚪ Top showcase / other ({len(rest)})**")
-        parts += [_line(t) for t in rest[:3]]
+    _section("🟢 POSITIVE", pos, 4)
+    _section("🔴 NEGATIVE / ISSUES", neg, 4)
+    _section("⚪ TOP SHOWCASE", rest, 3)
 
     shown = min(len(pos), 4) + min(len(neg), 4) + min(len(rest), 3)
     extra = len(tweets) - shown
     if extra > 0:
-        parts.append(f"… +{extra} more → full data in the *H3 X Buzz* Feishu table")
+        sections.append(f"➕ **{extra} more** in this window → full data in the **H3 X Buzz** Feishu table")
 
-    return feishu.build_card(
-        f"🎬 H3 Buzz · {len(tweets)} new posts", "\n".join(parts), template="red",
+    card = feishu.build_card(
+        f"🎬 H3 Buzz · {len(tweets)} new posts", feishu.ITEM_SEP.join(sections), template="red",
     )
+    # English footer for this card (build_card's default note is Chinese).
+    for el in card["elements"]:
+        if el.get("tag") == "note":
+            el["elements"] = [{"tag": "plain_text",
+                               "content": "🛰️ Model Radar · H3 watch · every 3h · sentiment-grouped"}]
+    return card
 
 
 def run_h3_watch() -> dict:
@@ -161,6 +185,24 @@ def run_h3_watch() -> dict:
     if not new:
         return {"new": 0}
 
-    pushed = feishu.send_card(s.feishu_bot_chat_id, build_h3_card(new))
-    log.info("H3 watch: %d new post(s), pushed=%s", len(new), pushed)
-    return {"new": len(new), "pushed": pushed}
+    worthy = _quality(new)
+    if not worthy:
+        log.info("H3 watch: %d new post(s), all below quality floor — no push", len(new))
+        return {"new": len(new), "pushed": False, "filtered_out": len(new)}
+
+    pushed = feishu.send_card(s.feishu_bot_chat_id, build_h3_card(worthy))
+    log.info("H3 watch: %d new, %d shown, pushed=%s", len(new), len(worthy), pushed)
+    return {"new": len(new), "shown": len(worthy), "pushed": pushed}
+
+
+def run_h3_demo() -> dict:
+    """Push a digest of the whole current search window (ignores the
+    watermark; does not advance it). For previewing the card format."""
+    s = get_settings()
+    client = XDataClient(api_key=s.twitterapi_key, base_url=s.twitterapi_base_url)
+    tweets = list(client.search_recent(s.h3_watch_query, max_pages=MAX_PAGES))
+    worthy = _quality(tweets)
+    if not worthy:
+        return {"seen": len(tweets), "pushed": False}
+    pushed = feishu.send_card(s.feishu_bot_chat_id, build_h3_card(worthy))
+    return {"seen": len(tweets), "shown": len(worthy), "pushed": pushed}

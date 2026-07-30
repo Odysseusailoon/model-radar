@@ -59,7 +59,7 @@ class Settings(BaseSettings):
     # the launch window. No-ops when Feishu credentials are absent (local dev).
     h3_watch_enabled: bool = True
     h3_watch_interval_min: int = 180  # 3h digest cadence (was 10-min during launch hours)
-    h3_watch_query: str = "(@Hailuo_AI OR #MiniMaxH3) -filter:retweets"
+    h3_watch_query: str = "(@Hailuo_AI OR #MiniMaxH3) -filter:retweets -filter:replies"
 
     # ---- Inbound webhook (reserved) ----
     webhook_secret: str = ""

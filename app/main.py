@@ -215,10 +215,11 @@ def debug_bot_digest(_: str = Depends(require_auth), db=Depends(get_db)):
 
 
 @app.post("/debug/h3-watch")
-def debug_h3_watch(_: str = Depends(require_auth)):
-    """Run one H3 watch cycle now (first call initialises the watermark)."""
-    from .h3_watch import run_h3_watch
-    return run_h3_watch()
+def debug_h3_watch(force: bool = False, _: str = Depends(require_auth)):
+    """Run one H3 watch cycle now (first call initialises the watermark).
+    force=true pushes the whole current window as a preview card instead."""
+    from .h3_watch import run_h3_demo, run_h3_watch
+    return run_h3_demo() if force else run_h3_watch()
 
 
 @app.post("/debug/bot-push")
