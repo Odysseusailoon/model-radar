@@ -113,10 +113,12 @@ def _themes(text: str) -> list:
 
 
 def build_h3_card(tweets: list) -> dict:
-    """English digest grouped BY THEME: each top theme is its own hairline
-    section with sentiment tally and its best posts; theme-less posts fall
-    into a Showcase section."""
+    """English digest grouped BY THEME. Stats (overview + theme counts) cover
+    the FULL batch; the quality floor only decides which posts appear as the
+    examples under each theme — so the card represents everything while
+    showing only signal."""
     tweets = sorted(tweets, key=_eng, reverse=True)
+    quality_ids = {id(t) for t in _quality(tweets)}
     by_theme: dict[str, list] = {}
     themeless = []
     for t in tweets:
@@ -129,30 +131,31 @@ def build_h3_card(tweets: list) -> dict:
 
     pos_n = sum(1 for t in tweets if _sentiment(t.text) == "pos")
     neg_n = sum(1 for t in tweets if _sentiment(t.text) in ("neg", "mixed"))
-    sections = [f"**Overview:** 🟢 {pos_n} positive · 🔴 {neg_n} issues · {len(tweets)} total"]
+    low_n = len(tweets) - len(quality_ids)
+    sections = [
+        f"**Overview:** 🟢 {pos_n} positive · 🔴 {neg_n} issues · {len(tweets)} total "
+        f"({low_n} low-signal: tiny accounts / no engagement)"
+    ]
 
     def _titem(t) -> str:
         return f"{_SENT_EMOJI[_sentiment(t.text)]} {_line(t)}"
 
-    shown_ids = set()
+    def _picks(items: list, n: int) -> list:
+        good = [t for t in items if id(t) in quality_ids][:n]
+        return good or items[:1]  # never show an empty theme section
+
     top_themes = sorted(by_theme.items(), key=lambda kv: -len(kv[1]))[:5]
     for th, items in top_themes:
         neg_in = sum(1 for t in items if _sentiment(t.text) in ("neg", "mixed"))
         flag = f" · 🔴{neg_in}" if neg_in else ""
-        picks = items[:2]
-        shown_ids.update(id(t) for t in picks)
-        body = "\n".join(_titem(t) for t in picks)
+        body = "\n".join(_titem(t) for t in _picks(items, 2))
         sections.append(f"**🎯 {th.upper()} — {len(items)}{flag}**\n{body}")
 
     if themeless:
-        picks = [t for t in themeless[:2]]
-        shown_ids.update(id(t) for t in picks)
-        body = "\n".join(_titem(t) for t in picks)
+        body = "\n".join(_titem(t) for t in _picks(themeless, 2))
         sections.append(f"**📎 SHOWCASE / OTHER — {len(themeless)}**\n{body}")
 
-    extra = len(tweets) - len(shown_ids)
-    if extra > 0:
-        sections.append(f"➕ **{extra} more** → filter by 主题 in the **H3 X Buzz** Feishu table")
+    sections.append("📊 Full breakdown → filter by 主题 in the **H3 X Buzz** Feishu table")
 
     card = feishu.build_card(
         f"🎬 H3 Buzz · {len(tweets)} new posts", feishu.ITEM_SEP.join(sections), template="red",
@@ -203,9 +206,10 @@ def run_h3_watch() -> dict:
         log.info("H3 watch: %d new post(s), all below quality floor — no push", len(new))
         return {"new": len(new), "pushed": False, "filtered_out": len(new)}
 
-    pushed = feishu.send_card(s.feishu_bot_chat_id, build_h3_card(worthy))
-    log.info("H3 watch: %d new, %d shown, pushed=%s", len(new), len(worthy), pushed)
-    return {"new": len(new), "shown": len(worthy), "pushed": pushed}
+    # Card stats cover ALL new posts; the floor only picks the examples shown.
+    pushed = feishu.send_card(s.feishu_bot_chat_id, build_h3_card(new))
+    log.info("H3 watch: %d new, %d quality, pushed=%s", len(new), len(worthy), pushed)
+    return {"new": len(new), "quality": len(worthy), "pushed": pushed}
 
 
 def run_h3_demo() -> dict:
