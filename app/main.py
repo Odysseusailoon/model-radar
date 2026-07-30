@@ -100,6 +100,17 @@ async def lifespan(app: FastAPI):
             coalesce=True,
         )
         log.info("Daily lab-watch scheduled for %02d:00 UTC", settings.follow_watch_hour_utc)
+    if settings.h3_watch_enabled:
+        from .h3_watch import run_h3_watch
+        scheduler.add_job(
+            run_h3_watch,
+            "interval",
+            minutes=settings.h3_watch_interval_min,
+            id="h3_watch",
+            max_instances=1,
+            coalesce=True,
+        )
+        log.info("H3 launch watch: every %d min", settings.h3_watch_interval_min)
     scheduler.start()
     log.info("Scheduler started: collecting every %d min", settings.collect_interval_minutes)
     yield
@@ -201,6 +212,13 @@ async def feishu_event(request: Request):
 def debug_bot_digest(_: str = Depends(require_auth), db=Depends(get_db)):
     """Push the weekly digest to the configured GTM group (P1 outbound)."""
     return {"pushed": feishu.send_dict(settings.feishu_bot_chat_id, dispatch(db, "/digest"))}
+
+
+@app.post("/debug/h3-watch")
+def debug_h3_watch(_: str = Depends(require_auth)):
+    """Run one H3 watch cycle now (first call initialises the watermark)."""
+    from .h3_watch import run_h3_watch
+    return run_h3_watch()
 
 
 @app.post("/debug/bot-push")
