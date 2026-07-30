@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 
 _watermark: int = 0  # max tweet id already reported (0 = not initialised)
 
-MAX_ITEMS_IN_CARD = 6
+MAX_ITEMS_IN_CARD = 10
 MAX_PAGES = 3
 
 
