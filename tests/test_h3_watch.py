@@ -47,18 +47,18 @@ def test_no_new_posts_no_push(monkeypatch):
     assert not sent
 
 
-def test_card_groups_by_sentiment_in_english():
+def test_card_groups_by_theme():
     tweets = [
         _tw(1, likes=50, text="the lipsync is amazing"),
-        _tw(2, likes=30, text="quite blurry, looks like 480p"),
+        _tw(2, likes=30, text="quite blurry 2k, looks like 480p"),
         _tw(3, likes=10, text="Made with MiniMax H3"),
     ]
     card = hw.build_h3_card(tweets)
     body = "\n".join(el["text"]["content"] for el in card["elements"] if el.get("tag") == "div")
-    assert "FEATURE MENTIONS" in body
-    assert "🟢 POSITIVE — 1 post" in body
-    assert "🔴 NEGATIVE / ISSUES — 1 post" in body
-    assert "⚪ TOP SHOWCASE — 1 post" in body
+    assert "🟢 1 positive · 🔴 1 issues · 3 total" in body
+    assert "LIPSYNC/AUDIO — 1" in body
+    assert "2K QUALITY — 1 · 🔴1" in body
+    assert "SHOWCASE / OTHER — 1" in body
     assert card["header"]["template"] == "red"
 
 
@@ -66,7 +66,7 @@ def test_card_overflow_counter():
     tweets = [_tw(i, likes=i, text="amazing lipsync") for i in range(1, 10)]
     card = hw.build_h3_card(tweets)
     body = "\n".join(el["text"]["content"] for el in card["elements"] if el.get("tag") == "div")
-    assert "5 more" in body
+    assert "7 more" in body  # theme cap shows 2 per theme
 
 
 def test_quality_floor_drops_reply_noise():
