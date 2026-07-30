@@ -27,11 +27,11 @@ def test_first_cycle_initialises_without_pushing(monkeypatch):
 def test_second_cycle_pushes_only_new(monkeypatch):
     hw._watermark = 100
     monkeypatch.setattr(hw, "XDataClient",
-                        lambda **kw: SimpleNamespace(search_recent=lambda q, max_pages: [_tw(103), _tw(101), _tw(95)]))
+                        lambda **kw: SimpleNamespace(search_recent=lambda q, max_pages: [_tw(103), _tw(101, handle="bob"), _tw(95)]))
     sent = []
     monkeypatch.setattr(hw.feishu, "send_card", lambda cid, card: sent.append(card) or True)
     out = hw.run_h3_watch()
-    assert out == {"new": 2, "pushed": True}
+    assert out == {"new": 2, "shown": 2, "pushed": True}
     assert hw._watermark == 103
     assert len(sent) == 1
     assert "2 new posts" in sent[0]["header"]["title"]["content"]
@@ -54,16 +54,45 @@ def test_card_groups_by_sentiment_in_english():
         _tw(3, likes=10, text="Made with MiniMax H3"),
     ]
     card = hw.build_h3_card(tweets)
-    body = card["elements"][0]["text"]["content"]
-    assert "Feature mentions" in body
-    assert "🟢 Positive (1)" in body
-    assert "🔴 Negative / issues (1)" in body
-    assert "⚪ Top showcase / other (1)" in body
+    body = "\n".join(el["text"]["content"] for el in card["elements"] if el.get("tag") == "div")
+    assert "FEATURE MENTIONS" in body
+    assert "🟢 POSITIVE — 1 post" in body
+    assert "🔴 NEGATIVE / ISSUES — 1 post" in body
+    assert "⚪ TOP SHOWCASE — 1 post" in body
     assert card["header"]["template"] == "red"
 
 
 def test_card_overflow_counter():
     tweets = [_tw(i, likes=i, text="amazing lipsync") for i in range(1, 10)]
     card = hw.build_h3_card(tweets)
-    body = card["elements"][0]["text"]["content"]
-    assert "+5 more" in body
+    body = "\n".join(el["text"]["content"] for el in card["elements"] if el.get("tag") == "div")
+    assert "5 more" in body
+
+
+def test_quality_floor_drops_reply_noise():
+    noise = [
+        _tw(1, likes=0, followers=200, text="@someone @Hailuo_AI amazing bro"),
+        _tw(2, likes=0, followers=200, text="nice creativity dear"),
+    ]
+    real = _tw(3, likes=50, followers=200, text="H3 lipsync test results")
+    kept = hw._quality(noise + [real])
+    assert [t.id for t in kept] == ["3"]
+
+
+def test_quality_floor_dedupes_author():
+    a1 = _tw(1, likes=5, handle="same", text="first post ok")
+    a2 = _tw(2, likes=90, handle="same", text="viral post wow")
+    kept = hw._quality([a1, a2])
+    assert len(kept) == 1 and kept[0].id == "2"
+
+
+def test_all_filtered_means_no_push(monkeypatch):
+    hw._watermark = 100
+    junk = _tw(200, likes=0, followers=50, text="@x @Hailuo_AI cool")
+    monkeypatch.setattr(hw, "XDataClient",
+                        lambda **kw: SimpleNamespace(search_recent=lambda q, max_pages: [junk]))
+    sent = []
+    monkeypatch.setattr(hw.feishu, "send_card", lambda cid, card: sent.append(card) or True)
+    out = hw.run_h3_watch()
+    assert out == {"new": 1, "pushed": False, "filtered_out": 1}
+    assert not sent
