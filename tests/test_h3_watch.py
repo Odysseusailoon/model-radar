@@ -34,7 +34,7 @@ def test_second_cycle_pushes_only_new(monkeypatch):
     assert out == {"new": 2, "pushed": True}
     assert hw._watermark == 103
     assert len(sent) == 1
-    assert "新增 2 条" in sent[0]["header"]["title"]["content"]
+    assert "2 new posts" in sent[0]["header"]["title"]["content"]
 
 
 def test_no_new_posts_no_push(monkeypatch):
@@ -47,9 +47,23 @@ def test_no_new_posts_no_push(monkeypatch):
     assert not sent
 
 
-def test_card_truncates_and_counts():
-    n = hw.MAX_ITEMS_IN_CARD + 5
-    card = hw.build_h3_card([_tw(i, likes=i) for i in range(1, n + 1)])
+def test_card_groups_by_sentiment_in_english():
+    tweets = [
+        _tw(1, likes=50, text="the lipsync is amazing"),
+        _tw(2, likes=30, text="quite blurry, looks like 480p"),
+        _tw(3, likes=10, text="Made with MiniMax H3"),
+    ]
+    card = hw.build_h3_card(tweets)
     body = card["elements"][0]["text"]["content"]
-    assert "另有 5 条" in body
+    assert "Feature mentions" in body
+    assert "🟢 Positive (1)" in body
+    assert "🔴 Negative / issues (1)" in body
+    assert "⚪ Top showcase / other (1)" in body
     assert card["header"]["template"] == "red"
+
+
+def test_card_overflow_counter():
+    tweets = [_tw(i, likes=i, text="amazing lipsync") for i in range(1, 10)]
+    card = hw.build_h3_card(tweets)
+    body = card["elements"][0]["text"]["content"]
+    assert "+5 more" in body

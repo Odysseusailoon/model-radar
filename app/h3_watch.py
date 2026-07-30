@@ -25,34 +25,105 @@ _watermark: int = 0  # max tweet id already reported (0 = not initialised)
 MAX_ITEMS_IN_CARD = 10
 MAX_PAGES = 3
 
+# English digest card: posts grouped by sentiment, plus a feature-mention tally.
+import re
+
+_POS = re.compile(
+    r"amazing|insane|incredible|mind.?blow|beast|cooked|epic|wow\b|wild|stunning|"
+    r"is back|alive|love (it|this|the)|best|impressive|blown|next level|game.?chang|"
+    r"awesome|fantastic|effortless|quite good|really g(ood|reat)|so good|🔥|凄い|最強", re.I)
+_NEG = re.compile(
+    r"blurry|disappoint|stuck|can'?t (generate|find|see)|bug\b|broken|inconsist|"
+    r"artifact|mistakes|worse|not (good|great)|unsatisf|paid partnership|refund|"
+    r"randomly|doesn'?t (work|follow)|fail|issue|problem|error", re.I)
+
+_FEATURES = [
+    ("Lipsync/Audio", re.compile(r"lip.?sync|audio\s?(ref|track|input)|voice|singing|sound", re.I)),
+    ("Omni Reference", re.compile(r"omni|12[\s-]?(asset|ref)|image ref|reference", re.I)),
+    ("Img2Video", re.compile(r"img\s?2\s?vid|image.to.video|first frame|last frame", re.I)),
+    ("2K Quality", re.compile(r"\b2k\b|resolution|quality", re.I)),
+    ("Multi-shot", re.compile(r"multi.?shot|consisten|across shots", re.I)),
+    ("Instruction", re.compile(r"instruction|follow|adher|prompt control", re.I)),
+    ("Music Video", re.compile(r"music video|\bmv\b|concert|song", re.I)),
+    ("Cinematic", re.compile(r"cinematic|film|movie|documentary", re.I)),
+    ("Anime/Style", re.compile(r"anime|stylized", re.I)),
+    ("vs Seedance", re.compile(r"seedance|sd2", re.I)),
+    ("vs Veo/Sora", re.compile(r"\bveo\b|\bsora\b|kling", re.I)),
+    ("Pricing", re.compile(r"cheap|price|credit|cost", re.I)),
+    ("Speed", re.compile(r"fastest|so fast|speed", re.I)),
+    ("Multilingual", re.compile(r"arabic|japanese|bulgarian|chinese|multilingual", re.I)),
+    ("Open weights", re.compile(r"open.?weight|open.?source|weights", re.I)),
+]
+
 
 def _eng(t) -> int:
     return (t.like_count or 0) + 2 * (t.retweet_count or 0) + (t.reply_count or 0)
 
 
 def _fmt_count(n: int) -> str:
-    if n >= 10000:
-        return f"{n/10000:.1f}万"
+    if n >= 1_000_000:
+        return f"{n/1_000_000:.1f}M"
+    if n >= 1_000:
+        return f"{n/1_000:.1f}K"
     return str(n)
 
 
+def _sentiment(text: str) -> str:
+    p, n = bool(_POS.search(text or "")), bool(_NEG.search(text or ""))
+    if p and n:
+        return "mixed"
+    if p:
+        return "pos"
+    if n:
+        return "neg"
+    return "neutral"
+
+
+def _line(t) -> str:
+    au = t.author
+    text = (t.text or "").replace("\n", " ")[:80]
+    return (f"❤{t.like_count or 0} · @{au.handle} ({_fmt_count(au.followers or 0)}) "
+            f"{text} [post]({t.url})")
+
+
 def build_h3_card(tweets: list) -> dict:
-    """One digest card for a batch of new posts (newest cycle only)."""
+    """English digest: feature tally + posts grouped positive / negative / top showcase."""
     tweets = sorted(tweets, key=_eng, reverse=True)
-    lines = []
-    for t in tweets[:MAX_ITEMS_IN_CARD]:
-        au = t.author
-        text = (t.text or "").replace("\n", " ")[:80]
-        lines.append(
-            f"❤{t.like_count or 0} · @{au.handle}({_fmt_count(au.followers or 0)}粉) "
-            f"{text} [原帖]({t.url})"
-        )
-    body = "\n".join(lines)
-    extra = len(tweets) - MAX_ITEMS_IN_CARD
+    groups = {"pos": [], "neg": [], "mixed": [], "neutral": []}
+    feat_tally: dict[str, int] = {}
+    for t in tweets:
+        groups[_sentiment(t.text)].append(t)
+        for name, pat in _FEATURES:
+            if pat.search(t.text or ""):
+                feat_tally[name] = feat_tally.get(name, 0) + 1
+
+    parts = []
+    if feat_tally:
+        top_feats = sorted(feat_tally.items(), key=lambda kv: -kv[1])[:6]
+        parts.append("**📌 Feature mentions:** " + " · ".join(f"{k} ×{v}" for k, v in top_feats))
+
+    pos = groups["pos"]
+    if pos:
+        parts.append(f"**🟢 Positive ({len(pos)})**")
+        parts += [_line(t) for t in pos[:4]]
+
+    neg = groups["neg"] + groups["mixed"]
+    if neg:
+        parts.append(f"**🔴 Negative / issues ({len(neg)})**")
+        parts += [_line(t) for t in neg[:4]]
+
+    rest = groups["neutral"]
+    if rest:
+        parts.append(f"**⚪ Top showcase / other ({len(rest)})**")
+        parts += [_line(t) for t in rest[:3]]
+
+    shown = min(len(pos), 4) + min(len(neg), 4) + min(len(rest), 3)
+    extra = len(tweets) - shown
     if extra > 0:
-        body += f"\n… 另有 {extra} 条(全量见 H3 X舆情表)"
+        parts.append(f"… +{extra} more → full data in the *H3 X Buzz* Feishu table")
+
     return feishu.build_card(
-        f"🚀 H3 舆情 · 新增 {len(tweets)} 条", body, template="red",
+        f"🎬 H3 Buzz · {len(tweets)} new posts", "\n".join(parts), template="red",
     )
 
 
