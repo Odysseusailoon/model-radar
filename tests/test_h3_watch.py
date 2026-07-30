@@ -100,3 +100,28 @@ def test_all_filtered_means_no_push(monkeypatch):
     out = hw.run_h3_watch()
     assert out == {"new": 1, "pushed": False, "filtered_out": 1}
     assert not sent
+
+
+def test_paid_partnership_alert(monkeypatch):
+    hw._watermark = 100
+    posts = [
+        _tw(103, likes=5, followers=900, text="H3 test video #ad @Hailuo_AI"),
+        _tw(102, likes=200, followers=5000, text="isn't it funny how every AI post is a paid partnership?"),
+        _tw(101, likes=10, followers=900, text="normal H3 showcase post"),
+    ]
+    monkeypatch.setattr(hw, "XDataClient",
+                        lambda **kw: SimpleNamespace(search_recent=lambda q, max_pages: posts))
+    sent = []
+    monkeypatch.setattr(hw.feishu, "send_card", lambda cid, card: sent.append(card) or True)
+    out = hw.run_h3_watch()
+    assert out["paid_signals"] == 2 and out["paid_alert"] is True
+    assert len(sent) == 2  # digest + paid alert
+    alert = sent[1]
+    assert "Paid-partnership signal" in alert["header"]["title"]["content"]
+    assert alert["header"]["template"] == "orange"
+
+
+def test_jp_pr_tag_detected():
+    assert hw._PAID_TAG.search("［PR］miniMaX H3がリリースされましたね！")
+    assert hw._PAID_TAG.search("[PR] first look at H3")
+    assert not hw._PAID_TAG.search("H3 has great PR momentum")
