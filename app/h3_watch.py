@@ -35,7 +35,7 @@ _POS = re.compile(
 _NEG = re.compile(
     r"blurry|disappoint|stuck|can'?t (generate|find|see)|bug\b|broken|inconsist|"
     r"artifact|mistakes|worse|not (good|great)|unsatisf|paid partnership|refund|"
-    r"randomly|doesn'?t (work|follow)|fail|issue|problem|error", re.I)
+    r"randomly|doesn'?t (work|follow)|(?<!never )fail(?!s? to (amaze|impress|deliver))|issue|problem|error", re.I)
 
 _FEATURES = [
     ("Lipsync/Audio", re.compile(r"lip.?sync|audio\s?(ref|track|input)|voice|singing|sound", re.I)),
