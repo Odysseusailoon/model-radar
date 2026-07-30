@@ -48,7 +48,8 @@ def test_no_new_posts_no_push(monkeypatch):
 
 
 def test_card_truncates_and_counts():
-    card = hw.build_h3_card([_tw(i, likes=i) for i in range(1, 12)])
+    n = hw.MAX_ITEMS_IN_CARD + 5
+    card = hw.build_h3_card([_tw(i, likes=i) for i in range(1, n + 1)])
     body = card["elements"][0]["text"]["content"]
     assert "另有 5 条" in body
     assert card["header"]["template"] == "red"
