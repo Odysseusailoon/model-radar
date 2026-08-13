@@ -13,12 +13,15 @@ campaigns/<name>/
   shortlist-*.{csv,html,pdf}   产出(自动生成)
 ```
 
-`campaigns/example/` 是一个完整的虚构示例,复制一份改内容即可:
+`campaigns/example/` 是一个完整的虚构示例;`campaigns/templates/` 有四套按场景
+分的填空模版(找客户 / 发布找 KOL / 找投资人 / 招聘 mapping),挑一个复制:
 
 ```bash
-cp -r campaigns/example campaigns/mycompany
-# 编辑 campaigns/mycompany/scoring-prompt.md 和 config.json
+cp -r campaigns/templates/customer-discovery campaigns/mycompany
+# 编辑 campaigns/mycompany/scoring-prompt.md 和 config.json,替换所有【填空】
 ```
+
+零基础教程(含飞书导入的点按步骤)见 `docs/GTM-COOKBOOK.md`。
 
 ## 四步跑通
 

@@ -1,0 +1,24 @@
+{
+  "title": "【填空:公司名】 · 潜在客户名单",
+  "brief_heading": "筛选依据:这家公司卖什么、卖给谁",
+  "company_brief": [
+    "<strong>【填空:公司名】</strong>,【填空:一句话产品定位 + 核实过的公司事实(成立/融资/团队)】。",
+    "<strong>解决的问题:</strong>【填空:目标客户的痛点与解法】。",
+    "<strong>因此名单优先级为:</strong>能拍板的决策者 → 重度使用的一线从业者 → 内部推动者 → 生态伙伴与传播节点。"
+  ],
+  "sources_note": "公司信息来源:【填空:融资公告 / 官网 / 可信报道的具体出处】。未经上述来源证实的说法一律未收录。",
+  "tier_blurbs": {
+    "3": "直接对口:正在做相关的事、能拍板采购、或明确有这个痛点。",
+    "2": "目标行业内的相邻从业者,可作为早期用户或内部推荐人。"
+  },
+  "categories": [
+    {"key": "decision_maker", "label": "采购决策者"},
+    {"key": "power_user", "label": "重度用户"},
+    {"key": "champion", "label": "内部推动者"},
+    {"key": "company", "label": "目标公司官方号"},
+    {"key": "partner", "label": "渠道 / 生态伙伴"},
+    {"key": "investor", "label": "赛道投资人"},
+    {"key": "media", "label": "传播 / 社区"},
+    {"key": "other", "label": "其他"}
+  ]
+}

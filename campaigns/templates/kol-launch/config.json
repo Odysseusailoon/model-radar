@@ -1,0 +1,23 @@
+{
+  "title": "【填空:产品名】发布 · KOL 触达名单",
+  "brief_heading": "筛选依据:这次发布什么、要什么传播效果",
+  "company_brief": [
+    "<strong>【填空:公司/产品名】</strong>,【填空:发布内容与最大卖点,只写已官宣口径】。",
+    "<strong>期望传播效果:</strong>【填空:发布日实测 demo / 技术大 V 评价 / 开发者社区覆盖】。",
+    "<strong>因此名单优先级为:</strong>评测博主与能做 demo 的开发者 → 有背书价值的研究者 → 社区节点与媒体 → 相邻领域创作者。"
+  ],
+  "sources_note": "产品口径以【填空:官方发布材料出处】为准,名单触达时不得转述未官宣信息。",
+  "tier_blurbs": {
+    "3": "会做实测/评测/集成内容,或其转发在目标社区有实质分量。",
+    "2": "相邻领域创作者,转发有价值但不会产出深度内容。"
+  },
+  "categories": [
+    {"key": "reviewer", "label": "评测 / 实测博主"},
+    {"key": "builder", "label": "开发者 / 集成作者"},
+    {"key": "researcher", "label": "研究者背书"},
+    {"key": "community", "label": "社区 / Newsletter"},
+    {"key": "media", "label": "媒体 / 记者"},
+    {"key": "adjacent", "label": "相邻领域创作者"},
+    {"key": "other", "label": "其他"}
+  ]
+}

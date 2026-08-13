@@ -1,0 +1,21 @@
+{
+  "title": "【填空:公司名】 · 人才 mapping",
+  "brief_heading": "筛选依据:我们在招什么人",
+  "company_brief": [
+    "<strong>【填空:公司名】</strong>,【填空:业务定位 + 团队/融资亮点】。",
+    "<strong>在招方向:</strong>【填空:方向列表,与 scoring-prompt.md 保持一致】。",
+    "<strong>因此名单优先级为:</strong>方向直接对口的在职研究员/工程师 → 相邻方向与推荐节点。"
+  ],
+  "sources_note": "公司信息以【填空:出处】为准。候选人信息仅来自其公开 bio,触达前请以其主页/论文为准复核。",
+  "tier_blurbs": {
+    "3": "当前就在做在招方向,身份与方向在 bio 中明确。",
+    "2": "相邻方向,或可作为推荐节点的导师 / 社区组织者。"
+  },
+  "categories": [
+    {"key": "role_a", "label": "【填空:方向一】"},
+    {"key": "role_b", "label": "【填空:方向二】"},
+    {"key": "role_c", "label": "【填空:方向三】"},
+    {"key": "referrer", "label": "推荐节点"},
+    {"key": "other", "label": "其他"}
+  ]
+}

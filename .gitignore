@@ -103,9 +103,10 @@ tools/score_aether_relevance.py
 tools/build_aether_report.py
 tools/h3_catalog_*.py
 
-# campaign workspaces: only the example template is published
+# campaign workspaces: only the example + templates are published
 campaigns/*
 !campaigns/README.md
 !campaigns/example/
+!campaigns/templates/
 campaigns/example/judgments.json
 campaigns/example/shortlist-*

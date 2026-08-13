@@ -1,0 +1,23 @@
+{
+  "title": "【填空:公司名】 · 投资人触达名单",
+  "brief_heading": "筛选依据:我们是谁、融什么",
+  "company_brief": [
+    "<strong>【填空:公司名】</strong>,【填空:业务定位 + 可对外的团队/里程碑事实】。",
+    "<strong>融资计划:</strong>【填空:阶段与赛道】。",
+    "<strong>因此名单优先级为:</strong>赛道对口的机构投资人 → 天使与 scout → 基金官方号与战投 → 能引荐的生态角色。"
+  ],
+  "sources_note": "公司事实以【填空:出处】为准;投资人方向信息仅来自其公开 bio,触达前应再核对其近期投资组合。",
+  "tier_blurbs": {
+    "3": "方向与阶段对口的投资人,或该赛道基金的官方号 / scout。",
+    "2": "泛科技投资人、天使、或能引荐的机构角色。"
+  },
+  "categories": [
+    {"key": "lead", "label": "机构投资人"},
+    {"key": "angel", "label": "天使投资人"},
+    {"key": "scout", "label": "Scout / 平台角色"},
+    {"key": "fund", "label": "基金官方号"},
+    {"key": "corp_vc", "label": "战投 / CVC"},
+    {"key": "connector", "label": "FA / 引荐节点"},
+    {"key": "other", "label": "其他"}
+  ]
+}

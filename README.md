@@ -36,6 +36,9 @@ GLM/Z.ai 等竞品)在 X (Twitter) 上的**可引用证据**与**竞争/合作�
 和一个 [aihubmix](https://aihubmix.com) 的 key(经其 Anthropic 兼容网关调用 Claude)。
 填进 `.env` 即可跑全部能力,不需要 X 官方 API 权限。
 
+> **不写代码的 GTM 同学**:直接看 [`docs/GTM-COOKBOOK.md`](docs/GTM-COOKBOOK.md)
+> ——从注册两个 key 到出名单、导飞书,每一步都是复制粘贴。
+
 ### 页面一览
 
 | 路由 | 用途 |
@@ -144,9 +147,10 @@ pytest
 ——飞书多维表格只能导入 CSV/XLSX,不能导入 PDF,所以两个都出。
 
 ```bash
-# 0. 建 campaign(公司背景 + 打分标准,完整虚构示例在 campaigns/example/)
-cp -r campaigns/example campaigns/mycompany
-#    编辑 campaigns/mycompany/scoring-prompt.md 和 config.json
+# 0. 建 campaign(四套现成模版:找客户 / 发布找KOL / 找投资人 / 招聘 mapping,
+#    见 campaigns/templates/;或从完整虚构示例 campaigns/example/ 起步)
+cp -r campaigns/templates/customer-discovery campaigns/mycompany
+#    编辑 campaigns/mycompany/scoring-prompt.md 和 config.json,替换所有【填空】
 
 # 1. 抓源账号的关注列表
 .venv/bin/python tools/fetch_followings.py some_researcher
