@@ -33,6 +33,8 @@ sd25-*.json
 ashby_*.json
 *-follow-status*.json
 *-judgments.json
+*-followings.json
+aether-shortlist-*
 k3-report-kols.json
 leaderboard-timeline.json
 hf-checkpoints.json
@@ -58,3 +60,52 @@ tools/update_h3_kol_follows.py
 tools/tag_devtools_interest.py
 tools/h3_daily_digest.py
 tools/h3_fetch_deep_evidence.py
+
+# ---------------------------------------------------------------------------
+# 2026-08-13 standard-GTM-repo cleanup: everything below was untracked from
+# HEAD (git rm --cached). Same two reasons as above — scraped personal data
+# or internal campaign one-offs. Files stay on local disk.
+# NOTE: they remain in old git history; only new clones of HEAD are clean.
+# ---------------------------------------------------------------------------
+products.json
+flux-mentions*.json
+fresh-launches.json
+jensen-wave.json
+kol-candidates*.json
+kol-ranked.md
+mj-*.json
+seedance*.json
+topics-mentions.json
+*-mutuals.json
+*-mutuals.md
+*-mutuals-filtered.json
+*-graph.json
+*qr*.png
+MINIMAX-*.md
+chris_j_paxton-followings.json
+
+# one-off campaign scripts (superseded by the generic campaigns/ pipeline)
+tools/append_new_kols.py
+tools/check_hailuo_reverse.py
+tools/check_minimax_follow.py
+tools/check_official_follow.py
+tools/extract_machines.py
+tools/fetch_asuka_graph.py
+tools/filter_official_and_ceo.py
+tools/kol_personas_from_followings.py
+tools/merge_mutuals_into_candidates.py
+tools/partner_scan.py
+tools/sd25_promo_today.py
+tools/wan3_*.py
+tools/voidasuka_*.py
+tools/h3_*.py
+tools/score_aether_relevance.py
+tools/build_aether_report.py
+tools/h3_catalog_*.py
+
+# campaign workspaces: only the example template is published
+campaigns/*
+!campaigns/README.md
+!campaigns/example/
+campaigns/example/judgments.json
+campaigns/example/shortlist-*

@@ -21,7 +21,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-HANDLE = (sys.argv[1] if len(sys.argv) > 1 else "VoidAsuka").lstrip("@")
+if len(sys.argv) < 2:
+    raise SystemExit("usage: tools/mutuals.py <screen_name>")
+HANDLE = sys.argv[1].lstrip("@")
 CACHE_DIR = Path(os.getenv("MUTUALS_CACHE_DIR", "/tmp/mutuals-cache"))
 OUT_MD = ROOT / f"{HANDLE.lower()}-mutuals.md"
 OUT_JSON = ROOT / f"{HANDLE.lower()}-mutuals.json"

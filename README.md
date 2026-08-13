@@ -27,6 +27,14 @@ GLM/Z.ai 等竞品)在 X (Twitter) 上的**可引用证据**与**竞争/合作�
   关注某公司/人,常是合作/招聘/兴趣的早期信号 → 飞书卡片。
 - **KOL 发现工具**(`tools/build_kol_list.py`):从一组种子实验室/研究者账号的关注交集里
   挖掘高可信度 KOL(被 ≥N 个种子共同关注),按粉丝排序产出候选名单。
+- **外联名单 pipeline**(`campaigns/`):从任意一个人的关注列表出发,LLM 逐个打分,
+  产出「谁会对某家公司/产品感兴趣」的可执行外联名单(PDF + 可导入飞书的 CSV)。
+  见下文 [外联名单 pipeline](#外联名单-pipeline--关注列表--可执行名单) 与
+  `campaigns/README.md`。
+
+**你只需要两把钥匙**:一个 [twitterapi.io](https://twitterapi.io) 的 API key(抓 X 数据)
+和一个 [aihubmix](https://aihubmix.com) 的 key(经其 Anthropic 兼容网关调用 Claude)。
+填进 `.env` 即可跑全部能力,不需要 X 官方 API 权限。
 
 ### 页面一览
 
@@ -63,7 +71,16 @@ app/
   queries.py     证据筛选(feed 与导出共用同一套筛选语义)
   export.py      CSV 生成(纯函数,便于测试)
   templates/     Jinja2:base / feed / admin_products
+  llm.py         网关辅助:取回复中第一个非空 text block(见下文「aihubmix 网关的坑」)
 tests/           pytest:分类 JSON 解析、去重、导出格式(全部 mock 外部调用)
+tools/           独立 CLI 工具(不依赖数据库,只要 .env 里的两个 key):
+  fetch_followings.py      抓一个账号的完整关注列表(含 bio,可直接打分)
+  fetch_graph.py           抓一个账号的关注+粉丝图谱(用于「与我关系」比对)
+  score_relevance.py       LLM 按 campaign prompt 逐个打分(带缓存,断点续跑)
+  build_outreach_report.py 出外联名单:PDF + 飞书可导入的 CSV
+  mutuals.py               列互粉(AI/科技圈过滤,按粉丝排序)
+  build_kol_list.py        种子账号关注交集 → KOL 候选名单
+campaigns/       外联 campaign 模板与工作区(example/ 为完整虚构示例)
 products.example.json   K3 示例 + 空的 GLM 模板
 Dockerfile  docker-compose.yml  railway.json  requirements.txt
 ```
@@ -114,6 +131,51 @@ pytest
 ```
 3 个测试文件覆盖:分类器 JSON 解析/归一化、去重逻辑、CSV 导出格式。全部 mock 外部调用,
 不需要网络或数据库。
+
+---
+
+## 外联名单 pipeline — 关注列表 → 可执行名单
+
+持续监测(上面的 radar)之外的另一条腿:**一次性、campaign 式的外联名单生产**。
+典型问题:「@某研究员 的关注列表里,谁会对我们公司感兴趣?」
+
+产出是两个文件:一份分层排版的 **PDF**(公司背景 → 统计 → 优先触达 → 按分类分组的
+人物表,每人带链接、粉丝数、相关度、一句话理由),和一份**带 BOM 的 CSV**
+——飞书多维表格只能导入 CSV/XLSX,不能导入 PDF,所以两个都出。
+
+```bash
+# 0. 建 campaign(公司背景 + 打分标准,完整虚构示例在 campaigns/example/)
+cp -r campaigns/example campaigns/mycompany
+#    编辑 campaigns/mycompany/scoring-prompt.md 和 config.json
+
+# 1. 抓源账号的关注列表
+.venv/bin/python tools/fetch_followings.py some_researcher
+
+# 2. LLM 逐个打分(带缓存;3,500 人约 $1–2,断了重跑不重复花钱)
+.venv/bin/python tools/score_relevance.py some_researcher-followings.json \
+    --campaign campaigns/mycompany
+
+# 3. 出报告(--self-graph 可选:加「与我关系」四态列 + 优先触达页)
+.venv/bin/python tools/fetch_graph.py YourHandle
+.venv/bin/python tools/build_outreach_report.py some_researcher-followings.json \
+    --campaign campaigns/mycompany --self-graph yourhandle-graph.json --self-name @YourHandle
+```
+
+细节(写 prompt 的要点、成本、四态关系的含义)见 **`campaigns/README.md`**。
+campaign 工作区默认 gitignore——名单里是几千个真实的人,不进公开仓库。
+
+---
+
+## aihubmix 网关的坑(重要)⭐
+
+经 aihubmix 调 Claude 时,网关会在**每个**回复前面加一个 extended-thinking block:
+
+1. **`msg.content[0]` 不再是 text block**——`content[0].text` 为 `None`。
+   取文本一律用 `app/llm.py` 的 `first_text(msg)`,或按 `block.type == "text"` 过滤。
+2. **thinking 会先消耗 1,500–4,000 个 `max_tokens`** 才轮到正文。按正文预算设的
+   `max_tokens`(如 1024)会导致 `stop_reason == "max_tokens"`、正文为空——
+   拼接式代码会**静默返回空字符串**而不是报错。仓库内所有调用已把 `max_tokens`
+   设到 5000+,并在空回复时显式 raise;新写调用请照此办理。
 
 ---
 

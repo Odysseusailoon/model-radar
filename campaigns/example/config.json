@@ -1,0 +1,29 @@
+{
+  "title": "Northwind Dynamics · 潜在人脉名单",
+  "brief_heading": "筛选依据:这家公司在做什么",
+  "company_brief": [
+    "<strong>Northwind Dynamics(虚构示例公司)</strong>,2026 年成立,做机器人触觉感知基础模型:高密度触觉传感器 + 跨本体的触觉表征预训练,让机械手在接触瞬间估计材质、滑移与握持稳定性。种子轮由虚构资本领投。",
+    "<strong>技术主张:</strong>当前 VLA 与世界模型几乎只用视觉,接触物理靠仿真凑;他们主张操作类任务的瓶颈在触觉,做「触觉优先」的操作栈。",
+    "<strong>因此名单优先级为:</strong>触觉感知同行 → 操作/灵巧手 → 具身智能/VLA → 机器人公司决策者与 physical AI 投资人 → 仿真、硬件、传播节点。"
+  ],
+  "sources_note": "公司信息来源:示例内容,替换为你的真实来源(融资公告 / 官网 / 可信报道),未经来源证实的说法一律不写。",
+  "tier_blurbs": {
+    "3": "命中核心技术交集:触觉感知、操作/灵巧手、具身智能,或为机器人公司决策者、physical AI 投资人。",
+    "2": "机器人、具身、仿真、硬件与生态相关从业者,可作为早期用户、候选人或传播节点。"
+  },
+  "categories": [
+    {"key": "tactile", "label": "触觉感知"},
+    {"key": "manipulation", "label": "操作 / 抓取 / 灵巧手"},
+    {"key": "embodied", "label": "具身智能 / VLA"},
+    {"key": "world_model", "label": "世界模型 / model-based RL"},
+    {"key": "humanoid", "label": "人形 / 足式"},
+    {"key": "sim", "label": "仿真 / 合成数据"},
+    {"key": "hardware", "label": "机器人硬件"},
+    {"key": "robot_company", "label": "机器人公司决策者"},
+    {"key": "investor", "label": "投资人"},
+    {"key": "academia", "label": "相关领域学者"},
+    {"key": "infra", "label": "算力 / 数据 / 工具链"},
+    {"key": "media", "label": "传播 / 社区"},
+    {"key": "other", "label": "其他"}
+  ]
+}

@@ -195,11 +195,21 @@ class Classifier:
     def _call(self, tweet: Tweet, product: Product) -> str:
         msg = self.client.messages.create(
             model=self.model,
-            max_tokens=1024,
+            # The gateway prepends an extended-thinking block that spends 1.5-4k
+            # tokens of this budget before the answer starts. At 1024 the answer
+            # never got emitted and this returned "" -- a silent misclassify,
+            # not an error. Keep well clear of the thinking ceiling.
+            max_tokens=6000,
             system=SYSTEM_PROMPT,
             messages=[{"role": "user", "content": _build_user_prompt(tweet, product)}],
         )
-        return "".join(block.text for block in msg.content if getattr(block, "type", None) == "text")
+        text = "".join(block.text for block in msg.content
+                       if getattr(block, "type", None) == "text" and block.text)
+        if not text:
+            raise RuntimeError(
+                f"empty reply (stop_reason={msg.stop_reason}, "
+                f"blocks={[getattr(b, 'type', '?') for b in msg.content]})")
+        return text
 
     def classify(self, tweet: Tweet, product: Product) -> ClassificationResult:
         """Classify one tweet. Retries once on JSON-parse failure; a second
