@@ -3,3 +3,58 @@ __pycache__/
 *.pyc
 .venv/
 .pytest_cache/
+
+# ---------------------------------------------------------------------------
+# Scraped / derived datasets — keep local, never commit.
+#
+# These files hold public-profile scrapes of thousands of real people (handle,
+# display name, bio, location, follower count) and verbatim third-party tweet
+# text. Scraped tweet text has also been observed to contain live API keys that
+# other people published themselves; republishing those here would leak someone
+# else's credential. This repository's history is world-readable, so the whole
+# class stays out of git.
+# ---------------------------------------------------------------------------
+voidasuka-mediakit-raw.json
+voidasuka-graph.json
+h3-*.json
+h3-*.xml
+h3-*.md
+H3-*.md
+H3-*.xml
+minimax-*.json
+minimax-*.md
+hailuo-*.json
+flux-kol-*.json
+flux-global-*.json
+wan3-*.json
+wan3-*.md
+ltx25-*.json
+sd25-*.json
+ashby_*.json
+*-follow-status*.json
+*-judgments.json
+k3-report-kols.json
+leaderboard-timeline.json
+hf-checkpoints.json
+partner-offers.json
+tml.json
+periodic.html
+resume-data-pipeline-rl.md
+
+# ---------------------------------------------------------------------------
+# Internal GTM tooling — runs locally only, deliberately unpublished.
+#
+# Each of these embeds one or more of: Feishu Base app tokens / table ids /
+# group chat ids, the KOL outreach playbook (DM copy, free-credit offer, GID
+# claim flow), or product names that are not publicly announced. None of it is
+# a secret on its own, but together it is internal operating detail that does
+# not belong in a public repo.
+# ---------------------------------------------------------------------------
+tools/gen_dm_scripts.py
+tools/refine_gid_steps.py
+tools/push_dm_columns.py
+tools/populate_h3_kol_table.py
+tools/update_h3_kol_follows.py
+tools/tag_devtools_interest.py
+tools/h3_daily_digest.py
+tools/h3_fetch_deep_evidence.py
