@@ -1,449 +1,296 @@
-# Model Radar 📡 — OSS 前沿模型 GTM 情报雷达
+# Model Radar
 
-为 **MiniMax GTM 团队**持续追踪 OSS 前沿大模型阵营(MiniMax 自己 + Kimi/Moonshot、
-GLM/Z.ai 等竞品)在 X (Twitter) 上的**可引用证据**与**竞争/合作情报**:LLM 自动分类,
-沉淀成可筛选、可导出、可推送到飞书(Lark)的结构化情报,并每天监测各实验室官方号的新动态。
+把 X 和公开 OSS 生态证据整理成可复核的模型发布报告、KOL 名单、外联清单与飞书/PDF 交付物。
 
-> _Track the OSS frontier-model field — demos, customer cases, expert takes, partnerships,
-> and eval results — and turn it into citable, filterable, Lark-pushable intelligence for GTM._
+这个仓库来自真实的模型 GTM 工作流。它更像一个 **script-first intelligence workbench**，
+不是一个要求长期部署的 SaaS：先围绕具体问题采集公开证据，再人工或借助 coding agent 复核，
+最后产出能回到原帖、能解释口径、能重复运行的报告。
 
-### 它解决什么
+> 仓库只发布代码、模板和不含真人数据的文档。抓取结果、联系人名单、截图、私信、报价与
+> 未公开 campaign 信息都留在本地，不进入 git。
 
-市场/销售想引用真实社会证据(demo / 客户 case / 大佬评价)时,素材散落在时间线里、难以
-检索取用;与此同时,GTM 又需要盯竞品的**合作、集成、企业采用、评测排名**动向。Model Radar
-把这两件事收进同一个可运营的后台。
+## 最近实际在怎么用
 
-### 核心能力
+| 交付物 | 最近的实际问题 | 从哪里开始 | 典型输出 |
+|---|---|---|---|
+| 发布复盘报告 | 一个模型 launch 后，声量、好/坏 case、本地部署、渠道接入和 D+10 留存如何变化？ | `tools/m31_flash_launch_*`、`tools/m31_flash_d10_*` | 带原帖链接的 Markdown、JSON、PDF |
+| 竞品与舆情扫描 | Kimi、GLM、DeepSeek、GPT、Gemini 等发布时，官方、合作方和用户分别在说什么？ | `tools/release_reaction_scan.py`、`tools/flagship_launch_*`、各主题 `*_scan.py` | 分类证据、对比表、发布节奏时间线 |
+| KOL / Core Influencer 名单 | 哪些研究者、开发者和 infra 账号被多个种子共同关注，值得进入长期观察或外联池？ | `tools/build_kol_list.py`、`tools/fetch_graph.py`、`tools/mutuals.py` | 去重名单、关系字段、CSV |
+| Campaign 外联名单 | 某位研究者的关注列表里，谁更可能对一个产品、活动或合作方向感兴趣？ | `tools/fetch_followings.py`、`tools/score_relevance.py`、`tools/build_outreach_report.py` | 分层 PDF + 飞书可导入 CSV |
+| OSS 生态追踪 | 新增了哪些权重、量化、推理后端、工作流或社区集成？哪些只是研究结果，哪些已有可用 artifact？ | `app/h3_watch.py`、公开 repo/模型页证据、`tools/readme_to_feishu.py` | 生态更新清单、README patch、飞书审阅稿 |
+| 周报与证据库 | 需要持续监测多个模型，而不是只做一次报告 | `app/` | Dashboard、证据流、周报、CSV、飞书告警 |
 
-- **多产品复用是一等公民**:产品名 / 关键词 / 官方号 / 种子 KOL / launch 日期都是数据库
-  配置行。加一个新产品 = 在 `/admin/products` 填一张表单,**零代码改动**。
-- **七类证据分类(Claude Haiku)**:真实 Demo / 客户 Case / 大佬评价 / **合作集成** /
-  资讯 / 推广 / 无关,外加 `竞争情报` 与 `评测/基准` 标记(抓取 SWE-bench、LMArena 等
-  榜单提及)。
-- **跨产品对比不丢**:一条“M2 吊打 GLM-5 和 Kimi K3”的对比推会同时挂到三个产品下——
-  竞争对比正是 GTM 最想要的情报。
-- **飞书告警**:高影响力提及 / 合作情报 / 高置信证据三类卡片,去重推送到 Lark。
-- **每日实验室监测**:每天拉取各 OSS 实验室官方号的新推 + **关注列表 diff**——实验室新增
-  关注某公司/人,常是合作/招聘/兴趣的早期信号 → 飞书卡片。
-- **KOL 发现工具**(`tools/build_kol_list.py`):从一组种子实验室/研究者账号的关注交集里
-  挖掘高可信度 KOL(被 ≥N 个种子共同关注),按粉丝排序产出候选名单。
-- **外联名单 pipeline**(`campaigns/`):从任意一个人的关注列表出发,LLM 逐个打分,
-  产出「谁会对某家公司/产品感兴趣」的可执行外联名单(PDF + 可导入飞书的 CSV)。
-  见下文 [外联名单 pipeline](#外联名单-pipeline--关注列表--可执行名单) 与
-  `campaigns/README.md`。
-- **发布复盘报告流水线**(`tools/*_<YYYYMMDD>.py`):围绕一次具体发布做深度扫描 →
-  LLM 打标 → 聚合 → 出飞书/PDF 报告。每个脚本把当时的查询窗口和口径写死,
-  半年后还能复算同一份数字。见下文 [扫描 → 报告流水线](#扫描--报告流水线一次性深度报告)。
+高频路径其实是前三种：**围绕一个明确问题写查询 → 拉公开证据 → 复核 → 聚合 → 交付**。
+常驻 Dashboard 是可选能力，不是使用这个仓库的前提。
 
-**你只需要两把钥匙**:一个 [twitterapi.io](https://twitterapi.io) 的 API key(抓 X 数据)
-和一个 [aihubmix](https://aihubmix.com) 的 key(经其 Anthropic 兼容网关调用 Claude)。
-填进 `.env` 即可跑全部能力,不需要 X 官方 API 权限。
+## 工作流
 
-> **不写代码的 GTM 同学**:直接看 [`docs/GTM-COOKBOOK.md`](docs/GTM-COOKBOOK.md)
-> ——从注册两个 key 到出名单、导飞书,每一步都是复制粘贴。
-
-### 页面一览
-
-| 路由 | 用途 |
-|---|---|
-| `/` | **概览**:证据量趋势、分类/情感分布、Top 声量、总 reach |
-| `/digest` | **周报**:按产品汇总本周合作/Demo/评测亮点 + 环比 |
-| `/feed` | **证据流**:筛选 + 逐条人工复核(通过/拒绝) |
-| `/admin/products` | **产品配置**:关键词/官方号/种子 KOL/launch |
-| `/export` | 按当前筛选**导出 CSV**(带 BOM,Excel 友好) |
-| `/debug/collect` · `/debug/follow-watch` · `/debug/reset` | 手动采集 / 每日监测 / 清库重拉(Basic Auth) |
-
-全站 HTTP Basic Auth(`marketing` / `DASHBOARD_PASSWORD`);单进程部署,uvicorn 同时服务
-后台并跑 APScheduler 定时任务。
-
----
-
-## 目录结构
-
-```
-app/
-  main.py        FastAPI 应用:dashboard / 复核 / 导出 / admin / webhook / health + APScheduler
-  config.py      所有环境变量(密钥、阈值、护栏)—— 产品配置不在这里,在数据库
-  db.py          SQLAlchemy engine / session,启动自动建表
-  models.py      三张表:products / evidence / alerts_sent
-  crud.py        产品配置增删改 + 从 JSON 播种
-  xclient.py     ⭐ 唯一与 twitterapi.io 通信的地方;所有字段映射集中于此
-  collector.py   采集编排:关键词阶段(增量)+ 全局 KOL 池(按内容归属)+ 限速加固
-  follow_watch.py 每日实验室监测:官方号新推 + 关注列表 diff → partnership 告警
-  digest.py      周报聚合:按产品汇总本周合作/Demo/评测亮点 + 环比
-  pipeline.py    共享管道:去重 → 分类 → 存储(轮询与 webhook 共用)
-  classifier.py  Claude Haiku 分类(含完整分类 prompt),严格 JSON、失败重试
-  alerts.py      飞书告警卡片 + 去重
-  queries.py     证据筛选(feed 与导出共用同一套筛选语义)
-  export.py      CSV 生成(纯函数,便于测试)
-  templates/     Jinja2:base / feed / admin_products
-  llm.py         网关辅助:取回复中第一个非空 text block(见下文「aihubmix 网关的坑」)
-tests/           pytest:分类 JSON 解析、去重、导出格式(全部 mock 外部调用)
-tools/           独立 CLI 工具(不依赖数据库,只要 .env 里的两个 key)
-  # —— 长期复用 ——
-  fetch_followings.py      抓一个账号的完整关注列表(含 bio,可直接打分)
-  fetch_graph.py           抓一个账号的关注+粉丝图谱(用于「与我关系」比对)
-  score_relevance.py       LLM 按 campaign prompt 逐个打分(带缓存,断点续跑)
-  build_outreach_report.py 出外联名单:PDF + 飞书可导入的 CSV
-  mutuals.py               列互粉(AI/科技圈过滤,按粉丝排序)
-  build_kol_list.py        种子账号关注交集 → KOL 候选名单
-  validate_palette.py      图表配色校验(报告里的图统一走同一套色板)
-  # —— 渲染 / 发布 ——
-  feishu_md_escape.py      转义 markdown,供 lark-cli `docs +create` 导入(见下文)
-  md_to_pdf.mjs            markdown → 打印版 HTML + A4 PDF(headless Chrome)
-  readme_to_feishu.py      GitHub README → 飞书可导入版(剥掉 badge / <details>)
-  # —— 一次性扫描 ——  约 45 个,命名 <主题>_<阶段>_<YYYYMMDD>.py,见「扫描 → 报告流水线」
-  <topic>_scan_*.py        拉 X 原始数据 → <topic>-tweets-<date>.json
-  <topic>_classify_*.py    LLM 逐条打标 → analysis.json
-  <topic>_analyze_*.py     聚合出表格/榜单 → analysis.md / volume.json
-  <topic>_feishu_*.py      写回飞书多维表格 / 文档
-campaigns/       外联 campaign 模板与工作区(example/ 为完整虚构示例)
-products.example.json   K3 示例 + 空的 GLM 模板
-Dockerfile  docker-compose.yml  railway.json  requirements.txt
-
-# 以下目录在本地生成,全部 gitignore(见「数据与凭证边界」):
-reports/         每轮正式报告的工作区:<YYYY-MM-DD>-<主题>/
-                 ├─ evidence/        原始抓取 JSON
-                 ├─ *.log            每次扫描/打标的运行日志
-                 ├─ analysis.json    逐条打标结果
-                 ├─ REPORT.zh-CN.md  正文
-                 └─ _feishu-*.md     同一份正文的飞书导入版
-outputs/         KOL 名单、主页截图、配图等交付物工作区
+```text
+公开问题
+  ↓
+查询窗口与口径（写进脚本）
+  ↓
+X / GitHub / Hugging Face 等公开证据
+  ↓
+去重、分类、人工复核
+  ↓
+数字 + 可点击证据 + 限制说明
+  ↓
+Markdown / CSV / PDF / 飞书
 ```
 
----
+每轮工作都遵守四条规则：
 
-## 本地跑起来(Docker,推荐)
+1. **先定义口径，再跑数字。** 时间窗、query 形状、分页上限和排除规则必须能回读。
+2. **每个重要判断都能点回原证据。** 推文 ID、repo、模型页和发布日期不靠记忆补。
+3. **区分公开事实、分析判断和未验证线索。** 集成不等于合作；draft 不等于发布；研究结果不等于可用权重。
+4. **真人数据不进仓库。** 代码可复用，抓取 payload、联系人清单和沟通内容不可默认公开。
 
-前置:装好 Docker Desktop。
+## Quick start
 
-1. 复制环境变量模板并填入你的 key:
-   ```bash
-   cp .env.example .env
-   # 编辑 .env:至少填 TWITTERAPI_KEY、ANTHROPIC_API_KEY;想收告警再填 FEISHU_WEBHOOK_URL
-   ```
-2. 起服务(app + postgres):
-   ```bash
-   docker compose --env-file .env up --build
-   ```
-   - 首次启动会自动建表,并从 `products.example.json` 播种一个 **K3** 测试产品配置
-     (因为 `SEED_PRODUCTS_FILE=products.example.json`)。
-   - ⚠️ 播种只在 products 表为空时发生。之后请用 `/admin/products` 管理产品。
-3. 打开 dashboard:<http://localhost:8000/>
-   - 账号 `marketing`,密码为你在 `.env` 里设的 `DASHBOARD_PASSWORD`。
-4. **不想等 10 分钟?** 立即采集一次(需 Basic Auth):
-   ```bash
-   curl -u marketing:你的密码 -X POST http://localhost:8000/debug/collect
-   ```
-   返回本次采集统计。刷新 `/` 即可看到入库并被分类的推文。
-
-> 先去 `/admin/products` 把 K3 的关键词改成能真正命中、且能消歧的词
-> (裸 `K3` 会命中一堆汽车/相机噪声)。改完下一个周期(或再点一次 `/debug/collect`)生效。
-
-### 本地跑(不用 Docker)
+### 1. 安装
 
 ```bash
-pip install -r requirements.txt
-# 需要一个可连的 Postgres,并设置 DATABASE_URL 及其它环境变量
-export $(grep -v '^#' .env | xargs)
-uvicorn app.main:app --reload
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+cp .env.example .env
 ```
 
-### 跑测试
+大多数 live X 扫描只需要在 `.env` 中填写：
 
-```bash
-pip install -r requirements.txt
-pytest
-```
-3 个测试文件覆盖:分类器 JSON 解析/归一化、去重逻辑、CSV 导出格式。全部 mock 外部调用,
-不需要网络或数据库。
-
----
-
-## 外联名单 pipeline — 关注列表 → 可执行名单
-
-持续监测(上面的 radar)之外的另一条腿:**一次性、campaign 式的外联名单生产**。
-典型问题:「@某研究员 的关注列表里,谁会对我们公司感兴趣?」
-
-产出是两个文件:一份分层排版的 **PDF**(公司背景 → 统计 → 优先触达 → 按分类分组的
-人物表,每人带链接、粉丝数、相关度、一句话理由),和一份**带 BOM 的 CSV**
-——飞书多维表格只能导入 CSV/XLSX,不能导入 PDF,所以两个都出。
-
-```bash
-# 0. 建 campaign(四套现成模版:找客户 / 发布找KOL / 找投资人 / 招聘 mapping,
-#    见 campaigns/templates/;或从完整虚构示例 campaigns/example/ 起步)
-cp -r campaigns/templates/customer-discovery campaigns/mycompany
-#    编辑 campaigns/mycompany/scoring-prompt.md 和 config.json,替换所有【填空】
-
-# 1. 抓源账号的关注列表
-.venv/bin/python tools/fetch_followings.py some_researcher
-
-# 2. LLM 逐个打分(带缓存;3,500 人约 $1–2,断了重跑不重复花钱)
-.venv/bin/python tools/score_relevance.py some_researcher-followings.json \
-    --campaign campaigns/mycompany
-
-# 3. 出报告(--self-graph 可选:加「与我关系」四态列 + 优先触达页)
-.venv/bin/python tools/fetch_graph.py YourHandle
-.venv/bin/python tools/build_outreach_report.py some_researcher-followings.json \
-    --campaign campaigns/mycompany --self-graph yourhandle-graph.json --self-name @YourHandle
+```dotenv
+TWITTERAPI_KEY=your_key
 ```
 
-细节(写 prompt 的要点、成本、四态关系的含义)见 **`campaigns/README.md`**。
-campaign 工作区默认 gitignore——名单里是几千个真实的人,不进公开仓库。
+如果你已经有缓存 JSON，做聚合、审阅、转 CSV 或渲染报告时不需要任何外部 API key。
 
----
+### 2. 先跑一个真实的发布复盘
 
-## 扫描 → 报告流水线(一次性深度报告)
-
-radar 和外联名单之外的第三条腿:围绕一次**具体发布/事件**做深度复盘,产出可直接
-进飞书的报告。`tools/` 里带日期后缀的脚本都是这条线的产物——它们是
-**run 记录**,不是通用库:每个都把当时的查询窗口、搜索词、口径写死在文件里,
-所以半年后还能复算同一份数字。
-
-典型一轮(以 `reports/2026-10-29-m31-flash-d10/` 为例):
+下面这组脚本保留了 M3.1 Flash launch 与 D+10 复盘的真实查询结构：
 
 ```bash
-# 1. 扫描:按小时/主题切分 query,原始推文落到 reports/<date>-<topic>/evidence/
-.venv/bin/python tools/m31_flash_d10_scan_20261029.py        # → evidence/merged-*.json
-.venv/bin/python tools/m31_flash_d10_volume_20261029.py      # → 同口径声量基线
+# 按主题和时间窗抓公开 X 证据
+TWITTERAPI_MIN_INTERVAL=1.2 \
+  .venv/bin/python tools/m31_flash_d10_scan_20261029.py --group main --suffix -local
 
-# 2. 打标:Claude Haiku 批量分类,可断点续跑
-.venv/bin/python tools/m31_flash_d10_classify_20261029.py    # → evidence/classified.json
+# 拉同口径日声量，避免只看一个孤立数字
+TWITTERAPI_MIN_INTERVAL=1.8 \
+  .venv/bin/python tools/m31_flash_d10_volume_20261029.py
 
-# 3. 聚合:出数字、曲线、与上一轮报告的 delta
-.venv/bin/python tools/m31_flash_d10_analyze_20261029.py     # → analysis.json + analysis.md
+# 先列出这一组会跑哪些 query，不发请求
+.venv/bin/python tools/m31_flash_d10_scan_20261029.py --group main --list
+```
 
-# 4. 发布:正文写进 REPORT.zh-CN.md,再转义成飞书导入版
-.venv/bin/python tools/feishu_md_escape.py REPORT.zh-CN.md > _feishu-REPORT.md
+日期脚本是 run record，不是抽象 SDK。复制一组最接近的脚本，修改窗口、关键词、对照组和
+输出目录，通常比从零写一个“万能扫描器”更可审计。`*_analyze_*.py` 需要对应目录中已有
+分类结果；只有 raw scan 时，先人工或用下一节任一方式生成该脚本约定的 `classified.json`。
+
+### 3. LLM 分类是可选步骤
+
+采集和渲染不依赖 LLM。需要批量分类时有三种方式：
+
+- 直接让 Claude Code、Codex 或其他 coding agent 读取缓存 JSON，按项目 schema 输出分类结果；
+- 使用你自己的模型/API，把结果写成分析脚本期望的 JSON；
+- 运行仓库里的 `*_classify_*.py` 或 `tools/score_relevance.py`。这些脚本使用
+  Anthropic-compatible 环境变量，只有走这条路径时才需要相应的 LLM credential。
+
+因此，**这个仓库没有第二把“必填模型 API key”**。最近几轮实际工作主要是 live X 采集加
+agent-assisted review；不要为了跑扫描先配置一个不需要的 LLM 网关。
+
+## Use case 1：模型发布复盘
+
+适合回答：
+
+- launch 当天到底出现了哪些真实使用 case，而不是只有转发和宣传？
+- open weights 发布后，GGUF、MLX、vLLM、SGLang、Ollama 等生态接入何时出现？
+- 用户是在继续使用、开始付费，还是几天后切回其他模型？
+- 与竞品相比，声量、渠道覆盖和有效证据密度如何？
+
+一轮标准目录：
+
+```text
+reports/<date>-<topic>/
+  evidence/          原始抓取与分片结果
+  *.log              query、窗口、分页和错误
+  analysis.json      结构化分类与聚合
+  REPORT.zh-CN.md    正文
+  _feishu-*.md       飞书导入版
+```
+
+典型步骤：
+
+```bash
+# 1. scan：按小时/主题拆 query，避免超长 query 和分页截断
+.venv/bin/python tools/m31_flash_launch_scan_20261019.py
+
+# 2. classify：可选；脚本支持缓存或断点续跑
+.venv/bin/python tools/m31_flash_launch_classify_20261019.py
+
+# 3. analyze：聚合类别、渠道、竞品、好坏 case 与引用
+.venv/bin/python tools/m31_flash_launch_analyze_20261019.py
+
+# 4. render：Markdown → A4 PDF
 node tools/md_to_pdf.mjs REPORT.zh-CN.md out.html out.pdf "MODEL RADAR"
 ```
 
-几条踩过坑后固化下来的规矩:
+仓库里还有 release reaction、flagship launch、Space Bunny、GLM、GPT、Gemini、Muse、
+Forkscope 等公开主题脚本。它们的价值是保留当时的查询设计和分析 schema，不代表对应报告
+或原始数据已经公开。
 
-- **声量必须有同口径基线**。「发布后 X 条推」单独看没有意义,要和同期另一个发布
-  (如 DeepSeek V4.1-Flash)用**同一套 query 形状**对比才有判断力。
-- **超长 query 会 400,分页上限 400 条**。宽窗口要按小时拆开扫,不要指望一个
-  query 拿全。
-- **引用的推文 ID 必须回表查**,不要凭记忆写——报告里每个数字都要能点回原推。
-- **每一步都留 `.log`**。重跑时先看日志里的窗口和 query,否则口径会悄悄漂。
-- 打标脚本一律**可续跑**(已处理的 ID 落盘跳过),LLM 批量打标断在中途是常态。
+## Use case 2：KOL 与外联名单
 
-报告工作区 `reports/` 和 `outputs/` 全部 gitignore——里面是原始抓取和真人截图。
-仓库里版本化的只有**脚本**,即复算报告所需的全部逻辑。
+### 种子关注交集 → KOL 候选
 
----
+`build_kol_list.py` 会优先复用已有缓存，只对缺失种子做 live fetch：
+
+```bash
+TWITTERAPI_KEY=your_key .venv/bin/python tools/build_kol_list.py
+```
+
+适合找“被多个实验室、研究者或 infra 账号共同关注的人”。交集强度只是发现信号，不能自动
+等同于影响力、合作意向或 endorsement；进入名单前仍要看个人资料和近期内容。
+
+### 关注列表 → campaign 名单
+
+```bash
+# 0. 从模板建立一个本地 campaign
+cp -r campaigns/templates/customer-discovery campaigns/my-campaign
+# 编辑 scoring-prompt.md 和 config.json，替换所有【填空】
+
+# 1. 抓源账号关注列表
+.venv/bin/python tools/fetch_followings.py some_researcher
+
+# 2. 可选：批量打分；也可以由 coding agent 或自有模型生成同 schema 结果
+.venv/bin/python tools/score_relevance.py some_researcher-followings.json \
+  --campaign campaigns/my-campaign
+
+# 3. 加自己的关系图并输出 PDF + CSV
+.venv/bin/python tools/fetch_graph.py YourHandle
+.venv/bin/python tools/build_outreach_report.py some_researcher-followings.json \
+  --campaign campaigns/my-campaign \
+  --self-graph yourhandle-graph.json \
+  --self-name @YourHandle
+```
+
+四套起始模板在 `campaigns/templates/`：customer discovery、KOL launch、investor scan、
+talent scan。模板可以公开；真实 campaign 目录、评分结果和联系人资料默认 gitignore。
+
+## Use case 3：OSS 生态追踪
+
+这条线不只看“谁发了推”，而是持续核对可用 artifact：
+
+- 模型与权重页；
+- quantization / GGUF / MLX；
+- vLLM、SGLang、Ollama、LM Studio 等推理路径；
+- text encoder、VAE、workflow、demo 与复现项目；
+- 研究论文、性能声明与实际可下载内容之间的差异。
+
+`app/h3_watch.py` 提供 H3 生态窗口监测；`tools/readme_to_feishu.py` 保留了把 H3 官方生态
+README 转成飞书审阅稿时使用的专用规则。它固定读取工作区中的
+`MINIMAX-H3-OFFICIAL-README.md`，适合作为新转换器的起点，不是任意 README 的通用 CLI。
+维护生态 index 时，先验证链接、license、artifact 状态和归属，再改 README；不要把
+“提到模型”升级成“官方合作”。
+
+## Use case 4：交付到飞书和 PDF
+
+```bash
+# 普通报告转飞书安全 Markdown
+.venv/bin/python tools/feishu_md_escape.py REPORT.zh-CN.md _feishu-REPORT.md
+
+# H3 生态 README 专用转换器；固定读取 MINIMAX-H3-OFFICIAL-README.md
+.venv/bin/python tools/readme_to_feishu.py
+
+# Markdown 转打印版 HTML + PDF（首次先 npm install marked）
+npm install marked
+node tools/md_to_pdf.mjs REPORT.zh-CN.md out.html out.pdf "MODEL RADAR"
+```
+
+飞书文档、表格和 PDF 是不同交付物：PDF 适合固定版式审阅，CSV/XLSX 才适合导入多维表格。
+“生成了文件”也不等于已经推送、分享或发布，外部终态要单独验证。
+
+## 可选：常驻 Dashboard
+
+`app/` 是 FastAPI + Postgres 的持续监测版本，适合多产品长期运行：
+
+- `/`：概览；
+- `/digest`：周报；
+- `/feed`：证据流与人工 approve/reject；
+- `/admin/products`：关键词、官方账号、种子 KOL 与 launch 日期；
+- `/export`：按筛选导出 CSV；
+- `/debug/collect`、`/debug/follow-watch`：手动触发采集和每日监测。
+
+Docker 启动：
+
+```bash
+docker compose --env-file .env up --build
+```
+
+首次可用 `products.example.json` 播种测试产品。Dashboard 自动分类需要配置一个兼容的
+LLM endpoint；如果你的目标只是一次发布复盘或名单生成，不必先部署这套服务。
+
+## Repository map
+
+```text
+app/                 可选的 FastAPI/Postgres 持续监测服务
+  xclient.py         twitterapi.io 的唯一字段映射层
+  collector.py       关键词 + 全局 KOL 池采集
+  classifier.py      可选的自动分类
+  follow_watch.py    官方账号新帖与关注列表 diff
+  h3_watch.py        H3 生态窗口监测
+  digest.py          周报聚合
+  templates/         Dashboard 页面
+
+tools/               高频工作区
+  *_scan*.py         采集公开证据
+  *_classify*.py     可选批量分类
+  *_analyze*.py      聚合与报告数据
+  fetch_followings.py / fetch_graph.py / mutuals.py
+  build_kol_list.py / score_relevance.py / build_outreach_report.py
+  feishu_md_escape.py / readme_to_feishu.py / md_to_pdf.mjs
+
+campaigns/           外联模板与虚构示例；真实 campaign 默认不公开
+tests/               外部调用均 mock 的单元与 smoke tests
+docs/                辅助文档
+products.example.json
+```
 
 ## 数据与凭证边界
 
-这个仓库刻意只装两类东西:**代码**和**不含真人数据的文档**。
+公开仓库包含：
 
-**凭证**全部走环境变量,没有任何一个写死在代码里:
+- 通用采集、分类、聚合、渲染代码；
+- 只基于公开事实的 dated run scripts；
+- 虚构 campaign 示例与空模板；
+- 测试和产品配置示例。
 
-| 放哪 | 是什么 | 状态 |
-|---|---|---|
-| `.env` | twitterapi.io key、aihubmix key、dashboard 密码、飞书 webhook | gitignore,从未进过 git 历史 |
-| `.env.example` | 同样的键名 + 占位值 | 已提交,照着填即可 |
-| `.lark-auth/` | lark-cli 的登录态 / 设备态 | gitignore |
+默认不公开：
 
-**不进 git 的数据**(`.gitignore` 里按形状而不是按文件名排除,所以新一轮扫描默认
-就在外面):
+- `reports/`、`outputs/`、`sites/`、`out-h3*/`；
+- 根目录生成的 JSON、CSV、HTML、PDF、PNG；
+- 真实 campaign 工作区；
+- 主页截图、逐字推文 payload、联系人清单；
+- 私信、报价、未发布产品定位与内部飞书 token；
+- `.env` 与 `.lark-auth/`。
 
-- 根目录所有 `*.json` / `*.csv` / `*.html` / `*.pdf` / `*.png` 原始抓取产物
-  (只放行 `products.example.json`、`railway.json`)
-- `reports/` `outputs/` `sites/` `out-h3*/` 工作区
-- `campaigns/*` 工作区(只发布 `README.md`、`example/`、`templates/`)
+判断标准不是“代码还是数据”，而是文件里有没有别人的内容、未公开计划或可用 credential。
+有，就不提交。即使数据来自公开 X，批量人物画像和逐字 payload 也不应默认进入公开 git 历史。
 
-排除它们有两个具体原因,不只是洁癖:
+## 采集与分析注意事项
 
-1. 这些文件里是**几千个真实的人**的公开资料(handle、简介、地理位置、粉丝数)和
-   逐字推文原文。
-2. 抓到的推文正文里**出现过别人自己公开的、仍然有效的 API key**(免费额度分享帖
-   是重灾区)。把这些 JSON 提交上来,等于替别人泄露凭证。
+- twitterapi.io 的长 query 可能返回 400；复杂 OR 组要拆成短 query。
+- Latest 分页有上限，宽时间窗按小时或主题切分，并在日志中记录缺口。
+- 同一条跨模型对比推应挂到所有相关产品，不能只算给第一个命中的模型。
+- 声量结论必须带同口径基线；孤立的“抓到 N 条”没有比较意义。
+- 先回表核对 tweet ID，再写引用、数字和代表性 case。
+- 分类脚本要可续跑；已处理 ID 落盘，失败与“没有结果”分开记录。
+- `app/xclient.py` 集中处理 API 字段映射。字段变空时先设 `XCLIENT_DEBUG=1` 看真实响应，
+  不要在多个脚本里各写一套猜测。
 
-**也有一类脚本本身就不提交**。围绕客户产品计划做的 campaign 一次性脚本,会把定位、
-投放口径和一份真实人名清单直接写死在文件里;另有几个脚本把私信往来、报价条款,或者
-内部工作区的飞书 token 嵌在常量里。这些按 `.gitignore` 末尾那段排除,留在本地。
+## Tests
 
-所以判断标准不是「代码 vs 数据」,而是**这个文件里有没有别人的东西**——别人的私信、
-别人的报价、别人没同意被公开的名字,或者客户还没对外讲的计划。有,就不提交;
-剩下的(通用 radar、外联 pipeline、针对公开数据的扫描脚本)才是这个仓库发布的内容。
+```bash
+.venv/bin/pytest
+```
 
----
-
-## aihubmix 网关的坑(重要)⭐
-
-经 aihubmix 调 Claude 时,网关会在**每个**回复前面加一个 extended-thinking block:
-
-1. **`msg.content[0]` 不再是 text block**——`content[0].text` 为 `None`。
-   取文本一律用 `app/llm.py` 的 `first_text(msg)`,或按 `block.type == "text"` 过滤。
-2. **thinking 会先消耗 1,500–4,000 个 `max_tokens`** 才轮到正文。按正文预算设的
-   `max_tokens`(如 1024)会导致 `stop_reason == "max_tokens"`、正文为空——
-   拼接式代码会**静默返回空字符串**而不是报错。仓库内所有调用已把 `max_tokens`
-   设到 5000+,并在空回复时显式 raise;新写调用请照此办理。
-
----
-
-## 部署到 Railway
-
-1. **建项目**:Railway → New Project → Deploy from GitHub repo(选本仓库)。
-   Railway 会识别 `railway.json` 用 Dockerfile 构建。
-2. **加 Postgres**:项目里 New → Database → PostgreSQL。Railway 会自动把
-   `DATABASE_URL` 注入到 app 服务(无需手填)。
-3. **设环境变量**(app 服务 → Variables):
-   - `TWITTERAPI_KEY`、`ANTHROPIC_API_KEY`(=你的 aihubmix key)、`ANTHROPIC_BASE_URL`
-   - `DASHBOARD_PASSWORD`、`FEISHU_WEBHOOK_URL`、`WEBHOOK_SECRET`
-   - 其余可用默认值(见下表)。
-   - 想让线上首启也自动播种,再设 `SEED_PRODUCTS_FILE=products.example.json`。
-4. **部署**:push 到默认分支即触发。健康检查走 `/health`。
-   进程常驻,APScheduler 每 10 分钟在进程内跑一次采集。
-5. 部署后同样可 `POST /debug/collect`(带 Basic Auth)立即验证。
-
-> 单服务部署:同一个 uvicorn 进程既服务 dashboard 又跑采集定时任务
-> (APScheduler 在 FastAPI lifespan 里启动)。不需要第二个 worker/服务。
-
----
-
-## 环境变量说明
-
-| 变量 | 必填 | 默认 | 说明 |
-|---|---|---|---|
-| `TWITTERAPI_KEY` | ✅ | — | twitterapi.io 的 API key(请求头 `X-API-Key`) |
-| `TWITTERAPI_BASE_URL` | | `https://api.twitterapi.io` | 一般不用改 |
-| `ANTHROPIC_API_KEY` | ✅ | — | **填你的 aihubmix key**;经 aihubmix 的 Anthropic 兼容端点调用 |
-| `ANTHROPIC_BASE_URL` | | `https://aihubmix.com` | aihubmix 的 Anthropic 兼容网关 |
-| `CLASSIFIER_MODEL` | | `claude-haiku-4-5-20251001` | 分类模型 |
-| `DATABASE_URL` | ✅(线上自动) | localhost | Railway 自动注入;支持 `postgres://` 自动转 `postgresql+psycopg://` |
-| `DASHBOARD_USER` | | `marketing` | Dashboard Basic Auth 用户名 |
-| `DASHBOARD_PASSWORD` | ✅ | `changeme` | Dashboard Basic Auth 密码,**务必改** |
-| `FEISHU_WEBHOOK_URL` | | 空 | 飞书自定义机器人 webhook;留空则不发告警 |
-| `WEBHOOK_SECRET` | | 空 | `/webhook/tweets` 的共享密钥(请求头 `X-Webhook-Secret`) |
-| `COLLECT_INTERVAL_MINUTES` | | `10` | 采集周期 |
-| `MAX_TWEETS_PER_CYCLE` | | `300` | **成本护栏**:单周期最多分类多少条推文 |
-| `MAX_PAGES_PER_QUERY` | | `5` | 每个关键词 query 每周期最多翻几页(每页约 20 条) |
-| `MAX_SEED_KOLS_PER_CYCLE` | | `15` | 全局 KOL 池每周期最多轮询多少个(轮转覆盖全部,免费档降压) |
-| `COLLECT_LANG` | | `en` | 只采集该语言的推文;`lang:` 搜索算子 + KOL 推 `tweet.lang` 过滤;`""` 收全部 |
-| `DIGEST_MIN_FOLLOWERS_EXPERT` | | `10000` | 周报"大佬评价"高亮的粉丝下限(或互动达标) |
-| `DIGEST_MIN_FOLLOWERS_CASE` | | `2000` | 周报"客户 Case"高亮的粉丝下限(或互动达标) |
-| `DIGEST_MIN_ENGAGEMENT` | | `200` | 加权互动(赞+2×转+引+评)达此值即视为"爆款",小号也能上高亮 |
-| `DIGEST_MIN_CONFIDENCE` | | `0.6` | 周报高亮的置信度下限 |
-| `ALERT_MIN_FOLLOWERS` | | `10000` | high_signal 告警的最低粉丝门槛 |
-| `ALERT_MEGA_FOLLOWERS` | | `100000` | mega_mention 告警的粉丝门槛 |
-| `ALERT_MIN_CONFIDENCE` | | `0.75` | high_signal / partnership 告警的最低置信度 |
-| `FOLLOW_WATCH_ENABLED` | | `true` | 每日实验室监测(官方号新推 + 关注 diff)开关 |
-| `FOLLOW_WATCH_HOUR_UTC` | | `1` | 每日监测运行的 UTC 小时(0-23) |
-| `FOLLOW_WATCH_MAX_PAGES` | | `20` | 每个被监测账号每次最多翻多少页关注(每页 200) |
-| `FOLLOW_WATCH_MIN_TARGET_FOLLOWERS` | | `1000` | 新增关注告警的粉丝门槛(低于则不推,降噪) |
-| `SEED_PRODUCTS_FILE` | | 空 | 设为 `products.example.json` 则在表为空时播种 |
-| `XCLIENT_DEBUG` | | 空 | 设 `1` 时把每批第一条原始推文打进日志,用于核对字段 |
-
----
-
-## 成本估算
-
-两块外部成本:
-
-- **twitterapi.io**:按请求/条计费,以其官网价目为准。护栏:`MAX_TWEETS_PER_CYCLE`(默认 300)
-  × 每天 144 个周期(10 分钟一次)= 单产品每天最多约 4.3 万条被"处理"。实际远低于此,
-  因为增量水位线让每周期只处理**新增**推文。
-- **LLM 分类(Claude Haiku)**:每条推文一次调用,输入约 400–700 token、输出约 200 token。
-  以 Haiku 量级单价估算,每条约 $0.0003–0.0006。即使护栏打满(300 条/周期),单产品单周期
-  约 $0.1–0.2;但稳态下每周期通常只有个位数到几十条新推文,日成本一般在 $1 以内/产品。
-
-**关键防爆点**:`MAX_TWEETS_PER_CYCLE` 是硬上限。如果关键词配得太宽(如裸 `K3`),
-命中量会暴涨——护栏会截断在 300 条/周期,并在日志里 `WARN`。看到该告警就去
-`/admin/products` 收紧关键词。
-
----
-
-## "字段对不上怎么办"排障指引 ⭐
-
-twitterapi.io 的返回字段全部集中映射在 **`app/xclient.py`** 一个文件里
-(顶部有大号提示 banner)。若某个值一直是空/0/错:
-
-1. 设环境变量 `XCLIENT_DEBUG=1` 重启,采集时会把每批**第一条原始推文 JSON** 打进日志。
-2. 对照日志里的真实字段名,改 `xclient.py` 里的:
-   - `_map_tweet`(推文字段:id / text / createdAt / *Count 等)
-   - `_map_author`(作者字段:userName / followers / description / isBlueVerified)
-   - `_extract_media`(**媒体最可能对不上**——见下)
-3. 端点路径 / 参数名 / 响应信封键也都在该文件顶部常量里(`ADVANCED_SEARCH_PATH`、
-   `KEY_TWEETS` 等),照 <https://docs.twitterapi.io> 最新文档改即可。
-
-**已核对(2026-07-19,依据 docs.twitterapi.io)**:
-- Advanced Search:`GET /twitter/tweet/advanced_search`,参数 `query` / `queryType` / `cursor`,
-  信封 `{tweets, has_next_page, next_cursor}`
-- User Last Tweets:`GET /twitter/user/last_tweets`,参数 `userId|userName` / `cursor` / `includeReplies`
-- 认证头:`X-API-Key`
-- 推文字段:`id, text, url, createdAt, likeCount, retweetCount, replyCount, quoteCount, viewCount, lang, author, entities`
-- 作者字段:`userName, name, followers, description, isBlueVerified`
-
-**⚠️ 未在文档中明确、需按真实响应核对的点**(代码里已用注释标出):
-- **媒体字段**:官方 OpenAPI 未文档化 photo/video 如何出现在推文里。`_extract_media`
-  目前探测几种常见形态(`extendedEntities.media[].media_url_https`、`entities.media[]`、
-  `media[]`)。若 demo 检测缺媒体,用 `XCLIENT_DEBUG=1` dump 一条真实推文再调整。
-- **`createdAt` 格式**:假定为 Twitter 经典格式 `"Wed Oct 10 20:19:24 +0000 2018"`,并带
-  ISO-8601 兜底。若解析告警,改 `_parse_created_at`。
-
----
-
-## 系统行为速览
-
-- **采集**(APScheduler,每 `COLLECT_INTERVAL_MINUTES` 分钟),两阶段:
-  - **关键词阶段**:对每个 active 产品,用 OR 拼接关键词做 advanced search
-    (`-filter:retweets` 排除转推),按 snowflake tweet_id 水位线增量。
-  - **KOL 池阶段**:所有产品的 `seed_kols` **合并去重成一个全局池**,每个 KOL 每轮只轮询
-    一次(轮转窗口,见下),拿到的每条推按**内容里提到哪个产品**归属——一份 KOL 名单服务
-    所有模型,@karpathy 发 GLM 就入库到 GLM 下;对比推同时挂到它提及的每个模型;与所有
-    产品无关的 KOL 推**直接跳过、不花 LLM**。
-  - **只收英文**(`COLLECT_LANG`,默认 `en`):关键词搜索加 `lang:en`,KOL 池按 `tweet.lang`
-    过滤——非英文推根本不入库、不分类(省 LLM 成本,也去掉噪声)。设 `""` 收所有语言。
-  - **限速加固**(免费档 1 请求/5 秒):`collect_once` 全局互斥锁(手动 `/debug/collect`
-    不会和定时任务并发撞限速)+ **产品起始位每轮轮转**(不再永远让最后一个产品被饿死)+
-    `MAX_SEED_KOLS_PER_CYCLE` 限量轮转 KOL + **每个数据源失败显式上报**(返回 `sources_failed`
-    / `errors`,不再静默吞掉,失败 vs "真没有"分得清)。
-- **分类**(Claude Haiku):每条新推文输出严格 JSON(见 `classifier.py` 的完整 prompt)。
-  七类互斥 category:`demo / customer_case / expert_review / partnership / news / promo /
-  irrelevant`,外加竞争情报标记 `is_competitor_signal`、评测标记 `eval_signal` 与
-  `benchmark_names`。**收紧了可信度判据**:蓝V单独不算权威、空泛夸赞不算大佬评价、
-  随手一测不算客户 Case、**表情包/梗图/reaction 图不算 demo**(demo 必须是"用该产品生成/
-  构建出来的产出物")。JSON 解析失败重试一次,再失败则以 `classification_failed=True`
-  入库,**不丢数据**。
-- **存储**(Postgres):`evidence` 去重按 **`(tweet_id, product_id)`** 复合唯一——同一条
-  推文可挂到它提及的每个产品(跨产品对比推是核心竞争情报,不能丢);`category/sentiment/
-  confidence` 冗余列便于筛选;`review_status` 默认 `pending`。
-- **告警**(飞书):三种类型,经 `alerts_sent` 去重 →
-  `mega_mention`(粉丝≥10万的相关提及)、
-  `partnership_signal`(`partnership` 且 `confidence≥0.75`,**不设粉丝门槛**——合作是事件)、
-  `high_signal`(`demo/customer_case/expert_review` 且 `confidence≥0.75` 且粉丝≥1万)。
-- **Dashboard**:`/` 概览图表;`/digest` **周报**——按产品汇总本周合作/Demo/评测亮点 + 环比,
-  **只露够格的证据**,并按**影响力**(粉丝 + 互动)排序、每条显示 ❤🔁💬。质量下限:大佬评价 /
-  客户 Case 需**够权威(粉丝达标)或推文够火(互动达标 `DIGEST_MIN_ENGAGEMENT`)**——小号爆款也能上;
-  demo 需有真实产出物媒体;合作/评测不设门槛;非英文一律不进高亮。原始分类计数不变、全部数据仍在
-  证据流里。`/feed` 证据流(顶部筛选 + 每卡 Approve/Reject);`/export` 导出 CSV;
-  `/admin/products` 产品配置。全站 HTTP Basic Auth。
-- **每日实验室监测**(APScheduler `cron`,每天 `FOLLOW_WATCH_HOUR_UTC` 点):对每个 active
-  产品的 `official_accounts`(各 OSS 实验室官方号):(a) 直接拉取其**最新推文**过一遍 pipeline
-  ——实验室自宣的合作/集成会分类为 `partnership` 并触发飞书卡片;(b) 快照其**关注列表**并与
-  昨日对比,**新增关注**→ 推 `🔗 新增关注情报` 卡片(实验室新关注某公司/人,常是合作/招聘/
-  兴趣的早期信号)。首日为 baseline(只存不告警);检测与告警分离,飞书失败次日自动重试。
-  可 `POST /debug/follow-watch`(Basic Auth)手动触发。存量对比落在 `follow_edges` 表。
-- **Webhook**(预留):`POST /webhook/tweets`,校验 `X-Webhook-Secret`,与轮询共用同一 pipeline。
-
----
-
-## 设计假设(实现时按最合理方式处理,列此备查)
-
-1. **`filter:retweets` 解释为"排除转推"**:转推不是原创社会证据,故用 `-filter:retweets`。
-   若你确实想*只要*转推,把 `collector.build_query` 里的 `-filter:retweets` 改掉即可。
-2. **增量水位线用 tweet_id(snowflake)而非时间戳**:id 单调、无时钟漂移问题;keyword 搜索
-   用 `queryType=Latest`(最新在前),配合水位线跳过已见。
-3. **mega_mention 告警要求 `relevant=True` 且非 irrelevant**:避免同名歧义(K3 汽车)的
-   10 万粉账号误触发告警。规范里的"无论分类"理解为"不限证据三类",但仍需与产品相关。
-4. **aihubmix 作为 Anthropic 兼容网关**:把 `ANTHROPIC_BASE_URL` 指向 aihubmix,
-   `ANTHROPIC_API_KEY` 填 aihubmix 的 key,用官方 anthropic SDK 调用。
-5. **播种仅在 products 表为空时发生**:避免每次重启覆盖用户在 admin 里的改动。
-6. **去重按 `(tweet_id, product_id)` 复合唯一**:同一条推文可同时归属它提及的多个产品——
-   跨产品对比推(“M2 吊打 GLM-5 和 Kimi K3”)正是 GTM 最想要的竞争情报,不能只算给先入库的
-   那个产品。旧库(全局唯一 `tweet_id`)由 `db._migrate_tweet_dedup` 在启动时就地迁移
-   (Postgres:DROP 旧约束 → ADD 复合约束,幂等)。
-7. **单进程内 APScheduler**:Railway 单实例常驻。若未来横向扩容多实例,需要把采集任务
-   改为单例(如 leader 选举或独立 worker 服务),否则多实例会重复采集。
+测试覆盖分类 JSON 解析、去重、导出、Dashboard、follow watch、H3 watch、bot 与响应信封映射；
+外部请求均 mock，不需要 live API key 或数据库。
