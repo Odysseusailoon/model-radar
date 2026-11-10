@@ -110,3 +110,53 @@ campaigns/*
 !campaigns/templates/
 campaigns/example/judgments.json
 campaigns/example/shortlist-*
+
+# 2026-09-15 release-timeline / reaction scans (scraped tweet text)
+release-*.json
+gpt56-sol-*.json
+gpt6-sol-rumor-*.json
+muse-tweets-*.json
+muse-agent-tweets-*.json
+muse-product-tweets-*.json
+
+# local auth state and env backups — never leave this machine
+.lark-auth/
+.env.bak*
+
+# ---------------------------------------------------------------------------
+# 2026-11-09 blanket rules.
+#
+# The per-scan lists above kept drifting out of date: every new scan added
+# another filename and a few always slipped through. Scraped payloads are now
+# excluded by shape instead of by name, so a new scan is ignored by default and
+# has to be opted in explicitly.
+# ---------------------------------------------------------------------------
+
+# Root-level JSON is always a scrape or a run artifact. The two config files
+# that do belong in git are re-included by name.
+/*.json
+!/products.example.json
+!/railway.json
+
+# Same for the other raw-payload shapes that land in the repo root.
+/*.csv
+/*.html
+/*.pdf
+/*.xml
+/*.png
+/*.ndjson
+
+# Run workspaces. These hold raw evidence JSON, profile screenshots of real
+# people, vendored third-party checkouts (each with its own .git), and rendered
+# report HTML — 270MB+ that belongs on disk, not in history. The reports
+# themselves ship via Feishu/Obsidian; only the tooling is versioned here.
+/outputs/
+/reports/
+/sites/
+/out-h3ig/
+/out-h3promo/
+
+# macOS noise, editor leftovers, in-place script backups
+.DS_Store
+*.bak
+*.esc

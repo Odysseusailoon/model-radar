@@ -31,6 +31,9 @@ GLM/Z.ai 等竞品)在 X (Twitter) 上的**可引用证据**与**竞争/合作�
   产出「谁会对某家公司/产品感兴趣」的可执行外联名单(PDF + 可导入飞书的 CSV)。
   见下文 [外联名单 pipeline](#外联名单-pipeline--关注列表--可执行名单) 与
   `campaigns/README.md`。
+- **发布复盘报告流水线**(`tools/*_<YYYYMMDD>.py`):围绕一次具体发布做深度扫描 →
+  LLM 打标 → 聚合 → 出飞书/PDF 报告。每个脚本把当时的查询窗口和口径写死,
+  半年后还能复算同一份数字。见下文 [扫描 → 报告流水线](#扫描--报告流水线一次性深度报告)。
 
 **你只需要两把钥匙**:一个 [twitterapi.io](https://twitterapi.io) 的 API key(抓 X 数据)
 和一个 [aihubmix](https://aihubmix.com) 的 key(经其 Anthropic 兼容网关调用 Claude)。
@@ -76,16 +79,36 @@ app/
   templates/     Jinja2:base / feed / admin_products
   llm.py         网关辅助:取回复中第一个非空 text block(见下文「aihubmix 网关的坑」)
 tests/           pytest:分类 JSON 解析、去重、导出格式(全部 mock 外部调用)
-tools/           独立 CLI 工具(不依赖数据库,只要 .env 里的两个 key):
+tools/           独立 CLI 工具(不依赖数据库,只要 .env 里的两个 key)
+  # —— 长期复用 ——
   fetch_followings.py      抓一个账号的完整关注列表(含 bio,可直接打分)
   fetch_graph.py           抓一个账号的关注+粉丝图谱(用于「与我关系」比对)
   score_relevance.py       LLM 按 campaign prompt 逐个打分(带缓存,断点续跑)
   build_outreach_report.py 出外联名单:PDF + 飞书可导入的 CSV
   mutuals.py               列互粉(AI/科技圈过滤,按粉丝排序)
   build_kol_list.py        种子账号关注交集 → KOL 候选名单
+  validate_palette.py      图表配色校验(报告里的图统一走同一套色板)
+  # —— 渲染 / 发布 ——
+  feishu_md_escape.py      转义 markdown,供 lark-cli `docs +create` 导入(见下文)
+  md_to_pdf.mjs            markdown → 打印版 HTML + A4 PDF(headless Chrome)
+  readme_to_feishu.py      GitHub README → 飞书可导入版(剥掉 badge / <details>)
+  # —— 一次性扫描 ——  约 90 个,命名 <主题>_<阶段>_<YYYYMMDD>.py,见「扫描 → 报告流水线」
+  <topic>_scan_*.py        拉 X 原始数据 → <topic>-tweets-<date>.json
+  <topic>_classify_*.py    LLM 逐条打标 → analysis.json
+  <topic>_analyze_*.py     聚合出表格/榜单 → analysis.md / volume.json
+  <topic>_feishu_*.py      写回飞书多维表格 / 文档
 campaigns/       外联 campaign 模板与工作区(example/ 为完整虚构示例)
 products.example.json   K3 示例 + 空的 GLM 模板
 Dockerfile  docker-compose.yml  railway.json  requirements.txt
+
+# 以下目录在本地生成,全部 gitignore(见「数据与凭证边界」):
+reports/         每轮正式报告的工作区:<YYYY-MM-DD>-<主题>/
+                 ├─ evidence/        原始抓取 JSON
+                 ├─ *.log            每次扫描/打标的运行日志
+                 ├─ analysis.json    逐条打标结果
+                 ├─ REPORT.zh-CN.md  正文
+                 └─ _feishu-*.md     同一份正文的飞书导入版
+outputs/         KOL 名单、主页截图、配图等交付物工作区
 ```
 
 ---
@@ -167,6 +190,77 @@ cp -r campaigns/templates/customer-discovery campaigns/mycompany
 
 细节(写 prompt 的要点、成本、四态关系的含义)见 **`campaigns/README.md`**。
 campaign 工作区默认 gitignore——名单里是几千个真实的人,不进公开仓库。
+
+---
+
+## 扫描 → 报告流水线(一次性深度报告)
+
+radar 和外联名单之外的第三条腿:围绕一次**具体发布/事件**做深度复盘,产出可直接
+进飞书的报告。`tools/` 里约 90 个带日期后缀的脚本都是这条线的产物——它们是
+**run 记录**,不是通用库:每个都把当时的查询窗口、搜索词、口径写死在文件里,
+所以半年后还能复算同一份数字。
+
+典型一轮(以 `reports/2026-10-29-m31-flash-d10/` 为例):
+
+```bash
+# 1. 扫描:按小时/主题切分 query,原始推文落到 reports/<date>-<topic>/evidence/
+.venv/bin/python tools/m31_flash_d10_scan_20261029.py        # → evidence/merged-*.json
+.venv/bin/python tools/m31_flash_d10_volume_20261029.py      # → 同口径声量基线
+
+# 2. 打标:Claude Haiku 批量分类,可断点续跑
+.venv/bin/python tools/m31_flash_d10_classify_20261029.py    # → evidence/classified.json
+
+# 3. 聚合:出数字、曲线、与上一轮报告的 delta
+.venv/bin/python tools/m31_flash_d10_analyze_20261029.py     # → analysis.json + analysis.md
+
+# 4. 发布:正文写进 REPORT.zh-CN.md,再转义成飞书导入版
+.venv/bin/python tools/feishu_md_escape.py REPORT.zh-CN.md > _feishu-REPORT.md
+node tools/md_to_pdf.mjs REPORT.zh-CN.md out.html out.pdf "MODEL RADAR"
+```
+
+几条踩过坑后固化下来的规矩:
+
+- **声量必须有同口径基线**。「发布后 X 条推」单独看没有意义,要和同期另一个发布
+  (如 DeepSeek V4.1-Flash)用**同一套 query 形状**对比才有判断力。
+- **超长 query 会 400,分页上限 400 条**。宽窗口要按小时拆开扫,不要指望一个
+  query 拿全。
+- **引用的推文 ID 必须回表查**,不要凭记忆写——报告里每个数字都要能点回原推。
+- **每一步都留 `.log`**。重跑时先看日志里的窗口和 query,否则口径会悄悄漂。
+- 打标脚本一律**可续跑**(已处理的 ID 落盘跳过),LLM 批量打标断在中途是常态。
+
+报告工作区 `reports/` 和 `outputs/` 全部 gitignore——里面是原始抓取和真人截图。
+仓库里版本化的只有**脚本**,即复算报告所需的全部逻辑。
+
+---
+
+## 数据与凭证边界
+
+这个仓库刻意只装两类东西:**代码**和**不含真人数据的文档**。
+
+**凭证**全部走环境变量,没有任何一个写死在代码里:
+
+| 放哪 | 是什么 | 状态 |
+|---|---|---|
+| `.env` | twitterapi.io key、aihubmix key、dashboard 密码、飞书 webhook | gitignore,从未进过 git 历史 |
+| `.env.example` | 同样的键名 + 占位值 | 已提交,照着填即可 |
+| `.lark-auth/` | lark-cli 的登录态 / 设备态 | gitignore |
+
+**不进 git 的数据**(`.gitignore` 里按形状而不是按文件名排除,所以新一轮扫描默认
+就在外面):
+
+- 根目录所有 `*.json` / `*.csv` / `*.html` / `*.pdf` / `*.png` 原始抓取产物
+  (只放行 `products.example.json`、`railway.json`)
+- `reports/` `outputs/` `sites/` `out-h3*/` 工作区
+- `campaigns/*` 工作区(只发布 `README.md`、`example/`、`templates/`)
+
+排除它们有两个具体原因,不只是洁癖:
+
+1. 这些文件里是**几千个真实的人**的公开资料(handle、简介、地理位置、粉丝数)和
+   逐字推文原文。
+2. 抓到的推文正文里**出现过别人自己公开的、仍然有效的 API key**(免费额度分享帖
+   是重灾区)。把这些 JSON 提交上来,等于替别人泄露凭证。
+
+要加新的扫描脚本时,**脚本本身提交,它吐出来的数据不提交**。
 
 ---
 
