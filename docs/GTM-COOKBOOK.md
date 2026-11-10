@@ -14,8 +14,7 @@
 1. **twitterapi.io**(抓 X/Twitter 数据)
    - 打开 <https://twitterapi.io> → 注册 → Dashboard 里复制 API Key。
    - 免费档能用(限速 1 请求/5 秒),充 $5 就快很多。
-2. **aihubmix**(调用 Claude 做判断,不需要海外信用卡)
-   - 打开 <https://aihubmix.com> → 注册 → 充值(¥10 起)→ 生成 API Key(`sk-` 开头)。
+2. 一个minimax模型的api
 
 > 两个 key 都是钱,**别发到群里、别截图**。只放在下面第 2 步的 `.env` 文件里。
 
