@@ -92,7 +92,7 @@ tools/           独立 CLI 工具(不依赖数据库,只要 .env 里的两个 k
   feishu_md_escape.py      转义 markdown,供 lark-cli `docs +create` 导入(见下文)
   md_to_pdf.mjs            markdown → 打印版 HTML + A4 PDF(headless Chrome)
   readme_to_feishu.py      GitHub README → 飞书可导入版(剥掉 badge / <details>)
-  # —— 一次性扫描 ——  约 90 个,命名 <主题>_<阶段>_<YYYYMMDD>.py,见「扫描 → 报告流水线」
+  # —— 一次性扫描 ——  约 45 个,命名 <主题>_<阶段>_<YYYYMMDD>.py,见「扫描 → 报告流水线」
   <topic>_scan_*.py        拉 X 原始数据 → <topic>-tweets-<date>.json
   <topic>_classify_*.py    LLM 逐条打标 → analysis.json
   <topic>_analyze_*.py     聚合出表格/榜单 → analysis.md / volume.json
@@ -196,7 +196,7 @@ campaign 工作区默认 gitignore——名单里是几千个真实的人,不进
 ## 扫描 → 报告流水线(一次性深度报告)
 
 radar 和外联名单之外的第三条腿:围绕一次**具体发布/事件**做深度复盘,产出可直接
-进飞书的报告。`tools/` 里约 90 个带日期后缀的脚本都是这条线的产物——它们是
+进飞书的报告。`tools/` 里带日期后缀的脚本都是这条线的产物——它们是
 **run 记录**,不是通用库:每个都把当时的查询窗口、搜索词、口径写死在文件里,
 所以半年后还能复算同一份数字。
 
@@ -260,7 +260,13 @@ node tools/md_to_pdf.mjs REPORT.zh-CN.md out.html out.pdf "MODEL RADAR"
 2. 抓到的推文正文里**出现过别人自己公开的、仍然有效的 API key**(免费额度分享帖
    是重灾区)。把这些 JSON 提交上来,等于替别人泄露凭证。
 
-要加新的扫描脚本时,**脚本本身提交,它吐出来的数据不提交**。
+**也有一类脚本本身就不提交**。围绕客户产品计划做的 campaign 一次性脚本,会把定位、
+投放口径和一份真实人名清单直接写死在文件里;另有几个脚本把私信往来、报价条款,或者
+内部工作区的飞书 token 嵌在常量里。这些按 `.gitignore` 末尾那段排除,留在本地。
+
+所以判断标准不是「代码 vs 数据」,而是**这个文件里有没有别人的东西**——别人的私信、
+别人的报价、别人没同意被公开的名字,或者客户还没对外讲的计划。有,就不提交;
+剩下的(通用 radar、外联 pipeline、针对公开数据的扫描脚本)才是这个仓库发布的内容。
 
 ---
 

@@ -160,3 +160,38 @@ muse-product-tweets-*.json
 .DS_Store
 *.bak
 *.esc
+
+# ---------------------------------------------------------------------------
+# 2026-11-10, going public. Everything below runs locally and stays local.
+#
+# Same policy as the "Internal GTM tooling" block above, applied to the Sep-Nov
+# 2026 campaign scripts and their write-ups. Three separate reasons:
+#
+#   1. Private correspondence and commercial terms, including verbatim DM
+#      threads with named individuals and per-post payment offers. None of
+#      those people agreed to be published.
+#   2. Client product plans, and targeting lists of real people built around
+#      them.
+#   3. Client-internal documents and the workspace tokens that address them.
+#
+# The generic radar, the outreach pipeline, and the public-data scan scripts
+# are unaffected — that is what this repository publishes.
+# ---------------------------------------------------------------------------
+
+# Report write-ups: every root-level markdown except this project's own README.
+/*.md
+!/README.md
+
+# Campaign one-offs built around client product plans and named individuals
+tools/pro_influencer_*.py
+tools/core_kol_*.py
+tools/outreach_status_push_20261020.py
+
+# Queries derived from a client-internal evaluation
+tools/spacebunny_dimension_scan.py
+
+# Writers that embed Feishu Base / Sheet tokens for internal workspaces
+tools/campaign_push_feishu_20261019.py
+tools/close_mutuals_table_20261019.py
+tools/close_mutuals_table_T117_20261019.py
+tools/flash_kol_push_feishu_20260922.py
