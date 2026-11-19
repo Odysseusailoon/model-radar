@@ -56,7 +56,7 @@ import os
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Iterator, Optional
+from typing import Callable, Iterator, Optional
 
 import httpx
 
@@ -241,6 +241,7 @@ class XDataClient:
         timeout: float = 20.0,
         max_retries: int = 3,
         min_interval: float = DEFAULT_MIN_INTERVAL,
+        before_request: Optional[Callable[[], None]] = None,
     ):
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
@@ -248,6 +249,7 @@ class XDataClient:
         self.max_retries = max_retries
         self.min_interval = min_interval
         self._last_request_at = 0.0
+        self.before_request = before_request
 
     def _throttle(self) -> None:
         """Space requests out to respect the provider's QPS limit."""
@@ -262,6 +264,8 @@ class XDataClient:
         url = f"{self.base_url}{path}"
         last_exc: Optional[Exception] = None
         for attempt in range(1, self.max_retries + 1):
+            if self.before_request:
+                self.before_request()
             try:
                 self._throttle()
                 self._last_request_at = time.monotonic()
@@ -298,6 +302,19 @@ class XDataClient:
         raise last_exc  # type: ignore[misc]
 
     # ---- Advanced search (keyword collection) ----------------------------
+    def search_page(self, query: str, cursor: str = "", query_type: str = "Latest") -> tuple[list[Tweet], str, bool]:
+        """One normalized page, including coverage metadata for bounded scans."""
+        data = self._get(ADVANCED_SEARCH_PATH,
+                         {"query": query, "queryType": query_type, "cursor": cursor})
+        nested = data.get("data")
+        if data.get("status") in ("error", "failed") or not (
+            isinstance(data.get(KEY_TWEETS), list) or
+            isinstance(nested, dict) and isinstance(nested.get(KEY_TWEETS), list)
+        ):
+            raise ValueError("unrecognized_search_response")
+        return ([_map_tweet(raw) for raw in _tweets_from(data)],
+                data.get(KEY_NEXT_CURSOR) or "", bool(data.get(KEY_HAS_NEXT)))
+
     def search_recent(
         self,
         query: str,
@@ -311,15 +328,10 @@ class XDataClient:
         """
         cursor = ""
         for _ in range(max_pages):
-            data = self._get(
-                ADVANCED_SEARCH_PATH,
-                {"query": query, "queryType": query_type, "cursor": cursor},
-            )
-            for raw in _tweets_from(data):
-                yield _map_tweet(raw)
-            if not data.get(KEY_HAS_NEXT):
+            tweets, cursor, has_next = self.search_page(query, cursor, query_type)
+            yield from tweets
+            if not has_next:
                 break
-            cursor = data.get(KEY_NEXT_CURSOR) or ""
             if not cursor:
                 break
 

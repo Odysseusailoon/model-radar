@@ -29,11 +29,23 @@ services:
       ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-https://aihubmix.com}
       FEISHU_WEBHOOK_URL: ${FEISHU_WEBHOOK_URL:-}
       DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-changeme}
+      DASHBOARD_USER: ${DASHBOARD_USER:-marketing}
       WEBHOOK_SECRET: ${WEBHOOK_SECRET:-}
+      INFERENCE_RADAR_ENABLED: ${INFERENCE_RADAR_ENABLED:-false}
+      INFERENCE_RADAR_INTERVAL_MINUTES: ${INFERENCE_RADAR_INTERVAL_MINUTES:-360}
+      INFERENCE_RADAR_DAYS: ${INFERENCE_RADAR_DAYS:-7}
+      INFERENCE_RADAR_MAX_REQUESTS: ${INFERENCE_RADAR_MAX_REQUESTS:-60}
+      INFERENCE_RADAR_MAX_PAGES: ${INFERENCE_RADAR_MAX_PAGES:-1}
+      INFERENCE_RADAR_DATA_DIR: /app/reports/inference-radar
+      RADAR_READ_TOKEN: ${RADAR_READ_TOKEN:-}
+      RADAR_GITHUB_TOKEN: ${RADAR_GITHUB_TOKEN:-}
       # Seed a starter product config on first boot (table-empty only).
       SEED_PRODUCTS_FILE: ${SEED_PRODUCTS_FILE:-products.example.json}
     ports:
       - "8000:8000"
+    volumes:
+      - radar-data:/app/reports/inference-radar
 
 volumes:
   pgdata:
+  radar-data:

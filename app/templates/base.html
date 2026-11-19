@@ -202,10 +202,15 @@
   <header>
     <span class="brand">📡 GTM <span>Evidence Radar</span></span>
     <nav>
+      {% if not inference_only %}
       <a href="/" class="{% if active=='overview' %}active{% endif %}">概览</a>
       <a href="/digest" class="{% if active=='digest' %}active{% endif %}">周报</a>
       <a href="/feed" class="{% if active=='feed' %}active{% endif %}">证据流</a>
+      {% endif %}
+      <a href="/inference" class="{% if active=='inference' %}active{% endif %}">Inference Radar</a>
+      {% if not inference_only %}
       <a href="/admin/products" class="{% if active=='products' %}active{% endif %}">产品配置</a>
+      {% endif %}
     </nav>
     <button class="icon-btn" id="theme" title="切换深色/浅色" aria-label="切换主题">◐</button>
   </header>

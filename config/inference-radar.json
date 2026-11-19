@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "description": "Inference engines, serving platforms, neoclouds, and US-developed open-model families. US refers to developer organization, not hosting location. Open weights does not imply an OSI-approved license; inspect each artifact's license and gating. This is an editable watchlist, not an exhaustive market census.",
+  "entities": [
+    {
+      "id": "sglang",
+      "name": "SGLang",
+      "group": "engine",
+      "x_query": "\"SGLang\"",
+      "website": "https://sgl-project.github.io/",
+      "github_repos": [
+        "sgl-project/sglang"
+      ],
+      "reference_urls": [
+        "https://sgl-project.github.io/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "vllm",
+      "name": "vLLM",
+      "group": "engine",
+      "x_query": "\"vLLM\"",
+      "website": "https://docs.vllm.ai/",
+      "github_repos": [
+        "vllm-project/vllm"
+      ],
+      "reference_urls": [
+        "https://docs.vllm.ai/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "baseten",
+      "name": "Baseten",
+      "group": "platform",
+      "x_query": "(\"Baseten\" OR \"baseten.co\")",
+      "website": "https://www.baseten.co/",
+      "github_repos": [
+        "basetenlabs/truss"
+      ],
+      "reference_urls": [
+        "https://www.baseten.co/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "fireworks",
+      "name": "Fireworks AI",
+      "group": "platform",
+      "x_query": "(\"Fireworks AI\" OR \"fireworks.ai\")",
+      "website": "https://fireworks.ai/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://fireworks.ai/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "modal",
+      "name": "Modal",
+      "group": "platform",
+      "x_query": "(\"Modal Labs\" OR \"modal.com\")",
+      "website": "https://modal.com/",
+      "github_repos": [
+        "modal-labs/modal-client"
+      ],
+      "reference_urls": [
+        "https://modal.com/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "together",
+      "name": "Together AI",
+      "group": "platform",
+      "x_query": "(\"Together AI\" OR \"together.ai\" OR \"togethercompute\")",
+      "website": "https://www.together.ai/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://www.together.ai/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "groq",
+      "name": "Groq",
+      "group": "platform",
+      "x_query": "(\"Groq\" OR \"groq.com\")",
+      "website": "https://groq.com/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://groq.com/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "cerebras",
+      "name": "Cerebras",
+      "group": "platform",
+      "x_query": "\"Cerebras\"",
+      "website": "https://www.cerebras.ai/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://www.cerebras.ai/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "coreweave",
+      "name": "CoreWeave",
+      "group": "neocloud",
+      "x_query": "\"CoreWeave\"",
+      "website": "https://www.coreweave.com/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://www.coreweave.com/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "lambda",
+      "name": "Lambda",
+      "group": "neocloud",
+      "x_query": "(\"Lambda Labs\" OR \"Lambda Cloud\" OR \"lambda.com\" OR \"lambda.ai\")",
+      "website": "https://lambda.com/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://lambda.com/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "crusoe",
+      "name": "Crusoe",
+      "group": "neocloud",
+      "x_query": "(\"Crusoe Cloud\" OR \"Crusoe AI\" OR \"crusoe.ai\")",
+      "website": "https://www.crusoe.ai/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://www.crusoe.ai/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "nebius",
+      "name": "Nebius",
+      "group": "neocloud",
+      "x_query": "\"Nebius\"",
+      "website": "https://nebius.com/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://nebius.com/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "runpod",
+      "name": "Runpod",
+      "group": "neocloud",
+      "x_query": "(\"Runpod\" OR \"runpod.io\")",
+      "website": "https://www.runpod.io/",
+      "github_repos": [],
+      "reference_urls": [
+        "https://www.runpod.io/"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "llama",
+      "name": "Meta Llama",
+      "group": "us_models",
+      "x_query": "(\"Meta Llama\" OR \"Llama model\" OR \"Llama weights\")",
+      "website": "https://huggingface.co/meta-llama",
+      "github_repos": [],
+      "hf_author": "meta-llama",
+      "hf_families": [
+        "llama"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/meta-llama"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "gemma",
+      "name": "Google Gemma",
+      "group": "us_models",
+      "x_query": "(\"Google Gemma\" OR \"Gemma model\" OR \"Gemma weights\")",
+      "website": "https://huggingface.co/google",
+      "github_repos": [],
+      "hf_author": "google",
+      "hf_families": [
+        "gemma"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/google"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "nemotron",
+      "name": "NVIDIA Nemotron",
+      "group": "us_models",
+      "x_query": "\"Nemotron\"",
+      "website": "https://huggingface.co/nvidia",
+      "github_repos": [],
+      "hf_author": "nvidia",
+      "hf_families": [
+        "nemotron"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/nvidia"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "olmo",
+      "name": "Ai2 OLMo",
+      "group": "us_models",
+      "x_query": "(\"OLMo\" OR \"Olmo\" OR \"OLMoE\")",
+      "website": "https://huggingface.co/allenai",
+      "github_repos": [],
+      "hf_author": "allenai",
+      "hf_families": [
+        "olmo"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/allenai"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "phi",
+      "name": "Microsoft Phi",
+      "group": "us_models",
+      "x_query": "(\"Microsoft Phi\" OR \"Phi-4\" OR \"Phi-5\")",
+      "website": "https://huggingface.co/microsoft",
+      "github_repos": [],
+      "hf_author": "microsoft",
+      "hf_families": [
+        "phi"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/microsoft"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "gpt-oss",
+      "name": "OpenAI gpt-oss",
+      "group": "us_models",
+      "x_query": "\"gpt-oss\"",
+      "website": "https://huggingface.co/openai",
+      "github_repos": [],
+      "hf_author": "openai",
+      "hf_families": [
+        "gpt-oss"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/openai"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "cogito",
+      "name": "Deep Cogito",
+      "group": "us_models",
+      "x_query": "(\"Deep Cogito\" OR \"Cogito model\")",
+      "website": "https://huggingface.co/deepcogito",
+      "github_repos": [],
+      "hf_author": "deepcogito",
+      "hf_families": [
+        "cogito"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/deepcogito"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "hermes",
+      "name": "Nous Hermes",
+      "group": "us_models",
+      "x_query": "(\"Nous Hermes\" OR \"NousResearch\" OR \"Hermes model\")",
+      "website": "https://huggingface.co/NousResearch",
+      "github_repos": [],
+      "hf_author": "NousResearch",
+      "hf_families": [
+        "hermes"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/NousResearch"
+      ],
+      "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "granite",
+      "name": "IBM Granite",
+      "group": "us_models",
+      "x_query": "(\"IBM Granite\" OR \"Granite model\")",
+      "website": "https://huggingface.co/ibm-granite",
+      "github_repos": [],
+      "hf_author": "ibm-granite",
+      "hf_families": [
+        "granite"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/ibm-granite"
+      ],
+      "reviewed_on": "2026-11-18"
+    }
+  ]
+}

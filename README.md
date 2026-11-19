@@ -1,5 +1,23 @@
 # Model Radar
 
+## New: Inference Radar
+
+Monitor **SGLang, vLLM, Baseten, Fireworks, Modal, Together AI**, Groq/Cerebras,
+CoreWeave/Lambda/Crusoe/Nebius/Runpod, and nine US-developed open-model families.
+The configurable watchlist combines X evidence, official GitHub releases, and Hugging Face
+model metadata. One reusable pipeline powers bounded CLI scans, resumable reports,
+`/inference`, a read-only agent API and optional scheduled monitoring.
+
+```bash
+.venv/bin/python -m radar plan --entities sglang,baseten,fireworks,modal,together --days 7
+.venv/bin/python -m radar scan --days 7 --max-requests 60
+.venv/bin/python -m radar report latest --format markdown
+```
+
+Collection needs no LLM key or database. See [Inference Radar setup, coverage and Agent V
+integration](docs/INFERENCE-RADAR.md). Dated scripts below remain available for reproducing
+earlier GTM research; new inference scans use `config/inference-radar.json`.
+
 把 X 和公开 OSS 生态证据整理成可复核的模型发布报告、KOL 名单、外联清单与飞书/PDF 交付物。
 
 这个仓库来自真实的模型 GTM 工作流。它更像一个 **script-first intelligence workbench**，
