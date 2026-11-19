@@ -1,28 +1,33 @@
 # Inference Radar
 
 Model Radar now has a reusable collection path for inference engines, serving platforms,
-neoclouds and US-developed open-model families. The same watchlist, scan engine and private
+neoclouds and US-connected and Chinese open-model families. The same watchlist, scan engine and private
 run snapshots power the CLI, dashboard, read-only API and optional scheduler.
 
 ## Coverage
 
-`config/inference-radar.json` contains 22 editable targets:
+`config/inference-radar.json` contains 41 editable targets:
 
 | Group | Targets | Collected sources |
 |---|---|---|
 | Engines | SGLang, vLLM | X mentions + official GitHub releases |
 | Serving platforms | Baseten, Fireworks AI, Modal, Together AI, Groq, Cerebras | X mentions; Baseten/Modal also have official GitHub release sources |
 | Neoclouds | CoreWeave, Lambda, Crusoe, Nebius, Runpod | X mentions |
-| US open-model families | Meta Llama, Google Gemma, NVIDIA Nemotron, Ai2 OLMo, Microsoft Phi, OpenAI gpt-oss, Deep Cogito, Nous Hermes, IBM Granite | X mentions + official Hugging Face organization model metadata |
+| US open-model families | Meta Llama, Google Gemma, NVIDIA Nemotron, Ai2 OLMo, Microsoft Phi, OpenAI gpt-oss, Deep Cogito, Nous Hermes, IBM Granite, Reflection Beam, Thinking Machines Inkling, Recursive Flint, IFM K2/Jais/PAN, Arcee AI, Zyphra, Meta Muse | X mentions + official Hugging Face organization model metadata |
 
-US describes the developer organization, not hosting geography. The watchlist includes
+| Chinese open-model families | DeepSeek, Alibaba Qwen, Moonshot Kimi, Z.ai GLM, MiniMax, 01.AI Yi, StepFun, InternLM/Sage, Baichuan, Tencent Hunyuan, Baidu ERNIE, ByteDance Seed | X mentions + official Hugging Face model metadata |
+
+Groups describe research ecosystems, not hosting geography or a model license. IFM is a global MBZUAI lab with Abu Dhabi, Silicon Valley and Paris facilities; its `region_note` explains why it appears in the US-connected watchlist. IFM K2 and Moonshot Kimi have separate IDs and official organizations; generic `K2` searches are avoided. The watchlist includes
 open-weight families with differing licenses; it does **not** claim that every model is
 OSI open source. HF observations retain license metadata, gating and whether weight files
 are listed. A repository modification can be a README edit, so it is labeled a
 `model_repository_update`, not an automatically verified launch.
 
-Every target includes primary reference URLs and a review date. This is a configurable
-starting universe, not every neocloud or American model. The website links are references;
+Every target includes primary reference URLs and a review date. The default request
+budget is now 100, enough for one request per configured source job across all 41
+targets, with some retry headroom. Explicitly configured smaller budgets remain
+honored and may skip jobs; inspect coverage or narrow the selection. This is a configurable
+starting universe, not every neocloud or US/Chinese model. The website links are references;
 this version does not scrape provider pricing pages, benchmark endpoints, or all blog posts.
 Model catalogs, hardware availability, pricing, funding, partnerships and reliability are
 discovered through the configured sources. Topic tags are explainable keyword hints and
@@ -38,11 +43,11 @@ cp .env.example .env
 
 .venv/bin/python -m radar list
 .venv/bin/python -m radar plan --entities sglang,baseten,fireworks,modal,together --days 7
-.venv/bin/python -m radar scan --days 7 --max-requests 60 --max-pages 1
+.venv/bin/python -m radar scan --days 7 --max-requests 100 --max-pages 1
 
 # Reproducible, explicit UTC window: since inclusive, until exclusive.
-.venv/bin/python -m radar scan --groups us_models --sources huggingface \
-  --since 2026-11-01 --until 2026-11-08 --max-requests 12
+.venv/bin/python -m radar scan --groups us_models,cn_models --sources huggingface \
+  --since 2026-11-01 --until 2026-11-08 --max-requests 40
 
 # Rerun only failed/skipped jobs; use the returned run ID.
 .venv/bin/python -m radar resume RUN_ID
@@ -108,7 +113,7 @@ For persistent monitoring, configure `.env`:
 INFERENCE_RADAR_ENABLED=true
 INFERENCE_RADAR_INTERVAL_MINUTES=360
 INFERENCE_RADAR_DAYS=7
-INFERENCE_RADAR_MAX_REQUESTS=60
+INFERENCE_RADAR_MAX_REQUESTS=100
 INFERENCE_RADAR_MAX_PAGES=1
 ```
 

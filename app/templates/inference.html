@@ -3,7 +3,7 @@
 {% block content %}
 <div class="card-head"><h1 style="font-size:24px;margin:0 0 6px">Inference Radar</h1>
   {% if run %}<a class="btn" href="/api/radar/runs/{{ run.id }}/export">Export full scan</a>{% endif %}</div>
-<p class="muted">Inference engines, serving platforms, neoclouds, and US-developed open-model families.</p>
+<p class="muted">Inference engines, serving platforms, neoclouds, and US-connected and Chinese open-model families.</p>
 <div class="kpis">
   <div class="card"><div class="kpi-label">Watchlist</div><div class="kpi-value">{{ catalog.entities|length }}</div><div class="kpi-foot">Configured organizations and model families</div></div>
   <div class="card"><div class="kpi-label">Evidence in view</div><div class="kpi-value">{{ rows|length }}</div><div class="kpi-foot">Bounded sample, not total market volume</div></div>
@@ -11,7 +11,7 @@
   <div class="card"><div class="kpi-label">Scheduled collection</div><div class="kpi-value" style="font-size:22px">{{ 'Every ' ~ interval ~ ' min' if enabled else 'Off' }}</div><div class="kpi-foot">{{ 'Runs while this service is running' if enabled else 'On-demand scans remain available' }}</div></div>
 </div>
 <form class="filters" method="get">
-  <label>Group<select name="group"><option value="">All groups</option>{% for value, label in [('engine','Engines'),('platform','Serving platforms'),('neocloud','Neoclouds'),('us_models','US open models')] %}<option value="{{ value }}" {% if group==value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+  <label>Group<select name="group"><option value="">All groups</option>{% for value, label in [('engine','Engines'),('platform','Serving platforms'),('neocloud','Neoclouds'),('us_models','US open-model ecosystem'),('cn_models','Chinese open models')] %}<option value="{{ value }}" {% if group==value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
   <label>Entity<select name="entity"><option value="">All entities</option>{% for e in catalog.entities %}<option value="{{ e.id }}" {% if entity==e.id %}selected{% endif %}>{{ e.name }}</option>{% endfor %}</select></label>
   <label>Source<select name="source"><option value="">All sources</option>{% for value in ['x','github','huggingface'] %}<option {% if source==value %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
   <label>Topic hint<select name="topic"><option value="">All topics</option>{% for value in topics %}<option value="{{ value }}" {% if topic==value %}selected{% endif %}>{{ value|replace('_',' ')|title }}</option>{% endfor %}</select></label>
@@ -38,5 +38,5 @@
   {% for tag in s.get('topic_tags',[]) %}<span class="pill">{{ tag|replace('_',' ') }}</span>{% endfor %}
 </article>
 {% else %}<div class="card empty"><h3>{{ 'No evidence matches these filters' if run else 'Your inference watchlist is ready' }}</h3><p>{{ 'Check coverage above before interpreting an empty sample as no activity.' if run else 'Start an on-demand scan, or enable scheduled collection for this service.' }}</p></div>{% endfor %}
-<details class="card" style="margin-top:18px"><summary>Watchlist and primary references</summary><div class="scroll-x"><table><thead><tr><th>Entity</th><th>Group</th><th>Sources</th></tr></thead><tbody>{% for e in entities %}<tr><td><a href="{{ e.website }}" target="_blank" rel="noopener noreferrer">{{ e.name }}</a></td><td>{{ e.group }}</td><td>{% if e.x_query %}X mentions{% endif %}{% if e.github_repos %} · GitHub releases{% endif %}{% if e.hf_author %} · Hugging Face models{% endif %}</td></tr>{% endfor %}</tbody></table></div></details>
+<details class="card" style="margin-top:18px"><summary>Watchlist and primary references</summary><div class="scroll-x"><table><thead><tr><th>Entity</th><th>Group</th><th>Sources</th></tr></thead><tbody>{% for e in entities %}<tr><td><a href="{{ e.website }}" target="_blank" rel="noopener noreferrer">{{ e.name }}</a>{% if e.region_note %}<small class="muted"> · {{ e.region_note }}</small>{% endif %}</td><td>{{ e.group }}</td><td>{% if e.x_query %}X mentions{% endif %}{% if e.github_repos %} · GitHub releases{% endif %}{% if e.hf_author %} · Hugging Face models{% endif %}</td></tr>{% endfor %}</tbody></table></div></details>
 {% endblock %}

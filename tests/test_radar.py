@@ -41,6 +41,25 @@ def test_catalog_includes_requested_entities_and_disambiguates_generic_names():
         Catalog(entities=[entity(), entity()])
 
 
+def test_global_watchlist_keeps_official_labs_and_chinese_models_distinct():
+    cat = load_catalog()
+    by_id = {e.id: e for e in cat.entities}
+    assert len(by_id) == 41
+    assert {"reflection", "thinking-machines", "recursive", "ifm", "arcee", "zyphra", "muse", "nemotron", "olmo"} <= set(by_id)
+    assert {e.id for e in cat.select(groups=["cn_models"])} == {
+        "deepseek", "qwen", "kimi", "glm", "minimax", "yi", "stepfun", "internlm", "baichuan", "hunyuan", "ernie", "seed"}
+    assert by_id["ifm"].hf_author == "IFM" and by_id["kimi"].hf_author == "moonshotai"
+    assert "Silicon Valley" in by_id["ifm"].region_note
+    assert by_id["muse"].hf_author == "meta-models"
+    assert by_id["reflection"].hf_author == "reflection"
+    assert by_id["thinking-machines"].hf_author == "thinkingmachines"
+    assert by_id["recursive"].hf_author == "RecursiveSI"
+    assert {"molmo", "olmo", "tulu"} <= set(by_id["olmo"].hf_families)
+    jobs = jobs_for(cat.select(groups=["cn_models"]), options(sources=["huggingface"]))
+    assert len(jobs) == 12
+    assert options().max_requests >= len(jobs_for(cat.entities, options()))
+
+
 @pytest.mark.parametrize("kwargs", [{"max_requests": 0}, {"max_pages": 11}, {"sources": []}])
 def test_invalid_budget_is_rejected(kwargs):
     with pytest.raises(ValueError):
@@ -241,7 +260,7 @@ def test_read_only_api_and_dashboard(monkeypatch, tmp_path):
         assert c.get("/api/radar/latest", headers=headers).status_code == 404
         assert c.post("/debug/inference-collect", headers=headers).status_code == 401
         response = c.get("/inference", auth=("smoke-user", "smoke-pass"))
-        assert response.status_code == 200 and "22" in response.text and "Not run yet" in response.text
+        assert response.status_code == 200 and ">41</div>" in response.text and "Chinese open models" in response.text and "Not run yet" in response.text
 
 
 def test_report_escapes_untrusted_content_and_csv_formulas():

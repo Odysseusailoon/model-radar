@@ -17,7 +17,7 @@ class ScanOptions(BaseModel):
     since: datetime
     until: datetime
     sources: list[Literal["x", "github", "huggingface"]] = Field(default_factory=lambda: ["x", "github", "huggingface"], min_length=1)
-    max_requests: int = Field(default=60, ge=1, le=500)
+    max_requests: int = Field(default=100, ge=1, le=500)
     max_pages: int = Field(default=1, ge=1, le=10)
     page_size: int = Field(default=50, ge=1, le=100)
 
