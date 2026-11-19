@@ -294,3 +294,53 @@ products.example.json
 
 测试覆盖分类 JSON 解析、去重、导出、Dashboard、follow watch、H3 watch、bot 与响应信封映射；
 外部请求均 mock，不需要 live API key 或数据库。
+
+## Account GTM monitor
+
+`tools/gtm_monitor.py` tracks Inferact, vLLM, RadixArk, and SGLang without an LLM
+key or Postgres. The `peers` cohort also includes Baseten, Modal, Prime Intellect,
+and Nous Research. It uses the shared `app/xclient.py` twitterapi.io adapter.
+
+```bash
+# First scan / comparative report (bounded to 15 pages per account)
+.venv/bin/python tools/gtm_monitor.py scan --cohort peers --days 30 --max-pages 15
+
+# Ongoing core-account monitoring, suitable for a daily Codex automation
+.venv/bin/python tools/gtm_monitor.py scan --cohort core --days 30 --max-pages 10
+
+# Render existing evidence without spending API credits
+.venv/bin/python tools/gtm_monitor.py report --cohort peers --days 30
+```
+
+Outputs are ignored under `reports/gtm-monitor/`: durable `monitor.sqlite3`,
+`monitor.json`, and an offline, filterable `monitor.html`. Use `--output` to change
+the export destination and `--db` to change the database. Existing FastAPI users
+can view the same database through the authenticated `/gtm` route; configure
+`GTM_MONITOR_DB` if needed. The page is read-only and does not spend API credits.
+Opening HTML does not schedule collection. Configure one daily runner using the
+core scan command, with this repository as its working directory and access to
+its ignored `.env` (or the `TWITTERAPI_KEY` environment variable). Do not enable a
+second runner against the same database.
+
+The scan re-reads the selected window, updates existing post metrics, deduplicates
+by account/post ID, and retains daily follower snapshots. The first run establishes
+a baseline; `new` means first observed, not necessarily newly published. Later
+runs return the first-seen IDs, suitable for a digest. Collection makes no social
+writes, sends no Feishu messages, and does not call an LLM. Requests are bounded
+by accounts × max-pages × client retry limit, with throttling and 429 backoff.
+
+Performance summaries include original and quote posts; replies and reposts are
+counted separately. Engagement = likes + reposts + replies + quotes. Public views
+are not unique people, and missing views remain unavailable. Median engagement
+and E/views are descriptive proxies, not revenue, conversions, unique reach, or
+causal evidence. Keyword labels overlap and need human review. Profile counts
+are observations from returned author objects, with their capture date.
+
+Every account records its page count, collection cutoff, pagination outcome,
+invalid-record count, and any sanitized exception type. Exit code 2 means capped,
+invalid, or failed coverage: partial evidence remains available but must not be
+reported as a complete window. `window_reached` and `source_exhausted` describe the
+provider's pagination, not an exhaustive archive guarantee. `--accounts baseten` permits targeted gap repair without re-fetching the cohort.
+`--as-of` accepts an
+explicit ISO timestamp with timezone for reproducible reports. Credentials,
+SQLite state, collected text, and private analysis must never enter Git.

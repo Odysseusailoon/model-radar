@@ -151,6 +151,17 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/gtm", response_class=HTMLResponse)
+def gtm_monitor_dashboard(_: str = Depends(require_auth)):
+    """Read-only account GTM dashboard; collection runs through the CLI."""
+    from .gtm_monitor import connect, render, summary
+    db = connect(settings.gtm_monitor_db)
+    try:
+        return HTMLResponse(render(summary(db)))
+    finally:
+        db.close()
+
+
 @app.post("/debug/collect")
 def debug_collect(_: str = Depends(require_auth)):
     """Manually trigger one collection cycle (handy right after deploy)."""

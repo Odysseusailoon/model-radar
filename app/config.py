@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # (Advanced Search: GET /twitter/tweet/advanced_search).
     twitterapi_base_url: str = "https://api.twitterapi.io"
 
+    # Local account-monitor state, populated by tools/gtm_monitor.py.
+    gtm_monitor_db: str = "reports/gtm-monitor/monitor.sqlite3"
+
     # ---- LLM (Anthropic SDK, via aihubmix Anthropic-compatible gateway) ----
     # aihubmix exposes an Anthropic-compatible endpoint, so we point the
     # Anthropic SDK's base_url at it and pass the aihubmix key as the API key.
