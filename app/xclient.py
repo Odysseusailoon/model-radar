@@ -109,6 +109,17 @@ class Tweet:
     raw: dict = field(default_factory=dict)
 
 
+@dataclass
+class TweetPage:
+    tweets: list[Tweet]
+    has_next: bool
+    next_cursor: str
+
+
+class XAPIResponseError(RuntimeError):
+    """A successful HTTP response whose provider payload is unusable."""
+
+
 def _parse_created_at(value) -> Optional[datetime]:
     if not value:
         return None
@@ -209,7 +220,7 @@ def _map_author(raw: dict) -> Author:
         handle=raw.get("userName", "") or "",
         name=raw.get("name", "") or "",
         followers=int(raw.get("followers", 0) or 0),
-        bio=raw.get("description", "") or "",
+        bio=raw.get("description") or (raw.get("profile_bio") or {}).get("description") or "",
         verified=bool(raw.get("isBlueVerified", False)),
     )
 
@@ -278,6 +289,9 @@ class XDataClient:
                     )
                 resp.raise_for_status()
                 data = resp.json()
+                if not isinstance(data, dict) or data.get("status") in ("error", "failed"):
+                    # Do not log provider bodies: they may contain credentials.
+                    raise XAPIResponseError("X API returned an unsuccessful response envelope")
                 if _DEBUG and data.get(KEY_TWEETS):
                     log.info("XCLIENT_DEBUG raw tweet[0]=%s", data[KEY_TWEETS][0])
                 return data
@@ -376,7 +390,19 @@ class XDataClient:
     ) -> Iterator[Tweet]:
         """Yield a seed account's latest tweets. Docs recommend userId over
         userName (more stable/faster); we support either."""
+        for page in self.user_tweet_pages(user_name, user_id, max_pages, include_replies):
+            yield from page.tweets
+
+    def user_tweet_pages(
+        self,
+        user_name: Optional[str] = None,
+        user_id: Optional[str] = None,
+        max_pages: int = 1,
+        include_replies: bool = False,
+    ) -> Iterator[TweetPage]:
+        """Expose pagination metadata so monitors can report capped coverage."""
         cursor = ""
+        seen_cursors: set[str] = set()
         params_base = {"includeReplies": str(include_replies).lower()}
         if user_id:
             params_base["userId"] = user_id
@@ -386,10 +412,16 @@ class XDataClient:
             return
         for _ in range(max_pages):
             data = self._get(USER_LAST_TWEETS_PATH, {**params_base, "cursor": cursor})
-            for raw in _tweets_from(data):
-                yield _map_tweet(raw)
-            if not data.get(KEY_HAS_NEXT):
+            nested = data.get("data")
+            rows = nested.get(KEY_TWEETS) if isinstance(nested, dict) else data.get(KEY_TWEETS)
+            if not isinstance(rows, list):
+                raise XAPIResponseError("X API response is missing the tweet list")
+            next_cursor = data.get(KEY_NEXT_CURSOR) or ""
+            has_next = bool(data.get(KEY_HAS_NEXT))
+            yield TweetPage([_map_tweet(raw) for raw in rows], has_next, next_cursor)
+            if not has_next:
                 break
-            cursor = data.get(KEY_NEXT_CURSOR) or ""
-            if not cursor:
-                break
+            if not next_cursor or next_cursor in seen_cursors:
+                raise XAPIResponseError("X API pagination cursor is missing or repeated")
+            seen_cursors.add(next_cursor)
+            cursor = next_cursor

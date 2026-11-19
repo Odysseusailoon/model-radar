@@ -43,3 +43,16 @@ def test_dashboard_accepts_correct_credentials(client):
 def test_debug_collect_is_not_publicly_exposed(client):
     """/debug/collect spends real API credits; it must never be anonymous."""
     assert client.post("/debug/collect").status_code == 401
+
+
+def test_account_monitor_requires_auth(client):
+    assert client.get("/gtm").status_code == 401
+
+
+def test_account_monitor_renders_without_postgres_data(client, tmp_path, monkeypatch):
+    from app.main import settings
+    monkeypatch.setattr(settings, "gtm_monitor_db", str(tmp_path / "monitor.sqlite3"))
+    response = client.get("/gtm", auth=("smoke-user", "smoke-pass"))
+    assert response.status_code == 200
+    assert "Inference GTM monitor" in response.text
+    assert "not collected" in response.text

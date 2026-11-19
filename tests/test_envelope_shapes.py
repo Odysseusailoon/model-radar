@@ -5,7 +5,7 @@ advanced_search returns {tweets: [...]}; last_tweets returns
 tweets with no error, so seed-KOL polling reported success while collecting
 nothing. Both shapes verified live 2026-07-20.
 """
-from app.xclient import XDataClient, _tweets_from
+from app.xclient import XDataClient, _tweets_from, _map_author
 
 RAW = {
     "type": "tweet",
@@ -16,6 +16,11 @@ RAW = {
     "likeCount": 1,
     "author": {"userName": "a", "id": "9", "followers": 5},
 }
+
+
+def test_author_bio_falls_back_to_nested_live_shape():
+    author = _map_author({"description": "", "profile_bio": {"description": "Serving open models"}})
+    assert author.bio == "Serving open models"
 
 
 def test_tweets_from_reads_top_level_envelope():
