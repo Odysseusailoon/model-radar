@@ -30,7 +30,7 @@ def parser():
         sub.add_argument("--since", help="ISO date/time, inclusive; naive dates are UTC")
         sub.add_argument("--until", help="ISO date/time, exclusive; defaults to now")
         sub.add_argument("--days", type=int, default=7)
-        sub.add_argument("--max-requests", type=int, default=60, help="HTTP attempt budget, including X retries")
+        sub.add_argument("--max-requests", type=int, default=100, help="HTTP attempt budget, including X retries")
         sub.add_argument("--max-pages", type=int, default=1, help="Per source/entity, 1–10")
         sub.add_argument("--page-size", type=int, default=50, help="GitHub/HF page size; X uses the provider default")
     resume = commands.add_parser("resume", help="Retry failed/skipped jobs from a saved run; successful/capped jobs are cached")

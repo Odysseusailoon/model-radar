@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     inference_radar_enabled: bool = False
     inference_radar_interval_minutes: int = Field(default=360, ge=60)
     inference_radar_days: int = Field(default=7, ge=1, le=366)
-    inference_radar_max_requests: int = Field(default=60, ge=1, le=500)
+    inference_radar_max_requests: int = Field(default=100, ge=1, le=500)
     inference_radar_max_pages: int = Field(default=1, ge=1, le=10)
     radar_read_token: str = ""  # optional read-only bearer token for Agent V
     radar_github_token: str = ""  # optional, raises public GitHub API rate limits

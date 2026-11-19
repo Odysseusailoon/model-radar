@@ -9,7 +9,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 DEFAULT_CATALOG = Path(__file__).resolve().parents[1] / "config/inference-radar.json"
-GROUPS = ("engine", "platform", "neocloud", "us_models")
+GROUPS = ("engine", "platform", "neocloud", "us_models", "cn_models")
 SOURCES = ("x", "github", "huggingface")
 
 
@@ -17,7 +17,7 @@ class Entity(BaseModel):
     model_config = ConfigDict(extra="forbid")
     id: str = Field(pattern=r"^[a-z0-9][a-z0-9-]{0,63}$")
     name: str = Field(min_length=1)
-    group: Literal["engine", "platform", "neocloud", "us_models"]
+    group: Literal["engine", "platform", "neocloud", "us_models", "cn_models"]
     x_query: str = Field(default="", max_length=350)
     website: str
     github_repos: list[str] = Field(default_factory=list)
@@ -25,6 +25,7 @@ class Entity(BaseModel):
     hf_families: list[str] = Field(default_factory=list)
     reference_urls: list[str] = Field(default_factory=list)
     reviewed_on: str = ""
+    region_note: str = ""
 
     @field_validator("github_repos")
     @classmethod

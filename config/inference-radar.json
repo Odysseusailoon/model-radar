@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Inference engines, serving platforms, neoclouds, and US-developed open-model families. US refers to developer organization, not hosting location. Open weights does not imply an OSI-approved license; inspect each artifact's license and gating. This is an editable watchlist, not an exhaustive market census.",
+  "description": "Inference engines, platforms, neoclouds, US-connected and Chinese open-model ecosystems. Licenses and release claims require source review.",
   "entities": [
     {
       "id": "sglang",
@@ -216,14 +216,16 @@
     },
     {
       "id": "olmo",
-      "name": "Ai2 OLMo",
+      "name": "Ai2 OLMo / Molmo / Tulu",
       "group": "us_models",
-      "x_query": "(\"OLMo\" OR \"Olmo\" OR \"OLMoE\")",
+      "x_query": "(\"OLMo\" OR \"OLMoE\" OR \"Molmo\" OR \"Allen Institute for AI\" OR \"Ai2 Tulu\")",
       "website": "https://huggingface.co/allenai",
       "github_repos": [],
       "hf_author": "allenai",
       "hf_families": [
-        "olmo"
+        "olmo",
+        "molmo",
+        "tulu"
       ],
       "reference_urls": [
         "https://huggingface.co/allenai"
@@ -309,6 +311,304 @@
         "https://huggingface.co/ibm-granite"
       ],
       "reviewed_on": "2026-11-18"
+    },
+    {
+      "id": "reflection",
+      "name": "Reflection Beam",
+      "group": "us_models",
+      "x_query": "(\"Reflection AI\" OR \"Reflection Beam\" OR \"reflection.ai\" OR \"Beam-1.0\")",
+      "website": "https://reflection.ai/",
+      "github_repos": [],
+      "hf_author": "reflection",
+      "hf_families": [],
+      "reference_urls": [
+        "https://reflection.ai/",
+        "https://huggingface.co/reflection",
+        "https://reflection.ai/blog/beam-is-available"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "thinking-machines",
+      "name": "Thinking Machines / Inkling",
+      "group": "us_models",
+      "x_query": "(\"Thinking Machines Lab\" OR \"ThinkingMachines\" OR \"Inkling model\" OR \"Inkling-2\" OR \"thinkingmachines.ai\")",
+      "website": "https://thinkingmachines.ai/",
+      "github_repos": [],
+      "hf_author": "thinkingmachines",
+      "hf_families": [],
+      "reference_urls": [
+        "https://thinkingmachines.ai/",
+        "https://huggingface.co/thinkingmachines",
+        "https://thinkingmachines.ai/news/introducing-inkling/"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "recursive",
+      "name": "Recursive / Flint",
+      "group": "us_models",
+      "x_query": "(\"Recursive Superintelligence\" OR \"Recursive Flint\" OR \"RecursiveSI\" OR \"recursive.com\")",
+      "website": "https://recursive.com/",
+      "github_repos": [],
+      "hf_author": "RecursiveSI",
+      "hf_families": [],
+      "reference_urls": [
+        "https://recursive.com/",
+        "https://huggingface.co/RecursiveSI",
+        "https://huggingface.co/RecursiveSI/flint"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "ifm",
+      "name": "IFM K2 / Jais / PAN",
+      "group": "us_models",
+      "x_query": "(\"IFM K2\" OR \"ifm.ai\" OR \"K2 Horizon\" OR \"LLM360\" OR from:IFM_AI)",
+      "website": "https://ifm.ai/",
+      "github_repos": [],
+      "hf_author": "IFM",
+      "hf_families": [],
+      "reference_urls": [
+        "https://ifm.ai/",
+        "https://huggingface.co/IFM",
+        "https://ifm.ai/k2/"
+      ],
+      "reviewed_on": "2026-11-19",
+      "region_note": "Global MBZUAI lab with facilities in Abu Dhabi, Silicon Valley and Paris; included for its US research footprint, not classified as US-only."
+    },
+    {
+      "id": "arcee",
+      "name": "Arcee AI",
+      "group": "us_models",
+      "x_query": "(\"Arcee AI\" OR \"arcee.ai\" OR \"Arcee Trinity\" OR from:arcee_ai)",
+      "website": "https://www.arcee.ai/",
+      "github_repos": [],
+      "hf_author": "arcee-ai",
+      "hf_families": [],
+      "reference_urls": [
+        "https://www.arcee.ai/",
+        "https://huggingface.co/arcee-ai"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "zyphra",
+      "name": "Zyphra",
+      "group": "us_models",
+      "x_query": "(\"Zyphra\" OR \"Zamba\" OR \"ZAYA model\" OR \"Zonos\")",
+      "website": "https://www.zyphra.com/",
+      "github_repos": [],
+      "hf_author": "Zyphra",
+      "hf_families": [],
+      "reference_urls": [
+        "https://www.zyphra.com/",
+        "https://huggingface.co/Zyphra"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "muse",
+      "name": "Meta Muse",
+      "group": "us_models",
+      "x_query": "(\"Meta Muse\" OR \"Muse Spark\" OR \"Muse Glimmer\" OR \"Muse Ember\")",
+      "website": "https://research.meta.ai/",
+      "github_repos": [],
+      "hf_author": "meta-models",
+      "hf_families": [
+        "muse"
+      ],
+      "reference_urls": [
+        "https://research.meta.ai/",
+        "https://huggingface.co/meta-models",
+        "https://research.meta.ai/blog/muse-spark-open"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "group": "cn_models",
+      "x_query": "(\"DeepSeek\" OR \"深度求索\")",
+      "website": "https://huggingface.co/deepseek-ai",
+      "github_repos": [],
+      "hf_author": "deepseek-ai",
+      "hf_families": [],
+      "reference_urls": [
+        "https://huggingface.co/deepseek-ai"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "qwen",
+      "name": "Alibaba Qwen",
+      "group": "cn_models",
+      "x_query": "(\"Qwen\" OR \"通义千问\")",
+      "website": "https://huggingface.co/Qwen",
+      "github_repos": [],
+      "hf_author": "Qwen",
+      "hf_families": [
+        "qwen"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/Qwen"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "kimi",
+      "name": "Moonshot Kimi",
+      "group": "cn_models",
+      "x_query": "(\"Kimi K2\" OR \"Kimi K3\" OR \"Moonshot AI\" OR \"月之暗面\")",
+      "website": "https://huggingface.co/moonshotai",
+      "github_repos": [],
+      "hf_author": "moonshotai",
+      "hf_families": [
+        "kimi"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/moonshotai"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "glm",
+      "name": "Z.ai / GLM",
+      "group": "cn_models",
+      "x_query": "(\"Z.ai\" OR \"Zhipu AI\" OR \"GLM-5\" OR \"GLM-4\" OR \"智谱\")",
+      "website": "https://huggingface.co/zai-org",
+      "github_repos": [],
+      "hf_author": "zai-org",
+      "hf_families": [
+        "glm"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/zai-org"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "minimax",
+      "name": "MiniMax",
+      "group": "cn_models",
+      "x_query": "(\"MiniMax\" OR \"稀宇科技\")",
+      "website": "https://huggingface.co/MiniMaxAI",
+      "github_repos": [],
+      "hf_author": "MiniMaxAI",
+      "hf_families": [],
+      "reference_urls": [
+        "https://huggingface.co/MiniMaxAI"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "yi",
+      "name": "01.AI / Yi",
+      "group": "cn_models",
+      "x_query": "(\"01.AI\" OR \"Yi model\" OR \"零一万物\")",
+      "website": "https://huggingface.co/01-ai",
+      "github_repos": [],
+      "hf_author": "01-ai",
+      "hf_families": [
+        "yi"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/01-ai"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "stepfun",
+      "name": "StepFun",
+      "group": "cn_models",
+      "x_query": "(\"StepFun\" OR \"Step-5\" OR \"阶跃星辰\")",
+      "website": "https://huggingface.co/stepfun-ai",
+      "github_repos": [],
+      "hf_author": "stepfun-ai",
+      "hf_families": [],
+      "reference_urls": [
+        "https://huggingface.co/stepfun-ai"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "internlm",
+      "name": "Shanghai AI Lab / InternLM / Sage",
+      "group": "cn_models",
+      "x_query": "(\"InternLM\" OR \"书生\" OR \"Sage-S2\")",
+      "website": "https://huggingface.co/internlm",
+      "github_repos": [],
+      "hf_author": "internlm",
+      "hf_families": [],
+      "reference_urls": [
+        "https://huggingface.co/internlm"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "baichuan",
+      "name": "Baichuan",
+      "group": "cn_models",
+      "x_query": "(\"Baichuan\" OR \"百川智能\")",
+      "website": "https://huggingface.co/baichuan-inc",
+      "github_repos": [],
+      "hf_author": "baichuan-inc",
+      "hf_families": [],
+      "reference_urls": [
+        "https://huggingface.co/baichuan-inc"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "hunyuan",
+      "name": "Tencent Hunyuan",
+      "group": "cn_models",
+      "x_query": "(\"Hunyuan\" OR \"Hy4\" OR \"腾讯混元\")",
+      "website": "https://huggingface.co/tencent",
+      "github_repos": [],
+      "hf_author": "tencent",
+      "hf_families": [
+        "hunyuan",
+        "hy3",
+        "hy4"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/tencent"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "ernie",
+      "name": "Baidu ERNIE",
+      "group": "cn_models",
+      "x_query": "(\"Baidu ERNIE\" OR \"ERNIE-5\" OR \"文心一言\" OR \"文心大模型\")",
+      "website": "https://huggingface.co/baidu",
+      "github_repos": [],
+      "hf_author": "baidu",
+      "hf_families": [
+        "ernie"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/baidu"
+      ],
+      "reviewed_on": "2026-11-19"
+    },
+    {
+      "id": "seed",
+      "name": "ByteDance Seed",
+      "group": "cn_models",
+      "x_query": "(\"ByteDance Seed\" OR \"Seed-OSS\" OR \"Seed model\" OR \"字节跳动 Seed\")",
+      "website": "https://huggingface.co/ByteDance-Seed",
+      "github_repos": [],
+      "hf_author": "ByteDance-Seed",
+      "hf_families": [
+        "seed",
+        "bagel"
+      ],
+      "reference_urls": [
+        "https://huggingface.co/ByteDance-Seed"
+      ],
+      "reviewed_on": "2026-11-19"
     }
   ]
 }

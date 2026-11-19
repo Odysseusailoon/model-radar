@@ -3,14 +3,14 @@
 ## New: Inference Radar
 
 Monitor **SGLang, vLLM, Baseten, Fireworks, Modal, Together AI**, Groq/Cerebras,
-CoreWeave/Lambda/Crusoe/Nebius/Runpod, and nine US-developed open-model families.
+CoreWeave/Lambda/Crusoe/Nebius/Runpod, and nine US-connected and Chinese open-model families.
 The configurable watchlist combines X evidence, official GitHub releases, and Hugging Face
 model metadata. One reusable pipeline powers bounded CLI scans, resumable reports,
 `/inference`, a read-only agent API and optional scheduled monitoring.
 
 ```bash
 .venv/bin/python -m radar plan --entities sglang,baseten,fireworks,modal,together --days 7
-.venv/bin/python -m radar scan --days 7 --max-requests 60
+.venv/bin/python -m radar scan --days 7 --max-requests 100
 .venv/bin/python -m radar report latest --format markdown
 ```
 
