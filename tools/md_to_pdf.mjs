@@ -1,6 +1,6 @@
 // Render a Markdown report to a print-styled HTML and an A4 PDF via headless Chrome.
 // usage: node tools/md_to_pdf.mjs <in.md> <out.html> <out.pdf> "<header label>"
-import fs from 'node:fs'; import {execFileSync} from 'node:child_process';
+import fs from 'node:fs'; import path from 'node:path'; import {execFileSync} from 'node:child_process';
 // `marked` is resolved from a normal install; set MARKED_ESM to an absolute
 // path to marked.esm.js when running somewhere without node_modules.
 let marked;
@@ -40,6 +40,17 @@ p{orphans:3;widows:3}.tw{overflow:visible;border:0}table{font-size:8.6pt}th,td{p
 @page{size:A4;margin:16mm 15mm 18mm}}`;
 const doc=`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><style>${css}</style></head><body><main><div class="label">${label}</div>${html}</main></body></html>`;
 fs.writeFileSync(outHtml,doc);
-const chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const candidates = [process.env.CHROME_BIN,
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  ...((process.env.PATH || '').split(path.delimiter).flatMap(dir =>
+    ['chromium', 'chromium-browser', 'google-chrome', 'google-chrome-stable'].map(name => path.join(dir, name))))];
+const chrome = candidates.find(file => {
+  if (!file) return false;
+  try { fs.accessSync(file, fs.constants.X_OK); return fs.statSync(file).isFile(); } catch { return false; }
+});
+if (!chrome) {
+  console.error('HTML written; PDF needs Chrome/Chromium. Install a browser or set CHROME_BIN to its executable.');
+  process.exit(1);
+}
 execFileSync(chrome,['--headless=new','--disable-gpu','--no-pdf-header-footer','--print-to-pdf='+outPdf,'file://'+fs.realpathSync(outHtml)],{stdio:'ignore',timeout:120000});
 console.log(JSON.stringify({title,mdChars:md.length,pdf:outPdf}));

@@ -1,0 +1,25 @@
+# Standalone inference monitoring: no Postgres, no LLM key.
+# docker compose -f docker-compose.inference.yml --env-file .env up --build -d
+services:
+  inference:
+    build: .
+    command: ["uvicorn", "radar.web:app", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    environment:
+      TWITTERAPI_KEY: ${TWITTERAPI_KEY:-}
+      DASHBOARD_USER: ${DASHBOARD_USER:-marketing}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:?Set a dashboard password in .env}
+      RADAR_READ_TOKEN: ${RADAR_READ_TOKEN:-}
+      RADAR_GITHUB_TOKEN: ${RADAR_GITHUB_TOKEN:-}
+      INFERENCE_RADAR_ENABLED: ${INFERENCE_RADAR_ENABLED:-false}
+      INFERENCE_RADAR_INTERVAL_MINUTES: ${INFERENCE_RADAR_INTERVAL_MINUTES:-360}
+      INFERENCE_RADAR_DAYS: ${INFERENCE_RADAR_DAYS:-7}
+      INFERENCE_RADAR_MAX_REQUESTS: ${INFERENCE_RADAR_MAX_REQUESTS:-60}
+      INFERENCE_RADAR_MAX_PAGES: ${INFERENCE_RADAR_MAX_PAGES:-1}
+      INFERENCE_RADAR_DATA_DIR: /app/reports/inference-radar
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - radar-data:/app/reports/inference-radar
+volumes:
+  radar-data:

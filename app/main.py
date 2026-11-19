@@ -31,6 +31,7 @@ from .charts import assign_colors, build_line_chart, build_sentiment_bars
 from .queries import EvidenceFilter, query_evidence
 from .stats import build_overview
 from .xclient import _map_tweet
+from .inference_radar import router as inference_router, run_radar_once, configure_radar_job
 
 logging.basicConfig(
     level=logging.INFO,
@@ -111,6 +112,7 @@ async def lifespan(app: FastAPI):
             coalesce=True,
         )
         log.info("H3 launch watch: every %d min", settings.h3_watch_interval_min)
+    configure_radar_job(scheduler)
     scheduler.start()
     log.info("Scheduler started: collecting every %d min", settings.collect_interval_minutes)
     yield
@@ -118,6 +120,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="GTM Evidence Radar", lifespan=lifespan)
+app.include_router(inference_router)
 
 
 # --------------------------------------------------------------------------
@@ -155,6 +158,15 @@ def health():
 def debug_collect(_: str = Depends(require_auth)):
     """Manually trigger one collection cycle (handy right after deploy)."""
     return collect_once()
+
+
+@app.post("/debug/inference-collect")
+def debug_inference_collect(_: str = Depends(require_auth)):
+    from radar.store import ScanBusy
+    try:
+        return run_radar_once()
+    except ScanBusy:
+        raise HTTPException(409, "An inference scan is already running")
 
 
 @app.post("/debug/reset")

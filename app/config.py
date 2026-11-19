@@ -7,9 +7,11 @@ infrastructure / secret configuration that is the same across products.
 from __future__ import annotations
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field
 
 
 class Settings(BaseSettings):
@@ -20,6 +22,17 @@ class Settings(BaseSettings):
     # Base URL for twitterapi.io. Verified against https://docs.twitterapi.io
     # (Advanced Search: GET /twitter/tweet/advanced_search).
     twitterapi_base_url: str = "https://api.twitterapi.io"
+
+    # Portable inference radar. Raw evidence stays in this gitignored directory.
+    inference_radar_catalog: str = str(Path(__file__).resolve().parents[1] / "config/inference-radar.json")
+    inference_radar_data_dir: str = "reports/inference-radar"
+    inference_radar_enabled: bool = False
+    inference_radar_interval_minutes: int = Field(default=360, ge=60)
+    inference_radar_days: int = Field(default=7, ge=1, le=366)
+    inference_radar_max_requests: int = Field(default=60, ge=1, le=500)
+    inference_radar_max_pages: int = Field(default=1, ge=1, le=10)
+    radar_read_token: str = ""  # optional read-only bearer token for Agent V
+    radar_github_token: str = ""  # optional, raises public GitHub API rate limits
 
     # ---- LLM (Anthropic SDK, via aihubmix Anthropic-compatible gateway) ----
     # aihubmix exposes an Anthropic-compatible endpoint, so we point the
